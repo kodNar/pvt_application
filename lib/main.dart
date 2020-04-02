@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'workerData.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,6 +46,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 5;
+  StalkerModel _stalkerModel = new StalkerModel();
 
   void _incrementCounter() {
     setState(() {
@@ -81,24 +83,27 @@ class _MyHomePageState extends State<MyHomePage> {
             Text('Volume')
           ]
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Press the button to reduct a life',
-            ),
-            Text(
-              '$_counter',
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .display1,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked, // lägger floating knappen i mitten.
+      body:
+      ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: _stalkerModel.coWorkers.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              height: 70,
+              color: Colors.amber,
+              child: ListTile(
+                leading: _stalkerModel.coWorkers[index].location == WorkerLocations.home?new Icon(Icons.home):
+                _stalkerModel.coWorkers[index].location == WorkerLocations.office?new Icon(Icons.local_post_office):
+                _stalkerModel.coWorkers[index].location == WorkerLocations.Tenndalen?new Icon(Icons.directions_railway):
+                    new Icon(Icons.money_off),
+                title: Text('${_stalkerModel.coWorkers[index].username}'),
+                subtitle: Text('Days: ${DateTime.now().difference(_stalkerModel.coWorkers[index].lastUpdated).inDays} since last update!'),
+              )
+            );
+          }),
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // lägger floating knappen i mitten.
       floatingActionButton: FloatingActionButton(
           onPressed: _incrementCounter,
           tooltip: 'Increment',
@@ -112,16 +117,17 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             IconButton(icon: Icon(Icons.location_searching),
-              onPressed: (){},
+              onPressed: () {},
             ),
-          IconButton(icon: Icon(Icons.access_alarm),
-            onPressed: (){},
-          )
+            IconButton(icon: Icon(Icons.access_alarm),
+              onPressed: () {},
+            )
           ],
         ),
       ),
     );
   }
+
 //SETTINGS
   void openPage(BuildContext context) {
     //Skapar ny sida
