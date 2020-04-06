@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'HomePage.dart';
 
 class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context,
-              new MaterialPageRoute(builder: (context) => HomePage()));
+          Navigator.pop(context);
         },
       ),
       body: Container(

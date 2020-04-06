@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
-import 'workerData.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.lightGreen,
+        primarySwatch: Colors.deepOrange,
       ),
       home: HomePage(title: 'Outside Gains'),
     );

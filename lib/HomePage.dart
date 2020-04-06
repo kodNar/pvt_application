@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
           title: Text(widget.title),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.settings_applications),
+              icon: Icon(Icons.settings),
               tooltip: 'Settings',
               onPressed: () {
                 Navigator.push(context, new MaterialPageRoute(
@@ -53,6 +53,9 @@ class _HomePageState extends State<HomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       // lägger floating knappen i mitten.
       floatingActionButton: FloatingActionButton(
+        onPressed: (){
+
+        },
           child: Icon(Icons.map)
       ),
       bottomNavigationBar: BottomAppBar(
@@ -75,6 +78,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   //SETTINGS
+  /*
   void openPage(BuildContext context) {
     Navigator.push(context, MaterialPageRoute(
         builder: (BuildContext context) {
@@ -96,4 +100,5 @@ class _HomePageState extends State<HomePage> {
         }
     ));
   }
+  */
 }
