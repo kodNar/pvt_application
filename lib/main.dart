@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepPurple,
       ),
       home: MyHomePage(title: 'Hej Einar! :)'),
+      //Hej Einar
     );
   }
 }
