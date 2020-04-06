@@ -136,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (BuildContext context) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text("Settings"),
+              title: const Text("Bettings?"),
             ),
             body: Center(
               child: Column(
