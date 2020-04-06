@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.deepPurple,
       ),
-      home: MyHomePage(title: 'PVT App'),
+      home: MyHomePage(title: 'Hej Einar'),
     );
   }
 }
