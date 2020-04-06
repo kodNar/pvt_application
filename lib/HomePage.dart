@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Settings.dart';
 import 'workerData.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -12,14 +13,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 5;
   StalkerModel _stalkerModel = new StalkerModel();
-
-  void _incrementCounter() {
-    setState(() {
-      _counter--;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +33,9 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icon(Icons.settings_applications),
               tooltip: 'Settings',
               onPressed: () {
-                openPage(context);
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => Settings()
+                ));
               },
             ),
             Text('Volume')
@@ -67,9 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       // lägger floating knappen i mitten.
       floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
-          tooltip: 'Increment',
-          child: Icon(Icons.add_to_home_screen)
+          child: Icon(Icons.map)
       ),
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
@@ -90,10 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-//SETTINGS
+  //SETTINGS
   void openPage(BuildContext context) {
-    //Skapar ny sida
-
     Navigator.push(context, MaterialPageRoute(
         builder: (BuildContext context) {
           return Scaffold(
