@@ -4,6 +4,8 @@ import 'Settings.dart';
 import 'workerData.dart';
 
 class HomePage extends StatefulWidget {
+
+
   HomePage({Key key, this.title}) : super(key: key);
   final String title;
   @override
@@ -18,6 +20,7 @@ class _HomePageState extends State<HomePage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
@@ -46,27 +49,25 @@ class _HomePageState extends State<HomePage> {
       ),
 
 
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       // lägger floating knappen i mitten.
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: (){
 
         },
           child: Icon(Icons.map)
-      ),
+      ),*/
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
-        notchMargin: 3,
         child: new Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            IconButton(icon: Icon(Icons.location_searching),
-              onPressed: () {},
+            Text("Stockholm Stad"),
+            Padding(
+              padding: const EdgeInsets.all(55.0),
             ),
-            IconButton(icon: Icon(Icons.access_alarm),
-              onPressed: () {},
-            )
+
           ],
         ),
       ),

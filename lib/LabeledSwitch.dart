@@ -53,6 +53,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   bool _isSelected = false;
   String label;
 
+
   @override
   Widget build(BuildContext context) {
     return LabeledSwitch(
