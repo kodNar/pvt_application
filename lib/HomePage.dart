@@ -36,15 +36,14 @@ class _HomePageState extends State<HomePage> {
           itemBuilder: (BuildContext context, int index){
             return Container(
               //Load in picture
-              height: 120,
               width: 120,
+              height: 600,
               decoration: new BoxDecoration(
                 image: DecorationImage(
                   image: new AssetImage(
-                    'assets/images/099.JPG'),
-                  fit: BoxFit.fill,
+                    'assets/images/bakgrund.png'),
+                  fit: BoxFit.cover,
                 ),
-                shape: BoxShape.rectangle
                 ),
 
 

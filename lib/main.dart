@@ -9,9 +9,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
+        primarySwatch: Colors.purple,
       ),
-      home: HomePage(title: 'Outside Gains'),
+      home: HomePage(title: 'Stockholm Outdoor Gyms'),
     );
   }
 }
