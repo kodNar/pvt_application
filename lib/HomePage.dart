@@ -37,16 +37,20 @@ class _HomePageState extends State<HomePage> {
           itemCount: _stalkerModel.coWorkers.length,
           itemBuilder: (BuildContext context, int index){
             return Container(
-                height: 70,
-                color: Colors.amber,
-                child: ListTile(
-                  leading: _stalkerModel.coWorkers[index].location == WorkerLocations.home?new Icon(Icons.home):
-                  _stalkerModel.coWorkers[index].location == WorkerLocations.office?new Icon(Icons.local_post_office):
-                  _stalkerModel.coWorkers[index].location == WorkerLocations.Tenndalen?new Icon(Icons.directions_railway):
-                  new Icon(Icons.money_off),
-                  title: Text('${_stalkerModel.coWorkers[index].username}'),
-                  subtitle: Text('Days: ${DateTime.now().difference(_stalkerModel.coWorkers[index].lastUpdated).inDays} since last update!'),
-                )
+              height: 120,
+              width: 120,
+              decoration: new BoxDecoration(
+                image: DecorationImage(
+                  image: new AssetImage(
+                    'Images/098.JPG'),
+                  fit: BoxFit.fill,
+                ),
+                shape: BoxShape.rectangle
+                ),
+
+
+
+
             );
           }),
 
