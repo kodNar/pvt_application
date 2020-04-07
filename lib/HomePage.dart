@@ -33,16 +33,15 @@ class _HomePageState extends State<HomePage> {
       ),
       body:
       ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: _stalkerModel.coWorkers.length,
           itemBuilder: (BuildContext context, int index){
             return Container(
+              //Load in picture
               height: 120,
               width: 120,
               decoration: new BoxDecoration(
                 image: DecorationImage(
                   image: new AssetImage(
-                    'Images/098.JPG'),
+                    'assets/images/099.JPG'),
                   fit: BoxFit.fill,
                 ),
                 shape: BoxShape.rectangle
