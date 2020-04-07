@@ -43,6 +43,6 @@ class StalkerModel {
     new CoWorker(
         username: "Figge",
         location: WorkerLocations.office,
-        lastUpdated: DateTime.parse("2019-07-22 14:30:41Z"))
+        lastUpdated: DateTime.parse("2018-07-22 14:30:41Z"))
   ];
 }
