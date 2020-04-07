@@ -46,7 +46,7 @@ class Settings extends StatelessWidget {
           Container(
 
             child:
-            MyStatefulWidget(),
+            MyStatefulWidget2(),
           ),
         ],
       ),

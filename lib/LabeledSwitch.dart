@@ -7,7 +7,6 @@ class LabeledSwitch extends StatelessWidget {
     this.value,
     this.onChanged,
   });
-
   final String label;
   final EdgeInsets padding;
   final bool groupValue;
@@ -41,7 +40,6 @@ class LabeledSwitch extends StatelessWidget {
 
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
-
   @override
   _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
 }
@@ -52,13 +50,34 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return LabeledSwitch(
-      label: 'This is the label text',
+      label: 'SlowMode',
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       value: _isSelected,
       onChanged: (bool newValue) {
         setState(() {
           _isSelected = newValue;
+        });
+      },
+    );
+  }
+}
+class MyStatefulWidget2 extends StatefulWidget {
+  MyStatefulWidget2({Key key}) : super(key: key);
+  @override
+  _MyStatefulWidgetState2 createState() => _MyStatefulWidgetState2();
+}
+class _MyStatefulWidgetState2 extends State<MyStatefulWidget2> {
+  bool _isSelected = false;
 
+  @override
+  Widget build(BuildContext context) {
+    return LabeledSwitch(
+      label: 'FastMode',
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      value: _isSelected,
+      onChanged: (bool newValue) {
+        setState(() {
+          _isSelected = newValue;
         });
       },
     );
