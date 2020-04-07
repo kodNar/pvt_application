@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Settings.dart';
 import 'workerData.dart';
@@ -14,6 +15,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -31,26 +33,18 @@ class _HomePageState extends State<HomePage> {
             ),
           ]
       ),
-      body:
-      ListView.builder(
-          itemBuilder: (BuildContext context, int index){
-            return Container(
-              //Load in picture
-              width: 120,
-              height: 600,
-              decoration: new BoxDecoration(
-                image: DecorationImage(
-                  image: new AssetImage(
-                    'assets/images/bakgrund.png'),
-                  fit: BoxFit.cover,
-                ),
-                ),
+      body: Stack(
+        children: <Widget>[
+          Center(
+            child: new Image.asset(
+                "assets/images/bakgrund.png",
+                width: size.width,
+                height: size.height,
+              fit: BoxFit.fill,)
+          )
+        ],
+      ),
 
-
-
-
-            );
-          }),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       // lägger floating knappen i mitten.
