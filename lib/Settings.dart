@@ -46,7 +46,6 @@ class Settings extends StatelessWidget {
       ),
 
       floatingActionButton: FloatingActionButton(
-
         onPressed: () {
           Navigator.pop(context);
         },
