@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
       ListView.builder(
           padding: const EdgeInsets.all(8),
           itemCount: _stalkerModel.coWorkers.length,
-          itemBuilder: (BuildContext context, int index) {
+          itemBuilder: (BuildContext context, int index){
             return Container(
                 height: 70,
                 color: Colors.amber,
