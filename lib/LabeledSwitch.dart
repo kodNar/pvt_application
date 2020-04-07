@@ -14,6 +14,7 @@ class LabeledSwitch extends StatelessWidget {
   final bool value;
   final Function onChanged;
 
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -41,16 +42,22 @@ class LabeledSwitch extends StatelessWidget {
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState('test', false);
 }
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+
+  _MyStatefulWidgetState(String label,bool _isSelected){
+    this.label = label;
+    this._isSelected = _isSelected;
+  }
   bool _isSelected = false;
+  String label;
 
   @override
   Widget build(BuildContext context) {
     return LabeledSwitch(
-      label: 'This is the label text',
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      label: label,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       value: _isSelected,
       onChanged: (bool newValue) {
         setState(() {

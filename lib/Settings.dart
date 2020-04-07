@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'LabeledSwitch.dart';
 
 class Settings extends StatelessWidget {
+  LabeledSwitch fastSetting = LabeledSwitch();
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -18,8 +19,9 @@ class Settings extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         children: <Widget>[
           Container(
+
             child:
-            new MyStatefulWidget(),
+            MyStatefulWidget(),
           ),
           Container(
               child:
