@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.black, //Sätter statusbarfärgen
+      statusBarColor: Colors.black, //Sätter statusbarfärgen till svart
     ));
     return MaterialApp(
       theme: ThemeData(
