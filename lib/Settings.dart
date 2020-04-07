@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/HomePage.dart';
+import 'LabeledSwitch.dart';
 
 class Settings extends StatelessWidget {
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -19,14 +18,24 @@ class Settings extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         children: <Widget>[
           Container(
-            height: 50,
-            color: Colors.amber[600],
-            child: const Center(child: Text('Entry A')),
+            child:
+            new MyStatefulWidget(),
           ),
           Container(
-            height: 50,
-            color: Colors.amber[500],
-            child: const Center(child: Text('Entry B')),
+              child:
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text('Deliver features faster', textAlign: TextAlign.center),
+                  ),
+                  Expanded(
+                    child: FittedBox(
+                      fit: BoxFit.contain, // otherwise the logo will be tiny
+                      child: const FlutterLogo(),
+                    ),
+                  ),
+                ],
+              )
           ),
           Container(
             height: 50,
