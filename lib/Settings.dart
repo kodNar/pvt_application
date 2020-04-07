@@ -5,9 +5,11 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+
         onPressed: () {
           Navigator.pop(context);
         },
+        child: Icon(Icons.save)
       ),
       body: Container(
         child: Center(
