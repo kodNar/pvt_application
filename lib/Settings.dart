@@ -15,7 +15,6 @@ class Settings extends StatelessWidget {
       body:
 
       ListView(
-        padding: const EdgeInsets.all(8),
         children: <Widget>[
           Container(
 
@@ -23,31 +22,17 @@ class Settings extends StatelessWidget {
              MyStatefulWidget(),
           ),
           Container(
-              child:
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text('Deliver features faster', textAlign: TextAlign.center),
-                  ),
-                  Expanded(
-                    child: FittedBox(
-                      fit: BoxFit.contain, // otherwise the logo will be tiny
-                      child: const FlutterLogo(),
-                    ),
-                  ),
-                ],
-              )
-          ),
-          Container(
-            height: 50,
-            color: Colors.amber[100],
-            child: const Center(child: Text('Entry C')),
-          ),
+             child:
+              MyTextInput(),
+              height: 60,
+              ),
+
           Container(
 
             child:
             MyStatefulWidget2(),
           ),
+
         ],
       ),
 
@@ -62,3 +47,37 @@ class Settings extends StatelessWidget {
     );
   }
 }
+
+
+/////////////////Code for input textField////////////////////////////////////////
+class MyTextInput extends StatefulWidget {
+  @override
+  _MyTextInput createState() => _MyTextInput();
+}
+
+// Define a corresponding State class.
+// This class holds the data related to the Form.
+class _MyTextInput extends State<MyTextInput> {
+  // Create a text controller and use it to retrieve the current value
+  // of the TextField.
+  final myController = TextEditingController();
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return
+       new TextField(
+          controller: myController,
+         onChanged: (String str){
+            setState(() {
+              //save the input
+            });
+         }
+      );
+  }
+}
+//////////////////////////////////////////////////////////////////
