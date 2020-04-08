@@ -59,6 +59,7 @@ class _HomePageState extends State<HomePage> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+
             RaisedButton(
               onPressed: (){
                 Navigator.push(context, new MaterialPageRoute(
@@ -66,6 +67,7 @@ class _HomePageState extends State<HomePage> {
               },
               child: const Text('enabled button'),
             ),
+            SizedBox(width: 10),
             RaisedButton(
               onPressed: () {
                 Navigator.push(context, new MaterialPageRoute(
