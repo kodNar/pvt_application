@@ -56,16 +56,23 @@ class _HomePageState extends State<HomePage> {
           ),
 
         ),
-        child: Column(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const SizedBox(height: 30, width: 30,),
             RaisedButton(
               onPressed: (){
                 Navigator.push(context, new MaterialPageRoute(
                     builder: (context) => LoginPage()));
               },
               child: const Text('enabled button'),
+            ),
+            RaisedButton(
+              onPressed: () {
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => LoginPage() ));
+                },
+              child: const Text('Box 2'),
+
             )
           ],
         ),
