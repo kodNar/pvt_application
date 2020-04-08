@@ -44,21 +44,10 @@ class _HomePageState extends State<HomePage> {
 
 
       body:
-      /*Stack(
-        children: <Widget>[
-          Center(
-            child: new Image.asset(
-              "assets/images/bakgrund.png",
-              width: size.width,
-              height: size.height,
-              fit: BoxFit.fill,),
-          ),
-        ],
-      ),*/
-
       Container(
         width: size.width,
         height: size.height,
+        alignment: Alignment.bottomCenter,
         decoration: new BoxDecoration(
           color: Color.fromARGB(255,132, 50, 155),
           image: DecorationImage(
@@ -67,17 +56,16 @@ class _HomePageState extends State<HomePage> {
           ),
 
         ),
-        child: Column(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            RaisedButton(onPressed: (){
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => LoginPage()));
-            },
-              child: const Text(
-                'enabled button',
-                style: TextStyle(fontSize: 20),
-              ),
+            const SizedBox(height: 30, width: 30,),
+            RaisedButton(
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => LoginPage()));
+              },
+              child: const Text('enabled button'),
             )
           ],
         ),
@@ -86,15 +74,6 @@ class _HomePageState extends State<HomePage> {
 
 
 
-
-      //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // lägger floating knappen i mitten.
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: (){
-
-        },
-          child: Icon(Icons.map)
-      ),*/
      bottomNavigationBar: BottomAppBar(
        color:Color.fromARGB(255, 132, 50, 155),
        shape: CircularNotchedRectangle(),
