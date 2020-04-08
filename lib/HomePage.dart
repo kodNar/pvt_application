@@ -36,6 +36,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ]
       ),
+
       body: Stack(
         children: <Widget>[
           Center(
@@ -58,44 +59,20 @@ class _HomePageState extends State<HomePage> {
           child: Icon(Icons.map)
       ),*/
       bottomNavigationBar: BottomAppBar(
+        color:Color.fromARGB(255, 132, 50, 155),
         shape: CircularNotchedRectangle(),
         child: new Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text("Stockholm Stad"),
+            Text("Stockholm Stad") ,
+
             Padding(
               padding: const EdgeInsets.all(55.0),
             ),
-
           ],
         ),
       ),
     );
   }
-
-  //SETTINGS
-  /*
-  void openPage(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(
-        builder: (BuildContext context) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text("Settings"),
-            ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'Settings page',
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-    ));
-  }
-  */
 }
