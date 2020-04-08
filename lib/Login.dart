@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
             TextFormField(
               validator: (input){
                 if(input.isEmpty){ //Check if auth sign or something
-                return 'Please type an Email';
+                return 'Please provide an Email';
                 }
                 return 'Hej';
               },
@@ -35,7 +35,10 @@ class _LoginPageState extends State<LoginPage> {
             TextFormField(
               validator: (input){
                 if(input.isEmpty){
-                  return 'Please type password';
+                  return 'Please provide a password';
+                }
+                if(input.length < 6){
+                  return 'Your password must be atleast 6 characters';
                 }
                 return 'Welcome';
               },
@@ -43,6 +46,11 @@ class _LoginPageState extends State<LoginPage> {
               decoration: InputDecoration(
                 labelText: 'Password'
               ),
+              obscureText: true, //Döljer texten
+            ),
+            RaisedButton(
+              onPressed: (){},
+              child: Text('Sign in'),
             )
           ],
         ),
