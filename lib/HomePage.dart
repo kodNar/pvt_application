@@ -59,21 +59,24 @@ class _HomePageState extends State<HomePage> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-
             RaisedButton(
+              color: Colors.transparent,
               onPressed: (){
                 Navigator.push(context, new MaterialPageRoute(
                     builder: (context) => LoginPage()));
               },
               child: const Text('Sign in'),
+              textColor: Colors.white,
             ),
             SizedBox(width: 10),
             RaisedButton(
+              color: Colors.transparent,
               onPressed: () {
                 Navigator.push(context, new MaterialPageRoute(
                     builder: (context) => LoginPage() ));
                 },
               child: const Text('Guest'),
+              textColor: Colors.white,
 
             )
           ],
