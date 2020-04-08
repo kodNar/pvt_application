@@ -27,9 +27,10 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.black, //Sätter statusbarfärgen till svart
     ));
+
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: themeColor,
+        primarySwatch: themeColor, fontFamily: 'Stockholm'
       ),
       home: HomePage(title: 'Stockholm Outdoor Gyms'),
     );
