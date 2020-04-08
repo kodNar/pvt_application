@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/SplashScreenPage.dart';
 import 'HomePage.dart';
 import 'package:flutter/services.dart';
 
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: themeColor, fontFamily: 'Stockholm'
       ),
-      home: HomePage(title: 'Stockholm Outdoor Gyms'),
+      home: SplashScreenPage(),
     );
   }
 }

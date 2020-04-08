@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
               tooltip: 'Settings',
               onPressed: () {
                 Navigator.push(context,
-                    new MaterialPageRoute(builder: (context) => Settings()));
+                     MaterialPageRoute(builder: (context) => Settings()));
               },
             ),
           ]),
@@ -42,9 +42,10 @@ class _HomePageState extends State<HomePage> {
         width: size.width,
         height: size.height,
         alignment: Alignment.bottomCenter,
-        decoration: new BoxDecoration(
+        decoration: BoxDecoration(
           color: Color.fromARGB(255, 132, 50, 155),
           image: DecorationImage(
+
             image: AssetImage('assets/images/bakgrund.png'),
             fit: BoxFit.fill,
           ),
@@ -65,9 +66,9 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.transparent,
                 onPressed: () {
                   Navigator.push(context,
-                      new MaterialPageRoute(builder: (context) => LoginPage()));
+                       MaterialPageRoute(builder: (context) => LoginPage()));
                 },
-                child: new Text(
+                child: Text(
                   'Sign in',
                   style: TextStyle(
                     fontSize: 25.0,
