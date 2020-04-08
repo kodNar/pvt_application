@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
           ),
 
         ),
-        child: Row(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             const SizedBox(height: 30, width: 30,),
