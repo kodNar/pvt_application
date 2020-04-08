@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(context, new MaterialPageRoute(
                     builder: (context) => LoginPage()));
               },
-              child: const Text('enabled button'),
+              child: const Text('Sign in'),
             ),
             SizedBox(width: 10),
             RaisedButton(
@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(context, new MaterialPageRoute(
                     builder: (context) => LoginPage() ));
                 },
-              child: const Text('Box 2'),
+              child: const Text('Guest'),
 
             )
           ],
