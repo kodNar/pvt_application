@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ]),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.only(top: 70),
         width: size.width,
         height: size.height,
         alignment: Alignment.center,
@@ -63,61 +63,63 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                ButtonTheme(
-                  minWidth: 150,
-                  height: 100,
-                  child: RaisedButton(
-                    //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100.0),
-                      side: BorderSide(color: Colors.white, width: 2.5),
-                    ),
-                    color: Colors.transparent,
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LoginPage()));
-                    },
-                    child: Text(
-                      'Sign in',
-                      style: TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.white,
+            Container(
+              padding: EdgeInsets.only(top: 50),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  ButtonTheme(
+                    minWidth: 150,
+                    height: 100,
+                    child: RaisedButton(
+                      //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100.0),
+                        side: BorderSide(color: Colors.white, width: 2.5),
+                      ),
+                      color: Colors.transparent,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()));
+                      },
+                      child: Text(
+                        'Sign in',
+                        style: TextStyle(
+                          fontSize: 25.0,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
-                ),
-
-                ButtonTheme(
-                  minWidth: 150,
-                  height: 100,
-
-
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      //Gör knappen till en cirkel och sätter dit en vit border för tydlighet
-                      borderRadius: BorderRadius.circular(100),
-                      side: BorderSide(color: Colors.white, width: 2.5),
-                    ),
-                    color: Colors.transparent,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => MenuPage()));
-                    },
-                    child: new Text(
-                      'Guest',
-                      style: TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.white,
+                  ButtonTheme(
+                    minWidth: 150,
+                    height: 100,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        //Gör knappen till en cirkel och sätter dit en vit border för tydlighet
+                        borderRadius: BorderRadius.circular(100),
+                        side: BorderSide(color: Colors.white, width: 2.5),
+                      ),
+                      color: Colors.transparent,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MenuPage()));
+                      },
+                      child: new Text(
+                        'Guest',
+                          style: TextStyle(
+                          fontSize: 25.0,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
