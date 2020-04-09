@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'LabeledSwitch.dart';
 
 class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -27,10 +26,21 @@ class Settings extends StatelessWidget {
                     Container(
                       child: MyStatefulWidget2(),
                     ),
+                    Container(
+                        child:
+                        RaisedButton(
+                          onPressed: (){
+                          //showDialog(context: _asyncConfirmDialog),
+                          },
+
+                          child: Text('Reset Settings'),
+
+                        )
+                    ),
                   ],
                 ),
-
               ),
+
               Container(
                 alignment: Alignment.bottomRight,
                   padding:EdgeInsets.all(20.0),
@@ -43,8 +53,7 @@ class Settings extends StatelessWidget {
   }
 }
 
-
-/////////////////Code for input textField////////////////////////////////////////
+///////////////////////Code for input textField/////////////////////////
 class MyTextInput extends StatefulWidget {
   @override
   _MyTextInput createState() => _MyTextInput();
@@ -67,16 +76,20 @@ class _MyTextInput extends State<MyTextInput> {
   @override
   Widget build(BuildContext context) {
     return new TextField(
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: 'Weight',
+        ),
         controller: myController,
         onChanged: (String str) {
           setState(() {
-            //save the input
+           //skriv kod för att spara texten
+            dispose();
           });
         });
   }
 }
 
-//////////////////////////////////////////////////////////////////
 ////////////////////snackbar code///////////////////////////////////////////
 class SnackBarPage extends StatelessWidget {
   @override
@@ -104,4 +117,119 @@ class SnackBarPage extends StatelessWidget {
     );
   }
 }
-///////////////////////////////////////////////////////////////////////
+
+//////////////////////////Pop-up box/////////////////////////////////////////////
+enum ConfirmAction { CANCEL, ACCEPT }
+
+Future<ConfirmAction> _asyncConfirmDialog(BuildContext context) async {
+  return showDialog<ConfirmAction>(
+    context: context,
+    barrierDismissible: false, // user must tap button for close dialog!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Reset settings?'),
+        content: const Text(
+            'This will reset your device to its default factory settings.'),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('CANCEL'),
+            onPressed: () {
+              Navigator.of(context).pop(ConfirmAction.CANCEL);
+            },
+          ),
+          FlatButton(
+            child: const Text('ACCEPT'),
+            onPressed: () {
+              Navigator.of(context).pop(ConfirmAction.ACCEPT);
+            },
+          )
+        ],
+      );
+    },
+  );
+}
+/////////////////////////////////LabeldSwitch//////////////////////////////////////////////////
+class LabeledSwitch extends StatelessWidget {
+  const LabeledSwitch({
+    this.label,
+    this.padding,
+    this.groupValue,
+    this.value,
+    this.onChanged,
+  });
+  final String label;
+  final EdgeInsets padding;
+  final bool groupValue;
+  final bool value;
+  final Function onChanged;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        onChanged(!value);
+      },
+      child: Padding(
+        padding: padding,
+        child: Row(
+          children: <Widget>[
+            Expanded(child: Text(label)),
+            Switch(
+              value: value,
+              onChanged: (bool newValue) {
+                onChanged(newValue);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MyStatefulWidget extends StatefulWidget {
+  MyStatefulWidget({Key key}) : super(key: key);
+  @override
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+}
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  bool _isSelected = false;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return LabeledSwitch(
+      label: 'SlowMode',
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      value: _isSelected,
+      onChanged: (bool newValue) {
+        setState(() {
+          _isSelected = newValue;
+        });
+      },
+    );
+  }
+}
+class MyStatefulWidget2 extends StatefulWidget {
+  MyStatefulWidget2({Key key}) : super(key: key);
+  @override
+  _MyStatefulWidgetState2 createState() => _MyStatefulWidgetState2();
+}
+class _MyStatefulWidgetState2 extends State<MyStatefulWidget2> {
+  bool _isSelected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return LabeledSwitch(
+      label: 'FastMode',
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      value: _isSelected,
+      onChanged: (bool newValue) {
+        setState(() {
+          _isSelected = newValue;
+        });
+      },
+    );
+  }
+}
