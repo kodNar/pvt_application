@@ -68,7 +68,7 @@ fonts:
         weight: 700
       - asset: fonts/Stocholm_Slab.ttf
         weight: 300
-        style: italic
+        style: Italic
   - family: Trajan Pro
     fonts:
         - asset: fonts/TrajanPro.ttf

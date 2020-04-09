@@ -57,6 +57,7 @@ class _HomePageState extends State<HomePage> {
               minWidth: 150,
               height: 100,
               child: RaisedButton(
+                //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100.0),
                   side: BorderSide(color: Colors.green, width: 2.5),
@@ -83,6 +84,7 @@ class _HomePageState extends State<HomePage> {
               height: 100,
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
+                  //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
                   borderRadius: BorderRadius.circular(100),
                   side: BorderSide(color: Colors.green, width: 2.5),
                 ),
@@ -109,9 +111,10 @@ class _HomePageState extends State<HomePage> {
         elevation: 0.0,
         child: new Row(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            Text("Stockholm Stad"),
+            Text("Stockholm Stad",
+              style: TextStyle(color: Colors.white, fontFamily: 'Stockholm', fontStyle: FontStyle.italic , fontSize: 29.0),),
             Padding(
               padding: const EdgeInsets.all(55.0),
             ),
