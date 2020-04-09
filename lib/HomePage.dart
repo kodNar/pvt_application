@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/Login.dart';
+import 'package:flutterapp/MenuPage.dart';
 import 'Settings.dart';
 import 'workerData.dart';
 
@@ -91,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.transparent,
                 onPressed: () {
                   Navigator.push(context,
-                      new MaterialPageRoute(builder: (context) => LoginPage()));
+                      new MaterialPageRoute(builder: (context) => MenuPage()));
                 },
                 child: new Text(
                   'Guest',
