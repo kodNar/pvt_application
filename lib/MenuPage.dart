@@ -29,7 +29,6 @@ class MenuPage extends StatelessWidget {
                 padding: EdgeInsets.all(20),
                 width: size.width,
                 height: size.height,
-                alignment: Alignment.bottomCenter,
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 132, 50, 155),
                   image: DecorationImage(

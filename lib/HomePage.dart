@@ -123,9 +123,9 @@ class _HomePageState extends State<HomePage> {
                 width: 55,
                 height: 55,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/Stockholm_endast_logga_vit.png'),
-                  fit: BoxFit.fill)
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/Stockholm_endast_logga_vit.png'),
+                        fit: BoxFit.fill)
                 ),
               ),
 
