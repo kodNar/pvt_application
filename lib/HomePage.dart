@@ -16,7 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  StalkerModel _stalkerModel = new StalkerModel();
 
   @override
   Widget build(BuildContext context) {
