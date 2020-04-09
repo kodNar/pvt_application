@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class Settings extends StatelessWidget {
   final globalKey = GlobalKey<ScaffoldState>();
+
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -11,44 +12,35 @@ class Settings extends StatelessWidget {
             title: Text('Settings'),
             actions: <Widget>[]),
         body: Builder(builder: (context) {
-          return Stack(
-            children: [
-              Container(
-                child:
-                ListView(
-                  children: <Widget>[
-                    Container(
-                      child: MyStatefulWidget(),
-                    ),
-                    Container(
-                      child: MyTextInput(),
-                      height: 60,
-                    ),
-                    Container(
-                      child: MyStatefulWidget2(),
-                    ),
-                    Container(
-                        child:
-                        RaisedButton(
-                          onPressed: (){
-                          showAlertDialog(context);
-                          },
-                          child: Text('Reset Settings'),
-
-                        )
-                    ),
-                  ],
-                ),
+          return Stack(children: [
+            Container(
+              child: ListView(
+                children: <Widget>[
+                  Container(
+                    child: MyStatefulWidget(),
+                  ),
+                  Container(
+                    child: MyTextInput(),
+                    height: 60,
+                  ),
+                  Container(
+                    child: MyStatefulWidget2(),
+                  ),
+                  Container(
+                      child: RaisedButton(
+                    onPressed: () {
+                      showAlertDialog(context);
+                    },
+                    child: Text('Reset Settings'),
+                  )),
+                ],
               ),
-
-              Container(
+            ),
+            Container(
                 alignment: Alignment.bottomRight,
-                  padding:EdgeInsets.all(20.0),
-                  child:
-                  SnackBarPageSaved()
-              ),
-              ]
-          );
+                padding: EdgeInsets.all(20.0),
+                child: SnackBarPageSaved()),
+          ]);
         }));
   }
 }
@@ -71,7 +63,7 @@ class _MyTextInput extends State<MyTextInput> {
     // Clean up the controller when the widget is disposed.
     myController.dispose();
     super.dispose();
-}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +75,7 @@ class _MyTextInput extends State<MyTextInput> {
         controller: myController,
         onChanged: (String str) {
           setState(() {
-           //skriv kod för att spara texten
+            //skriv kod för att spara texten
             dispose();
           });
         });
@@ -111,18 +103,18 @@ class SnackBarPageSaved extends StatelessWidget {
 
           Scaffold.of(context).showSnackBar(snackBar);
           Icon(Icons.check);
-
         },
       ),
     );
   }
 }
+
 //////////////////////////Pop-up box reset/////////////////////////////////////////////
 showAlertDialog(BuildContext context) {
   // set up the buttons
   Widget yesButton = FlatButton(
     child: Text("Yes"),
-    onPressed:  () {
+    onPressed: () {
       final snackBar = SnackBar(content: Text('Settings has been reset'));
       Scaffold.of(context).showSnackBar(snackBar);
       // to-do reset settings
@@ -131,7 +123,7 @@ showAlertDialog(BuildContext context) {
   );
   Widget noButton = FlatButton(
     child: Text("No"),
-    onPressed:  () {
+    onPressed: () {
       Navigator.of(context).pop();
     },
   );
@@ -154,6 +146,7 @@ showAlertDialog(BuildContext context) {
     },
   );
 }
+
 /////////////////////////////////LabeldSwitch///////////////////////////////////
 class LabeledSwitch extends StatelessWidget {
   const LabeledSwitch({
@@ -163,12 +156,12 @@ class LabeledSwitch extends StatelessWidget {
     this.value,
     this.onChanged,
   });
+
   final String label;
   final EdgeInsets padding;
   final bool groupValue;
   final bool value;
   final Function onChanged;
-
 
   @override
   Widget build(BuildContext context) {
@@ -196,12 +189,13 @@ class LabeledSwitch extends StatelessWidget {
 
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
+
   @override
   _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
 }
+
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   bool _isSelected = true;
-
 
   @override
   Widget build(BuildContext context) {
@@ -217,11 +211,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
   }
 }
+
 class MyStatefulWidget2 extends StatefulWidget {
   MyStatefulWidget2({Key key}) : super(key: key);
+
   @override
   _MyStatefulWidgetState2 createState() => _MyStatefulWidgetState2();
 }
+
 class _MyStatefulWidgetState2 extends State<MyStatefulWidget2> {
   bool _isSelected = false;
 
