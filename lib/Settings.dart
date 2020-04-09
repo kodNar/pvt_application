@@ -27,10 +27,21 @@ class Settings extends StatelessWidget {
                     Container(
                       child: MyStatefulWidget2(),
                     ),
+                    Container(
+                        child:
+                        RaisedButton(
+                          onPressed: (){
+                          //showDialog(context: _asyncConfirmDialog),
+                          },
+
+                          child: Text('Reset Settings'),
+
+                        )
+                    ),
                   ],
                 ),
-
               ),
+
               Container(
                 alignment: Alignment.bottomRight,
                   padding:EdgeInsets.all(20.0),
@@ -44,7 +55,7 @@ class Settings extends StatelessWidget {
 }
 
 
-/////////////////Code for input textField////////////////////////////////////////
+///////////////////////Code for input textField/////////////////////////////
 class MyTextInput extends StatefulWidget {
   @override
   _MyTextInput createState() => _MyTextInput();
@@ -67,6 +78,11 @@ class _MyTextInput extends State<MyTextInput> {
   @override
   Widget build(BuildContext context) {
     return new TextField(
+        obscureText: true,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: 'Weight',
+        ),
         controller: myController,
         onChanged: (String str) {
           setState(() {
@@ -76,7 +92,6 @@ class _MyTextInput extends State<MyTextInput> {
   }
 }
 
-//////////////////////////////////////////////////////////////////
 ////////////////////snackbar code///////////////////////////////////////////
 class SnackBarPage extends StatelessWidget {
   @override
@@ -104,4 +119,35 @@ class SnackBarPage extends StatelessWidget {
     );
   }
 }
-///////////////////////////////////////////////////////////////////////
+
+//////////////////////////Pop-up box/////////////////////////////////////////////
+enum ConfirmAction { CANCEL, ACCEPT }
+
+Future<ConfirmAction> _asyncConfirmDialog(BuildContext context) async {
+  return showDialog<ConfirmAction>(
+    context: context,
+    barrierDismissible: false, // user must tap button for close dialog!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Reset settings?'),
+        content: const Text(
+            'This will reset your device to its default factory settings.'),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('CANCEL'),
+            onPressed: () {
+              Navigator.of(context).pop(ConfirmAction.CANCEL);
+            },
+          ),
+          FlatButton(
+            child: const Text('ACCEPT'),
+            onPressed: () {
+              Navigator.of(context).pop(ConfirmAction.ACCEPT);
+            },
+          )
+        ],
+      );
+    },
+  );
+}
+///////////////////////////////////////////////////////////////////////////////////
