@@ -119,9 +119,7 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.all(55.0),
             ),
-            Positioned(
-              bottom: (0.0),
-              child: Container(
+             Container(
                 width: 55,
                 height: 55,
                 decoration: BoxDecoration(
@@ -130,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                   fit: BoxFit.fill)
                 ),
               ),
-            )
+
           ],
         ),
       ),
