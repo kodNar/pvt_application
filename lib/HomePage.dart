@@ -110,7 +110,8 @@ class _HomePageState extends State<HomePage> {
         color: Color.fromARGB(255, 132, 50, 155),
         shape: CircularNotchedRectangle(),
         elevation: 0.0,
-        child: new Row(
+
+        child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
@@ -119,16 +120,15 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.all(55.0),
             ),
-             Container(
-                width: 55,
-                height: 55,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/Stockholm_endast_logga_vit.png'),
-                        fit: BoxFit.fill)
-                ),
+            Container(
+              width: 62,
+              height: 62,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/Stockholm_endast_logga_vit.png'),
+                      fit: BoxFit.fill)
               ),
-
+            ),
           ],
         ),
       ),
