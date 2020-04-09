@@ -26,20 +26,158 @@ class MenuPage extends StatelessWidget {
                   ),
                 ]),
             body: Container(
-                padding: EdgeInsets.all(20),
+                color: Color.fromARGB(255, 132, 50, 155),
+                padding: EdgeInsets.only(top: 20),
                 width: size.width,
                 height: size.height,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 132, 50, 155),
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/bakgrund.png'),
-                    fit: BoxFit.fill,
+                alignment: Alignment.topCenter,
+                child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text("Appnamn",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Stockholm',
+                          fontStyle: FontStyle.italic,
+                          fontSize: 45
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        width: 175,
+                        height: 175,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 132, 50, 155),
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/AppLogga_vit.png'),
+                            fit: BoxFit.fill,
+                      ),
+                    ),
                   ),
-                ),
-                child: Stack(children: [
-                  Container(),
-                  Container(),
-                  Container(),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            ButtonTheme(
+                              minWidth: 125,
+                              height: 75,
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                  side: BorderSide(color: Colors.white, width: 2.5),
+                                ),
+                                color: Colors.transparent,
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MenuPage()
+                                    )
+                                  );
+                                },
+                                child: Text(
+                                  'Nav',
+                                  style: TextStyle(
+                                    fontSize: 25.0,
+                                    color: Colors.white,
+                                  ),
+
+                                ),
+                              ),
+                            ),
+                            ButtonTheme(
+                              minWidth: 125,
+                              height: 75,
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                  side: BorderSide(color: Colors.white, width: 2.5),
+                                ),
+                                color: Colors.transparent,
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MenuPage()
+                                      )
+                                  );
+                                },
+                                child: Text(
+                                  'Nav',
+                                  style: TextStyle(
+                                    fontSize: 25.0,
+                                    color: Colors.white,
+                                  ),
+
+                                ),
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            ButtonTheme(
+                              minWidth: 125,
+                              height: 75,
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                  side: BorderSide(color: Colors.white, width: 2.5),
+                                ),
+                                color: Colors.transparent,
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MenuPage()
+                                      )
+                                  );
+                                },
+                                child: Text(
+                                  'Nav',
+                                  style: TextStyle(
+                                    fontSize: 25.0,
+                                    color: Colors.white,
+                                  ),
+
+                                ),
+                              ),
+                            ),
+                            ButtonTheme(
+                              minWidth: 125,
+                              height: 75,
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                  side: BorderSide(color: Colors.white, width: 2.5),
+                                ),
+                                color: Colors.transparent,
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MenuPage()
+                                      )
+                                  );
+                                },
+                                child: Text(
+                                  'Nav',
+                                  style: TextStyle(
+                                    fontSize: 25.0,
+                                    color: Colors.white,
+                                  ),
+
+                                ),
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ),
                 ]))));
   }
 }
