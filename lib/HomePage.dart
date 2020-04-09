@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 132, 50, 155),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 132, 50, 155),
@@ -42,18 +43,33 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.all(20),
         width: size.width,
         height: size.height,
-        alignment: Alignment.bottomCenter,
-        decoration: BoxDecoration(
+        alignment: Alignment.center,
+        /*decoration: BoxDecoration(
           color: Color.fromARGB(255, 132, 50, 155),
           image: DecorationImage(
 
-            image: AssetImage('assets/images/bakgrund.png'),
+            image: AssetImage('assets/images/AppLogga_vit.png'),
             fit: BoxFit.fill,
           ),
-        ),
-        child: Row(
+        ),*/
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            Container(
+              height: 150,
+              width: 150,
+              alignment: Alignment.topLeft,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 132, 50, 155),
+                image: DecorationImage(
+
+                  image: AssetImage('assets/images/applogga_vit_liten.png'),
+                  fit: BoxFit.fill,
+                ),
+              ),
+
+            ),
+
             ButtonTheme(
               minWidth: 150,
               height: 100,
