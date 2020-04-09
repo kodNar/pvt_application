@@ -1,33 +1,46 @@
 import 'package:flutter/material.dart';
-    class MenuPage extends StatelessWidget{
+import 'Settings.dart';
+
+class MenuPage extends StatelessWidget {
   @override
-      Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return MaterialApp(
-      title: 'Menu',
-      home:Scaffold(
-          appBar: AppBar(
-             title: Text('hej!'),
-          ),
-              body: Center(
-              child:Stack(
-                  children: [
-                    Container(
+        title: 'Menu',
 
-                    ),
-                    Container(
+        home: Scaffold(
+            appBar: AppBar(
+                backgroundColor: Color.fromARGB(255, 132, 50, 155),
+                // Here we take the value from the MyHomePage object that was created by
+                // the App.build method, and use it to set our appbar title.
+                title: Text('Menu'),
+                actions: <Widget>[
 
-                    ),
-                    Container(
-
-                    ),
-                    ]
-
-
-              )
-
-            )
-
-        )
-      );
+                  IconButton(
+                    icon: Icon(Icons.settings),
+                    tooltip: 'Settings',
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Settings()));
+                    },
+                  ),
+                ]),
+            body: Container(
+                padding: EdgeInsets.all(20),
+                width: size.width,
+                height: size.height,
+                alignment: Alignment.bottomCenter,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 132, 50, 155),
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/bakgrund.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                child: Stack(children: [
+                  Container(),
+                  Container(),
+                  Container(),
+                ]))));
   }
-    }
+}
