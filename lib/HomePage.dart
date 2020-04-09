@@ -55,6 +55,16 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Text("Appnamn", style: TextStyle(
+                  color: Colors.white, fontFamily: 'Stockholm', fontStyle: FontStyle.italic, fontSize: 45
+                ),),
+              ],
+            ),
             Container(
               height: 150,
               width: 150,
