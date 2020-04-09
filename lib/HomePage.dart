@@ -69,8 +69,63 @@ class _HomePageState extends State<HomePage> {
               ),
 
             ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ButtonTheme(
+                  minWidth: 150,
+                  height: 100,
+                  child: RaisedButton(
+                    //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100.0),
+                      side: BorderSide(color: Colors.green, width: 2.5),
 
-            ButtonTheme(
+
+                    ),
+                    color: Colors.transparent,
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
+                    },
+                    child: Text(
+                      'Sign in',
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                ButtonTheme(
+                  minWidth: 150,
+                  height: 100,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
+                      borderRadius: BorderRadius.circular(100),
+                      side: BorderSide(color: Colors.green, width: 2.5),
+                    ),
+                    color: Colors.transparent,
+                    onPressed: () {
+                      Navigator.push(context,
+                          new MaterialPageRoute(builder: (context) => MenuPage()));
+                    },
+                    child: new Text(
+                      'Guest',
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            /*ButtonTheme(
               minWidth: 150,
               height: 100,
               child: RaisedButton(
@@ -118,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-            ),
+            ),*/
           ],
         ),
       ),
