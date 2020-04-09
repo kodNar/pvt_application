@@ -119,6 +119,18 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.all(55.0),
             ),
+            Positioned(
+              bottom: (0.0),
+              child: Container(
+                width: 55,
+                height: 55,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/Stockholm_endast_logga_vit.png'),
+                  fit: BoxFit.fill)
+                ),
+              ),
+            )
           ],
         ),
       ),
