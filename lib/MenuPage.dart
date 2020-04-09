@@ -117,6 +117,7 @@ class MenuPage extends StatelessWidget {
                         ),
                       ),
                       Container(
+                        padding: EdgeInsets.all(10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
