@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/MapsTest.dart';
 import 'Settings.dart';
 
 class MenuPage extends StatelessWidget {
@@ -71,7 +72,7 @@ class MenuPage extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => MenuPage()
+                                      builder: (context) => MyApp()
                                     )
                                   );
                                 },
