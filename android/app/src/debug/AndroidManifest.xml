@@ -2,7 +2,7 @@
     package="com.example.flutterapp">
     <application>
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBWM2YzptcK9S9t8w8AgNerW66DFSXjj8I"/>
+            android:value=""/>
     </application>
     <!-- Flutter needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
