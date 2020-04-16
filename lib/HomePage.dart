@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
             ),
 
             Container(
-              padding: EdgeInsets.only(bottom: 15),
+              padding: EdgeInsets.only(bottom: 5),
               child: GestureDetector(
                 onTap: () => initiateFacebookLogin(),
                 child: Image.asset('assets/images/googleLoggaKnapp.png',
