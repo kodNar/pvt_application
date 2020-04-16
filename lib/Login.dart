@@ -18,21 +18,34 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Form(
         key: _formKey,
-        child: Column(
+        child: Container(
+          color: Color.fromARGB(255, 132, 50, 155),
+          child: Column(
           children: <Widget>[
             TextFormField(
+              style: TextStyle(
+                color: Colors.white,
+              ),
+              cursorColor: Colors.white,
               validator: (input){
                 if(input.isEmpty){ //Check if auth sign or something
-                return 'Please provide an Email';
+                  return 'Please provide an Email';
                 }
                 return 'Hej';
               },
               onSaved: (input) => _email = input,
               decoration: InputDecoration(
-                labelText: 'Email'
+                  labelText: 'Email',
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                  )
               ),
             ),
             TextFormField(
+              style: TextStyle(
+                color: Colors.white,
+              ),
+              cursorColor: Colors.white,
               validator: (input){
                 if(input.isEmpty){
                   return 'Please provide a password';
@@ -44,8 +57,12 @@ class _LoginPageState extends State<LoginPage> {
               },
               onSaved: (input) => _password = input,
               decoration: InputDecoration(
-                labelText: 'Password'
+                  labelText: 'Password',
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                  )
               ),
+
               obscureText: true, //Döljer texten
             ),
             RaisedButton(
@@ -53,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Text('Sign in'),
             )
           ],
+          ),
         ),
       ),
     );
