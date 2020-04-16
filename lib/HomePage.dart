@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/Login.dart';
 import 'package:flutterapp/MenuPage.dart';
+import 'package:flutterapp/Register.dart';
 import 'Settings.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
@@ -74,17 +75,17 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Container(
 
-              child: RaisedButton(
-                  onPressed: () => initiateFacebookLogin(),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  side: BorderSide(color: Colors.white, width: 2.5),
+            Container(
+              child: GestureDetector(
+                onTap: () => initiateFacebookLogin(),
+                child: Image.asset('assets/images/facebookLogga.png',
+                  width: 200,
+                  height: 50,
                 ),
-                child: Text('Sign in with Facebook'),
               ),
             ),
+
             Container(
               padding: EdgeInsets.only(top: 30),
               child: Row(
@@ -196,6 +197,7 @@ class _HomePageState extends State<HomePage> {
 
   void onLoginStatusChanged(bool isLoggedIn) {
     setState(() {
+
       this.isLoggedIn = isLoggedIn;
     });
   }
