@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:dio/dio.dart';
 
 
 class MyApp extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,10 +23,14 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
+  static const nycLat = 59.328560;
+  static const nycLng = 18.065836;
+  static const apiKey ='AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
+
   Completer<GoogleMapController> _controller = Completer();
 
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(59.328560, 18.065836),
+    target: LatLng(nycLat , nycLng),
     zoom: 14.4746,
   );
 
@@ -49,10 +56,36 @@ class MapSampleState extends State<MapSample> {
         icon: Icon(Icons.directions_boat),
       ),
     );
+
+  }
+  @override
+  void initState(){
+    super.initState();
+  }
+  @override
+  void didChangeDependencies() async{
+    super.didChangeDependencies();
+    print('wefw');
+    print(await searchNearby('Food'));
   }
 
   Future<void> _goToTheLake() async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
+  Future<List<String>> searchNearby(String keyWord) async{
+    var dio = Dio();
+    var url ='https://maps.googleapis.com/maps/api/place/nearbysearch/json';
+    var parameters = {
+      'key': apiKey,
+      'location': '$nycLat,$nycLng',
+      'radius': '2000',
+      keyWord: keyWord,
+    };
+    var response = await dio.get(url,data:parameters);
+    return response.data['results']
+    .map<String>((result) => result ['name'].toString())
+    .toList();
+  }
+
 }

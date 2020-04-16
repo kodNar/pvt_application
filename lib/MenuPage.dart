@@ -8,7 +8,6 @@ class MenuPage extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return MaterialApp(
         title: 'Menu',
-
         home: Scaffold(
             appBar: AppBar(
                 backgroundColor: Color.fromARGB(255, 132, 50, 155),

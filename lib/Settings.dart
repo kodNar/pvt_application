@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatelessWidget {
-  final globalKey = GlobalKey<ScaffoldState>();
-
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
