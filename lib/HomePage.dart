@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/Login.dart';
 import 'package:flutterapp/MenuPage.dart';
 import 'Settings.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -76,7 +77,7 @@ class _HomePageState extends State<HomePage> {
             Container(
 
               child: RaisedButton(
-                onPressed: () {},
+                  onPressed: () => initiateFacebookLogin(),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                   side: BorderSide(color: Colors.white, width: 2.5),
@@ -173,4 +174,31 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+  void initiateFacebookLogin() async {
+    var facebookLogin = FacebookLogin();
+    var facebookLoginResult =
+    await facebookLogin.logIn(['email']);
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        print("Error");
+        onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print("CancelledByUser");
+        onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.loggedIn:
+        print("LoggedIn");
+        onLoginStatusChanged(true);
+        break;
+    }
+  }
+
+  void onLoginStatusChanged(bool isLoggedIn) {
+    setState(() {
+      this.isLoggedIn = isLoggedIn;
+    });
+  }
+
+
 }
