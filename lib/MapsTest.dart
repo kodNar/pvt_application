@@ -84,13 +84,7 @@ class MapSampleState extends State<MapSample> {
   Future<List<String>> searchNearby(String keyWord) async{
     var dio = Dio();
   var url ='https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$nycLat,$nycLng&radius=1500&keyword=utegym&key=$apiKey';
-  var parameters = {
-    'key': apiKey,
-    'location': '$nycLat,$nycLng',
-    'radius': '800',
-    'keyWord': keyWord,
-  };
-  var response = await dio.get(url,data:parameters);
+  var response = await dio.get(url,data:null);
   return response.data['results']
       .map<String>((result) => result ['name'].toString())
       .toList();
