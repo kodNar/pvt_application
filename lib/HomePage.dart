@@ -6,7 +6,6 @@ import 'package:flutterapp/Login.dart';
 import 'package:flutterapp/MenuPage.dart';
 import 'Settings.dart';
 
-
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
   final String title;
@@ -16,6 +15,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isLoggedIn = false;
+  Map userProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +64,28 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 50),
+              child: RaisedButton(
+                onPressed: () {},
+                child: Text('Sign in with Google'),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  side: BorderSide(color: Colors.white, width: 2.5),
+                ),
+              ),
+            ),
+            Container(
+
+              child: RaisedButton(
+                onPressed: () {},
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  side: BorderSide(color: Colors.white, width: 2.5),
+                ),
+                child: Text('Sign in with Facebook'),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -110,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: new Text(
                         'Guest',
-                          style: TextStyle(
+                        style: TextStyle(
                           fontSize: 25.0,
                           color: Colors.white,
                         ),

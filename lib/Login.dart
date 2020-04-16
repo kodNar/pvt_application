@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterapp/MenuPage.dart';
 import 'package:flutterapp/Register.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:http/http.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -89,7 +91,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-
             ],
           ),
         ),
