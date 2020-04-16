@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "173513363176",
+    "firebase_url": "https://pvtproject-68e3e.firebaseio.com",
+    "project_id": "pvtproject-68e3e",
+    "storage_bucket": "pvtproject-68e3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173513363176:android:eb9913ee1d2751ab73835d",
+        "android_client_info": {
+          "package_name": "com.example.flutterapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "173513363176-m91lqrvkceinkerk48sma7jj4belat94.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCi3HNvghYzGnoTFoCJezRfyiLV2RJsoUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "173513363176-m91lqrvkceinkerk48sma7jj4belat94.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
