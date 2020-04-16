@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/Constants.dart';
 import 'package:flutterapp/Login.dart';
 import 'package:flutterapp/MenuPage.dart';
 import 'package:flutterapp/Register.dart';
@@ -65,21 +66,21 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+
             Container(
-              child: RaisedButton(
-                onPressed: () {},
-                child: Text('Sign in with Google'),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  side: BorderSide(color: Colors.white, width: 2.5),
+              padding: EdgeInsets.only(bottom: 15),
+              child: GestureDetector(
+                onTap: () => initiateFacebookLogin(),
+                child: Image.asset('assets/images/googleLoggaKnapp.png',
+                  width: 200,
+                  height: 50,
                 ),
               ),
             ),
-
             Container(
               child: GestureDetector(
                 onTap: () => initiateFacebookLogin(),
-                child: Image.asset('assets/images/facebookLogga.png',
+                child: Image.asset('assets/images/facebookLoggaKnapp.png',
                   width: 200,
                   height: 50,
                 ),
@@ -93,11 +94,11 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   ButtonTheme(
                     minWidth: 150,
-                    height: 100,
+                    height: 75,
                     child: RaisedButton(
                       //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100.0),
+                        borderRadius: BorderRadius.circular(15),
                         side: BorderSide(color: Colors.white, width: 2.5),
                       ),
                       color: Colors.transparent,
@@ -118,11 +119,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                   ButtonTheme(
                     minWidth: 150,
-                    height: 100,
+                    height: 75,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
                         //Gör knappen till en cirkel och sätter dit en vit border för tydlighet
-                        borderRadius: BorderRadius.circular(100),
+                        borderRadius: BorderRadius.circular(15),
                         side: BorderSide(color: Colors.white, width: 2.5),
                       ),
                       color: Colors.transparent,
