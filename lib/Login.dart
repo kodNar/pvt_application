@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => new _LoginPageState();
-
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -75,5 +75,14 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+Future<void> signIn() async {
+    final formState = _formKey.currentState;
+    if(formState.validate()){
+      formState.save(); //ser till att vi kan hämta variablerna.
+      FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
+    }
+    //TODO validate fields
+
+}
 
 }
