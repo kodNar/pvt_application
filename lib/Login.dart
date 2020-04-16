@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterapp/MenuPage.dart';
+import 'package:flutterapp/Register.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -64,16 +65,24 @@ class _LoginPageState extends State<LoginPage> {
 
                 obscureText: true, //Döljer texten
               ),
+
               RaisedButton(
                 onPressed: signIn,
                 child: Text('Sign in'),
-              )
+              ),
+              RaisedButton(
+                onPressed: (){
+                  Navigator.push(context,MaterialPageRoute(builder:(context) => Register()));
+                },
+              ),
             ],
           ),
         ),
       ),
     );
   }
+
+
   Future<void> signIn() async {
 
     final formState = _formKey.currentState;
