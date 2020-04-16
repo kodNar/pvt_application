@@ -64,8 +64,7 @@ class MapSampleState extends State<MapSample> {
   @override
   void didChangeDependencies() async{
     super.didChangeDependencies();
-    print('wefw');
-    print(await searchNearby('Food'));
+    print(await searchNearby('Utegym'));
   }
 
   Future<void> _goToTheLake() async {
@@ -74,17 +73,17 @@ class MapSampleState extends State<MapSample> {
   }
   Future<List<String>> searchNearby(String keyWord) async{
     var dio = Dio();
-    var url ='https://maps.googleapis.com/maps/api/place/nearbysearch/json';
-    var parameters = {
-      'key': apiKey,
-      'location': '$nycLat,$nycLng',
-      'radius': '2000',
-      keyWord: keyWord,
-    };
-    var response = await dio.get(url,data:parameters);
-    return response.data['results']
-    .map<String>((result) => result ['name'].toString())
-    .toList();
-  }
+  var url ='https://maps.googleapis.com/maps/api/place/nearbysearch/json';
+  var parameters = {
+    'key': apiKey,
+    'location': '$nycLat,$nycLng',
+    'radius': '2000',
+    keyWord: keyWord,
+  };
+  var response = await dio.get(url,data:parameters);
+  return response.data['results']
+      .map<String>((result) => result ['name'].toString())
+      .toList();
+}
 
 }
