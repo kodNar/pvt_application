@@ -2,11 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart';
-
+import 'package:http/http.dart' as http;
 
 class MyApp extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,6 +20,7 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
+  List <Marker> allOutdoorGym = [];
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
   static const apiKey ='AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
@@ -47,7 +46,9 @@ class MapSampleState extends State<MapSample> {
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
+
         },
+        markers: Set.from(allOutdoorGym)
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _goToTheLake,
@@ -60,11 +61,20 @@ class MapSampleState extends State<MapSample> {
   @override
   void initState(){
     super.initState();
+    allOutdoorGym.add(Marker(
+        markerId: MarkerId('myMarker'),
+        draggable: false,
+        onTap: (){
+
+        },
+        position: LatLng(nycLat,nycLng)
+
+    ));
   }
   @override
   void didChangeDependencies() async{
     super.didChangeDependencies();
-    print(await searchNearby('Utegym'));
+    print(await searchNearby('mcdonald'));
   }
 
   Future<void> _goToTheLake() async {
@@ -73,17 +83,16 @@ class MapSampleState extends State<MapSample> {
   }
   Future<List<String>> searchNearby(String keyWord) async{
     var dio = Dio();
-  var url ='https://maps.googleapis.com/maps/api/place/nearbysearch/json';
+  var url ='https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$nycLat,$nycLng&radius=1500&keyword=utegym&key=$apiKey';
   var parameters = {
     'key': apiKey,
     'location': '$nycLat,$nycLng',
-    'radius': '2000',
-    keyWord: keyWord,
+    'radius': '800',
+    'keyWord': keyWord,
   };
   var response = await dio.get(url,data:parameters);
   return response.data['results']
       .map<String>((result) => result ['name'].toString())
       .toList();
-}
-
+  }
 }
