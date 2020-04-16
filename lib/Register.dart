@@ -12,7 +12,8 @@ class _RegisterState extends State<Register>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(title: Text("blyat"))
+        backgroundColor: Color.fromARGB(255, 132, 50, 155),
+        appBar: AppBar(title: Text("blyat"))
     );
   }
 

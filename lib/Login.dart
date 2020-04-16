@@ -70,10 +70,17 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: signIn,
                 child: Text('Sign in'),
               ),
-              RaisedButton(
-                onPressed: (){
-                  Navigator.push(context,MaterialPageRoute(builder:(context) => Register()));
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(context,MaterialPageRoute(builder:(context) => Register() ));
                 },
+                child: Text('No account? Register here',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.indigoAccent,
+                    ),
+                ),
               ),
             ],
           ),
