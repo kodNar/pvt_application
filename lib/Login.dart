@@ -32,7 +32,6 @@ class _LoginPageState extends State<LoginPage> {
                   if(input.isEmpty){ //Check if auth sign or something
                     return 'Please provide an Email';
                   }
-                  return '';
                 },
                 onSaved: (input) => _email = input,
                 decoration: InputDecoration(
@@ -54,7 +53,6 @@ class _LoginPageState extends State<LoginPage> {
                   if(input.length < 6){
                     return 'Your password must be atleast 6 characters';
                   }
-                  return '';
                 },
                 onSaved: (input) => _password = input,
                 decoration: InputDecoration(
@@ -77,19 +75,20 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
   Future<void> signIn() async {
+
     final formState = _formKey.currentState;
     if (formState.validate()) {
       formState.save(); //ser till att vi kan hämta variablerna.
+      print(_email);
+      print(_password);
       try {
-        AuthResult user = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: _email, password: _password);
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MenuPage()));
+        AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MenuPage()));
+
       } catch (e) {
         print(e.message);
       }
-      //TODO validate fields
-
+      //TODO validate field
     }
   }
 }
