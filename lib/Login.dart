@@ -66,22 +66,30 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: true, //Döljer texten
               ),
 
-              RaisedButton(
-                onPressed: signIn,
-                child: Text('Sign in'),
+              Container(
+                padding: EdgeInsets.only(top: 20),
+                child: RaisedButton(
+                  onPressed: signIn,
+                  child: Text('Sign in'),
+                ),
               ),
-              GestureDetector(
-                onTap: (){
-                  Navigator.push(context,MaterialPageRoute(builder:(context) => Register() ));
-                },
-                child: Text('No account? Register here',
+
+              Container(
+                padding: EdgeInsets.only(top: 20),
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.push(context,MaterialPageRoute(builder:(context) => Register() ));
+                  },
+                  child: Text('No account? Click here',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
-                      color: Colors.indigoAccent,
+                      color: Colors.white,
                     ),
+                  ),
                 ),
               ),
+
             ],
           ),
         ),
