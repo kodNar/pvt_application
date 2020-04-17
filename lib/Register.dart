@@ -144,14 +144,11 @@ class _RegisterState extends State<Register>{
   Future<void> register() async{
     final formState = _formKey.currentState;
     if(formState.validate()){
-      print("Kommer du hit?#1");
       formState.save();
       try{
-        print("Kommer du hit?#2");
-        print(_password);
-        print(_email);
+
         AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(password: _password, email: _email);
-        //user.user.sendEmailVerification();
+        user.user.sendEmailVerification();
         Navigator.of(context).pop();
       }catch(e){
         print(e.message);
