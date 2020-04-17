@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutterapp/GenericGymPage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-class OutdoorGym {
+class OutdoorGym{
   String _name;
   double _lat;
   double _lng;
@@ -8,7 +10,7 @@ class OutdoorGym {
   Marker _marker;
   //home/office/unknown
 
-  OutdoorGym(String name,String lat,String lng){
+  OutdoorGym(String name,String lat,String lng,context){
     this._name= name;
     this._lat = double.parse(lat);
     this._lng = double.parse(lng);
@@ -16,7 +18,9 @@ class OutdoorGym {
         markerId: MarkerId (name),
         position: LatLng (this._lat,this._lng),
         onTap:(){
-          //smart shiiit
+          print("hej");
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => GenericGymPage()));
         },
         draggable: false
     );

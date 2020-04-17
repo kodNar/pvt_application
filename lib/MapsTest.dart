@@ -90,6 +90,7 @@ class MapSampleState extends State<MapSample> {
           f["name"].toString(),
           f["geometry"]["location"]["lat"].toString(),
           f["geometry"]["location"]["lng"].toString(),
+          context
         ))
 
     );
