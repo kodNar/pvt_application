@@ -21,6 +21,7 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
+  List<Marker> allMarkers = [];
   List <OutdoorGym> allOutdoorGym = [];
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
@@ -44,12 +45,14 @@ class MapSampleState extends State<MapSample> {
     return new Scaffold(
       body: GoogleMap(
         mapType: MapType.normal,
+        markers: Set.from(allMarkers
+        ),
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
 
         },
-        markers: Set.from(allOutdoorGym)
+
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _goToTheLake,
@@ -66,26 +69,32 @@ class MapSampleState extends State<MapSample> {
   @override
   void didChangeDependencies() async{
     super.didChangeDependencies();
-    print(await searchNearby('mcdonald'));
+    await searchNearby();
+    for(int i = 0; i < allOutdoorGym.length; i++){
+      allMarkers.add(allOutdoorGym[i].marker);
+    }
   }
 
   Future<void> _goToTheLake() async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
-  Future<List<String>> searchNearby(String keyWord) async{
+  Future<List<String>> searchNearby() async{
     var dio = Dio();
   var url ='https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$nycLat,$nycLng&radius=4000&keyword=utegym&key=$apiKey';
   var response = await dio.get(url,data:null);
 
-    List data1 =   json.decode(response.data)['results'];
+    List data1 = response.data['results'];
     data1.forEach((f) =>
-        allOutdoorGym.add(new OutdoorGym(
-          f["name"],
-          f["longitude"],
-          f["latitude"],
-        )));
+        allOutdoorGym.add(new OutdoorGym (
+          f["name"].toString(),
+          f["geometry"]["location"]["lat"].toString(),
+          f["geometry"]["location"]["lng"].toString(),
+        ))
+
+    );
 
   return null;
   }
+
 }
