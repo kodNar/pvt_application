@@ -42,6 +42,9 @@ class _RegisterState extends State<Register>{
                   if (input.isEmpty) {
                     return 'Please provide an Email';
                   }
+                  if(!input.contains("@")) {
+                    return 'Please provide a valid Email';
+                  }
                 },
                 onSaved: (input) => _email = input,
                 decoration: InputDecoration(
@@ -151,8 +154,26 @@ class _RegisterState extends State<Register>{
     if(formState.validate()){
       formState.save();
       if(_password != _confirmPassword) {
-        print("fel");
-        return;
+        showDialog(context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text(
+              "Confirm password"
+            ),
+            content: new Text(
+              "The passwords must be matching"
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: new Text("Ok"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        }
+        );
       }
       try{
         AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(password: _password, email: _email);
