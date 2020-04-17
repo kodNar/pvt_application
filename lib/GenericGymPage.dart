@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 class GenericGymPage extends StatelessWidget {
+  String _name;
+  List <String> _equipment = [];
 
+
+  GenericGymPage(String name, List<String> Equipment) {
+
+  }
   Widget build(BuildContext context) {
-
-    GenericGymPage();
-
     return Scaffold(
         appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by

@@ -20,7 +20,7 @@ class OutdoorGym{
         onTap:(){
           print("hej");
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => GenericGymPage()));
+              MaterialPageRoute(builder: (context) => GenericGymPage(_name, equipments)));
         },
         draggable: false
     );
