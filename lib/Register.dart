@@ -11,7 +11,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register>{
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _email, _nickName, _password;
+  String _email, _nickName, _password, _confirmPassword;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +37,7 @@ class _RegisterState extends State<Register>{
                   color: Colors.white,
                 ),
                 cursorColor: Colors.white,
+                // ignore: missing_return
                 validator: (input) {
                   if (input.isEmpty) {
                     return 'Please provide an Email';
@@ -73,6 +74,7 @@ class _RegisterState extends State<Register>{
                 style: TextStyle(
                   color: Colors.white,
                 ),
+                // ignore: missing_return
                 validator: (input) {
                   if (input.isEmpty) {
                     return 'Please provide a password';
@@ -89,16 +91,19 @@ class _RegisterState extends State<Register>{
                 obscureText: true,
               ),
 
-             /* TextFormField(
+             TextFormField(
                 style: TextStyle(
                   color: Colors.white,
                 ),
+                // ignore: missing_return
                 validator: (input) {
-                  if (_password.length < 3) {
+                  print(input);
+
+                  if (input.isEmpty) {
                     return 'Please repeat your password';
                   }
                 },
-                //onSaved: (input) => _password = input,
+                onSaved: (input) => _confirmPassword = input,
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
                   labelText: 'Confirm password:',
@@ -108,7 +113,7 @@ class _RegisterState extends State<Register>{
 
                 ),
                 obscureText: true,
-              ),*/
+              ),
               Container(
                 padding: EdgeInsets.only(top: 20),
                 child: ButtonTheme(
@@ -145,6 +150,10 @@ class _RegisterState extends State<Register>{
     final formState = _formKey.currentState;
     if(formState.validate()){
       formState.save();
+      if(_password != _confirmPassword) {
+        print("fel");
+        return;
+      }
       try{
 
         AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(password: _password, email: _email);

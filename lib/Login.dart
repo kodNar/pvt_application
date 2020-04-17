@@ -29,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.white,
                 ),
                 cursorColor: Colors.white,
+                // ignore: missing_return
                 validator: (input){
                   if(input.isEmpty){ //Check if auth sign or something
                     return 'Please provide an Email';
@@ -47,6 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.white,
                 ),
                 cursorColor: Colors.white,
+                // ignore: missing_return
                 validator: (input){
                   if(input.isEmpty){
                     return 'Please provide a password';
@@ -100,11 +102,12 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> signIn() async {
 
     final formState = _formKey.currentState;
-    if (formState.validate()) {
+
+    if (formState.validate()) { //Checks so that the inputs are correct
       formState.save(); //ser till att vi kan hämta variablerna.
 
       try {
-        AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
+        AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password); //Confirming the e-mail and password towards the firebase database
         Navigator.push(context, MaterialPageRoute(builder: (context) => MenuPage()));
 
       } catch (e) {
