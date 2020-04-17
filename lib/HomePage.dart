@@ -2,10 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/Constants.dart';
 import 'package:flutterapp/Login.dart';
 import 'package:flutterapp/MenuPage.dart';
+import 'package:flutterapp/Register.dart';
 import 'Settings.dart';
-
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -16,6 +18,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isLoggedIn = false;
+  Map userProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -62,18 +66,39 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+
             Container(
-              padding: EdgeInsets.only(top: 50),
+              padding: EdgeInsets.only(bottom: 5),
+              child: GestureDetector(
+                onTap: () => initiateFacebookLogin(),
+                child: Image.asset('assets/images/googleLoggaKnapp.png',
+                  width: 200,
+                  height: 50,
+                ),
+              ),
+            ),
+            Container(
+              child: GestureDetector(
+                onTap: () => initiateFacebookLogin(),
+                child: Image.asset('assets/images/facebookLoggaKnapp.png',
+                  width: 200,
+                  height: 50,
+                ),
+              ),
+            ),
+
+            Container(
+              padding: EdgeInsets.only(top: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   ButtonTheme(
                     minWidth: 150,
-                    height: 100,
+                    height: 75,
                     child: RaisedButton(
                       //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100.0),
+                        borderRadius: BorderRadius.circular(15),
                         side: BorderSide(color: Colors.white, width: 2.5),
                       ),
                       color: Colors.transparent,
@@ -94,11 +119,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                   ButtonTheme(
                     minWidth: 150,
-                    height: 100,
+                    height: 75,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
                         //Gör knappen till en cirkel och sätter dit en vit border för tydlighet
-                        borderRadius: BorderRadius.circular(100),
+                        borderRadius: BorderRadius.circular(15),
                         side: BorderSide(color: Colors.white, width: 2.5),
                       ),
                       color: Colors.transparent,
@@ -110,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: new Text(
                         'Guest',
-                          style: TextStyle(
+                        style: TextStyle(
                           fontSize: 25.0,
                           color: Colors.white,
                         ),
@@ -151,4 +176,32 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+  void initiateFacebookLogin() async {
+    var facebookLogin = FacebookLogin();
+    var facebookLoginResult =
+    await facebookLogin.logIn(['email']);
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        print("Error");
+        onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print("CancelledByUser");
+        onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.loggedIn:
+        print("LoggedIn");
+        onLoginStatusChanged(true);
+        break;
+    }
+  }
+
+  void onLoginStatusChanged(bool isLoggedIn) {
+    setState(() {
+
+      this.isLoggedIn = isLoggedIn;
+    });
+  }
+
+
 }
