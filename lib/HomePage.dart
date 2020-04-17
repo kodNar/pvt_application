@@ -176,6 +176,8 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  //Facebook login
   void initiateFacebookLogin() async {
     var facebookLogin = FacebookLogin();
     var facebookLoginResult =
