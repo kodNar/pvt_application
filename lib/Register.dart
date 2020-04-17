@@ -50,7 +50,7 @@ class _RegisterState extends State<Register>{
                   ),
                 ),
               ),
-              TextFormField(
+             /* TextFormField(
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -68,7 +68,7 @@ class _RegisterState extends State<Register>{
                   ),
 
                 ),
-              ),
+              ),*/
               TextFormField(
                 style: TextStyle(
                   color: Colors.white,
@@ -78,7 +78,7 @@ class _RegisterState extends State<Register>{
                     return 'Please provide a password';
                   }
                 },
-                onSaved: (input) => _email = input,
+                onSaved: (input) => _password = input,
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
                   labelText: 'Password:',
@@ -88,12 +88,13 @@ class _RegisterState extends State<Register>{
                 ),
                 obscureText: true,
               ),
-              TextFormField(
+
+             /* TextFormField(
                 style: TextStyle(
                   color: Colors.white,
                 ),
                 validator: (input) {
-                  if (_password != input) {
+                  if (_password.length < 3) {
                     return 'Please repeat your password';
                   }
                 },
@@ -107,7 +108,7 @@ class _RegisterState extends State<Register>{
 
                 ),
                 obscureText: true,
-              ),
+              ),*/
               Container(
                 padding: EdgeInsets.only(top: 20),
                 child: ButtonTheme(
@@ -120,13 +121,8 @@ class _RegisterState extends State<Register>{
                       side: BorderSide(color: Colors.white, width: 2.5),
                     ),
                     color: Colors.transparent,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
+                    onPressed: register,
 
-                              builder: (context) => LoginPage()));
-                    },
                     child: Text(
                       'Register',
                       style: TextStyle(
@@ -145,19 +141,19 @@ class _RegisterState extends State<Register>{
     );
   }
 
-  Future<void> register() async {
-
+  Future<void> register() async{
     final formState = _formKey.currentState;
-    if (formState.validate()) {
-      formState.save(); //ser till att vi kan hämta variablerna.
-
-      try {
-        FirebaseUser user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password) as FirebaseUser;
-        user.sendEmailVerification();
-        //Display for the user that we sent him/her an email
+    if(formState.validate()){
+      print("Kommer du hit?#1");
+      formState.save();
+      try{
+        print("Kommer du hit?#2");
+        print(_password);
+        print(_email);
+        AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(password: _password, email: _email);
+        //user.user.sendEmailVerification();
         Navigator.of(context).pop();
-
-      } catch (e) {
+      }catch(e){
         print(e.message);
       }
     }
