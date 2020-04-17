@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 class GenericGymPage extends StatelessWidget {
 
   Widget build(BuildContext context) {
+
+    GenericGymPage();
+
     return Scaffold(
         appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
