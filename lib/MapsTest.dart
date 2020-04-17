@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/OutdoorGym.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 
 class MyApp extends StatelessWidget {
   @override
@@ -20,7 +21,7 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
-  List <Marker> allOutdoorGym = [];
+  List <OutdoorGym> allOutdoorGym = [];
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
   static const apiKey ='AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
@@ -61,15 +62,6 @@ class MapSampleState extends State<MapSample> {
   @override
   void initState(){
     super.initState();
-    allOutdoorGym.add(Marker(
-        markerId: MarkerId('myMarker'),
-        draggable: false,
-        onTap: (){
-
-        },
-        position: LatLng(nycLat,nycLng)
-
-    ));
   }
   @override
   void didChangeDependencies() async{
@@ -83,16 +75,17 @@ class MapSampleState extends State<MapSample> {
   }
   Future<List<String>> searchNearby(String keyWord) async{
     var dio = Dio();
-  var url ='https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$nycLat,$nycLng&radius=1500&keyword=utegym&key=$apiKey';
-  var parameters = {
-    'key': apiKey,
-    'location': '$nycLat,$nycLng',
-    'radius': '800',
-    'keyWord': keyWord,
-  };
-  var response = await dio.get(url,data:parameters);
-  return response.data['results']
-      .map<String>((result) => result ['name'].toString())
-      .toList();
+  var url ='https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$nycLat,$nycLng&radius=4000&keyword=utegym&key=$apiKey';
+  var response = await dio.get(url,data:null);
+
+    List data1 =   json.decode(response.data)['results'];
+    data1.forEach((f) =>
+        allOutdoorGym.add(new OutdoorGym(
+          f["name"],
+          f["longitude"],
+          f["latitude"],
+        )));
+
+  return null;
   }
 }
