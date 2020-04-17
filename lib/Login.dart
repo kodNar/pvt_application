@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterapp/MenuPage.dart';
 import 'package:flutterapp/Register.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:http/http.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -104,8 +102,7 @@ class _LoginPageState extends State<LoginPage> {
     final formState = _formKey.currentState;
     if (formState.validate()) {
       formState.save(); //ser till att vi kan hämta variablerna.
-      print(_email);
-      print(_password);
+
       try {
         AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
         Navigator.push(context, MaterialPageRoute(builder: (context) => MenuPage()));
@@ -113,7 +110,6 @@ class _LoginPageState extends State<LoginPage> {
       } catch (e) {
         print(e.message);
       }
-      //TODO validate field
     }
   }
 }
