@@ -155,7 +155,6 @@ class _RegisterState extends State<Register>{
         return;
       }
       try{
-
         AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(password: _password, email: _email);
         user.user.sendEmailVerification();
         Navigator.of(context).pop();
