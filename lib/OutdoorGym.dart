@@ -10,8 +10,8 @@ class OutdoorGym {
 
   OutdoorGym(String name,String lat,String lng){
    this.name= name;
-   this.lat =00;
-   this.lng = 00;
+   this.lat = double.parse(lat);
+   this.lng = double.parse(lng);
    this.marker = new Marker(
      markerId: MarkerId (name),
      position: LatLng (this.lat,this.lng),
