@@ -10,6 +10,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _email, _password;
 
@@ -75,7 +76,73 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text('Sign in'),
                 ),
               ),
-
+              Container(
+                padding: EdgeInsets.only(top: 20),
+                child: GestureDetector(
+                  onTap: (){
+                    final formState = _formKey.currentState;
+                    formState.save();
+                    if(_email.isEmpty) {
+                      showDialog(context: context,
+                      builder: (BuildContext context)  {
+                        return AlertDialog(
+                          title: Text(
+                            "Failed reset"
+                          ),
+                          content: Text(
+                            "Please input your e-mail in the e-mail field"
+                          ),
+                          actions: <Widget>[
+                            new FlatButton(
+                              child: Text(
+                                "Ok"
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        );
+                      }
+                      );
+                    }
+                    // ignore: unnecessary_statements
+                    else{
+                        sendPasswordResetEmail(_email);
+                        showDialog(context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text(
+                                "Reset password"
+                            ),
+                            content: Text(
+                                "An e-mail to reset your password has been sent to your registered e-mail."
+                            ),
+                            actions: <Widget>[
+                              new FlatButton(
+                                child: Text(
+                                  "Ok",
+                                ),
+                                onPressed: ()
+                                {
+                                  Navigator.of(context).pop();
+                                  },
+                              )
+                            ],
+                          );
+                        }
+                        );
+                    };
+                    },
+                  child: Text('Forgot password? Click here',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
               Container(
                 padding: EdgeInsets.only(top: 20),
                 child: GestureDetector(
@@ -98,6 +165,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+
+  //reset password
+  Future sendPasswordResetEmail(String email) async {
+    return _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
 
   Future<void> signIn() async {
 
