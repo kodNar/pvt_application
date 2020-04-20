@@ -23,8 +23,6 @@ class OutdoorGym{
         },
         draggable: false
     );
-
-    print("OutdoorGym{_name: $_name, _lat: $_lat, _lng: $_lng}");
   }
 
   Marker get marker => _marker;
