@@ -200,9 +200,6 @@ class _HomePageState extends State<HomePage> {
         FacebookAccessToken myToken = facebookLoginResult.accessToken;
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: myToken.token);
         AuthResult user = await _auth.signInWithCredential(credential);
-
-
-        //_auth.signInWithCredential(credential);
     }
   }
 
