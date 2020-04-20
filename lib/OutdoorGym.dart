@@ -18,7 +18,6 @@ class OutdoorGym{
         markerId: MarkerId (name),
         position: LatLng (this._lat,this._lng),
         onTap:(){
-          print("hej");
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => GenericGymPage(_name, equipments)));
         },

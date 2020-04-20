@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart';
-import 'package:location/location.dart';
-
 
 class MyApp extends StatelessWidget {
   @override
@@ -23,34 +20,18 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
-
-
-
-
   List<Marker> allMarkers = [];
   List <OutdoorGym> allOutdoorGym = [];
-
-
-  LocationData currentLocation;
-  Location location;
-
-
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
-  static const apiKey ='AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
+  static const apiKey = 'AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
+
   Completer<GoogleMapController> _controller = Completer();
 
-
-
-
-
-
-  void setInitialLocation() async {
-    //Denna metod körs av någon anledning inte. Testat att lägga in en print som ej kommer upp.
-    //Detta bör således vara anledningen till att currentLocation returnerar null i widget build
-    currentLocation = await location.getLocation();
-  }
-
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(nycLat, nycLng),
+    zoom: 14.4746,
+  );
 
   static final CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
@@ -60,28 +41,14 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
-    setInitialLocation();
-    CameraPosition _kGooglePlex = CameraPosition(
-      target: LatLng(nycLat , nycLng),
-      zoom: 14.4746,
-
-    );
-    if(currentLocation != null) {
-      _kGooglePlex = CameraPosition(
-        target: LatLng(currentLocation.latitude, currentLocation.longitude),
-        zoom: 14.4746,
-      );
-    }
     return new Scaffold(
       body: GoogleMap(
         mapType: MapType.normal,
-        markers: Set.from(allMarkers
-        ),
-        myLocationEnabled: true,
+
         initialCameraPosition: _kGooglePlex,
+        markers: Set.from(allMarkers),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
-
         },
 
       ),
@@ -91,39 +58,41 @@ class MapSampleState extends State<MapSample> {
         icon: Icon(Icons.directions_boat),
       ),
     );
-
   }
+
   @override
-  void didChangeDependencies() async{
-    super.didChangeDependencies();
-    await searchNearby();
-    for(int i = 0; i < allOutdoorGym.length; i++){
-      allMarkers.add(allOutdoorGym[i].marker);
-    }
-
-
+  void initState() {
+    super.initState();
+    _asyncMethod();
   }
-
   Future<void> _goToTheLake() async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
-  Future<List<String>> searchNearby() async{
+
+  _asyncMethod() async {
+    await _searchNearby();
+    for (int i = 0; i < allOutdoorGym.length; i++) {
+      allMarkers.add(allOutdoorGym[i].marker);
+    }
+  }
+
+  Future<List<String>> _searchNearby() async {
     var dio = Dio();
-  var url ='https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$nycLat,$nycLng&radius=4000&keyword=utegym&key=$apiKey';
-  var response = await dio.get(url,data:null);
+    var url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$nycLat,$nycLng&radius=4000&keyword=utegym&key=$apiKey';
+    var response = await dio.get(url, data: null);
 
     List data1 = response.data['results'];
     data1.forEach((f) =>
         allOutdoorGym.add(new OutdoorGym (
-          f["name"].toString(),
-          f["geometry"]["location"]["lat"].toString(),
-          f["geometry"]["location"]["lng"].toString(),
-          context
+            f["name"].toString(),
+            f["geometry"]["location"]["lat"].toString(),
+            f["geometry"]["location"]["lng"].toString(),
+            context
         )
-    )
+        )
     );
-  return null;
+    return null;
   }
 
 }
