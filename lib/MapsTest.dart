@@ -24,12 +24,12 @@ class MapSampleState extends State<MapSample> {
   List <OutdoorGym> allOutdoorGym = [];
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
-  static const apiKey ='AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
+  static const apiKey = 'AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
 
   Completer<GoogleMapController> _controller = Completer();
 
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(nycLat , nycLng),
+    target: LatLng(nycLat, nycLng),
     zoom: 14.4746,
   );
 
@@ -44,12 +44,11 @@ class MapSampleState extends State<MapSample> {
     return new Scaffold(
       body: GoogleMap(
         mapType: MapType.normal,
-        markers: Set.from(allMarkers
-        ),
+
         initialCameraPosition: _kGooglePlex,
+        markers: Set.from(allMarkers),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
-
         },
 
       ),
@@ -59,40 +58,41 @@ class MapSampleState extends State<MapSample> {
         icon: Icon(Icons.directions_boat),
       ),
     );
-
   }
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
+    _asyncMethod();
   }
-  @override
-  void didChangeDependencies() async{
-    super.didChangeDependencies();
-    await searchNearby();
-    for(int i = 0; i < allOutdoorGym.length; i++){
-      allMarkers.add(allOutdoorGym[i].marker);
-    }
-  }
-
   Future<void> _goToTheLake() async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
-  Future<List<String>> searchNearby() async{
+
+  _asyncMethod() async {
+    await _searchNearby();
+    for (int i = 0; i < allOutdoorGym.length; i++) {
+      allMarkers.add(allOutdoorGym[i].marker);
+    }
+  }
+
+  Future<List<String>> _searchNearby() async {
     var dio = Dio();
-  var url ='https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$nycLat,$nycLng&radius=4000&keyword=utegym&key=$apiKey';
-  var response = await dio.get(url,data:null);
+    var url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$nycLat,$nycLng&radius=4000&keyword=utegym&key=$apiKey';
+    var response = await dio.get(url, data: null);
 
     List data1 = response.data['results'];
     data1.forEach((f) =>
         allOutdoorGym.add(new OutdoorGym (
-          f["name"].toString(),
-          f["geometry"]["location"]["lat"].toString(),
-          f["geometry"]["location"]["lng"].toString(),
-          context
+            f["name"].toString(),
+            f["geometry"]["location"]["lat"].toString(),
+            f["geometry"]["location"]["lng"].toString(),
+            context
         )
-    )
+        )
     );
-  return null;
+    return null;
   }
+
 }
