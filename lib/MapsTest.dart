@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart';
+import 'package:location/location.dart';
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -20,18 +23,34 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
+
+
+
+
   List<Marker> allMarkers = [];
   List <OutdoorGym> allOutdoorGym = [];
+
+
+  LocationData currentLocation;
+  Location location;
+
+
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
   static const apiKey ='AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
-
   Completer<GoogleMapController> _controller = Completer();
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(nycLat , nycLng),
-    zoom: 14.4746,
-  );
+
+
+
+
+
+  void setInitialLocation() async {
+    //Denna metod körs av någon anledning inte. Testat att lägga in en print som ej kommer upp.
+    //Detta bör således vara anledningen till att currentLocation returnerar null i widget build
+    currentLocation = await location.getLocation();
+  }
+
 
   static final CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
@@ -41,11 +60,24 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
+    setInitialLocation();
+    CameraPosition _kGooglePlex = CameraPosition(
+      target: LatLng(nycLat , nycLng),
+      zoom: 14.4746,
+
+    );
+    if(currentLocation != null) {
+      _kGooglePlex = CameraPosition(
+        target: LatLng(currentLocation.latitude, currentLocation.longitude),
+        zoom: 14.4746,
+      );
+    }
     return new Scaffold(
       body: GoogleMap(
         mapType: MapType.normal,
         markers: Set.from(allMarkers
         ),
+        myLocationEnabled: true,
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
@@ -62,16 +94,14 @@ class MapSampleState extends State<MapSample> {
 
   }
   @override
-  void initState(){
-    super.initState();
-  }
-  @override
   void didChangeDependencies() async{
     super.didChangeDependencies();
     await searchNearby();
     for(int i = 0; i < allOutdoorGym.length; i++){
       allMarkers.add(allOutdoorGym[i].marker);
     }
+
+
   }
 
   Future<void> _goToTheLake() async {
@@ -95,4 +125,5 @@ class MapSampleState extends State<MapSample> {
     );
   return null;
   }
+
 }
