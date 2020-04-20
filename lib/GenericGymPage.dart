@@ -119,6 +119,8 @@ class _buttonR extends State<buttonR> {
     this.icon =icon;
     this.name = name;
   }
+
+
   @override
   Widget build(BuildContext context) {
     return RaisedButton.icon(
