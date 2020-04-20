@@ -23,6 +23,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool isLoggedIn = false;
   Map userProfile;
+  FirebaseAuth mAuth;
 
   @override
   Widget build(BuildContext context) {
@@ -198,9 +199,13 @@ class _HomePageState extends State<HomePage> {
         print("LoggedIn");
         FacebookAccessToken myToken = facebookLoginResult.accessToken;
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: myToken.token);
-        _auth.signInWithCredential(credential);
+        final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
+
+
+        //_auth.signInWithCredential(credential);
     }
   }
+
 
   void onLoginStatusChanged(bool isLoggedIn) {
     setState(() {
