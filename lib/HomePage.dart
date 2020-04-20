@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/Constants.dart';
@@ -8,6 +10,7 @@ import 'package:flutterapp/MenuPage.dart';
 import 'package:flutterapp/Register.dart';
 import 'Settings.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -50,7 +53,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text("Appnamn",
+            Text("AppName",
                 style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Stockholm',
@@ -66,12 +69,12 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-
             Container(
               padding: EdgeInsets.only(bottom: 5),
               child: GestureDetector(
                 onTap: () => initiateFacebookLogin(),
-                child: Image.asset('assets/images/googleLoggaKnapp.png',
+                child: Image.asset(
+                  'assets/images/googleLoggaKnapp.png',
                   width: 200,
                   height: 50,
                 ),
@@ -80,13 +83,13 @@ class _HomePageState extends State<HomePage> {
             Container(
               child: GestureDetector(
                 onTap: () => initiateFacebookLogin(),
-                child: Image.asset('assets/images/facebookLoggaKnapp.png',
+                child: Image.asset(
+                  'assets/images/facebookLoggaKnapp.png',
                   width: 200,
                   height: 50,
                 ),
               ),
             ),
-
             Container(
               padding: EdgeInsets.only(top: 30),
               child: Row(
@@ -164,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                       fit: BoxFit.fill)),
             ),
             Text(
-              "Stockholm Stad",
+              "Stockholms Stad",
               style: TextStyle(
                   color: Colors.white,
                   fontFamily: 'Stockholm',
@@ -179,9 +182,9 @@ class _HomePageState extends State<HomePage> {
 
   //Facebook login
   void initiateFacebookLogin() async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
     var facebookLogin = FacebookLogin();
-    var facebookLoginResult =
-    await facebookLogin.logIn(['email']);
+    var facebookLoginResult = await facebookLogin.logIn(['email']);
     switch (facebookLoginResult.status) {
       case FacebookLoginStatus.error:
         print("Error");
@@ -193,17 +196,15 @@ class _HomePageState extends State<HomePage> {
         break;
       case FacebookLoginStatus.loggedIn:
         print("LoggedIn");
-        onLoginStatusChanged(true);
-        break;
+        FacebookAccessToken myToken = facebookLoginResult.accessToken;
+        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: myToken.token);
+        _auth.signInWithCredential(credential);
     }
   }
 
   void onLoginStatusChanged(bool isLoggedIn) {
     setState(() {
-
       this.isLoggedIn = isLoggedIn;
     });
   }
-
-
 }

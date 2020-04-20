@@ -59,11 +59,7 @@ class MapSampleState extends State<MapSample> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _asyncMethod();
-  }
+
   Future<void> _goToTheLake() async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
@@ -74,6 +70,11 @@ class MapSampleState extends State<MapSample> {
     for (int i = 0; i < allOutdoorGym.length; i++) {
       allMarkers.add(allOutdoorGym[i].marker);
     }
+  }
+  @override
+  void initState() {
+    super.initState();
+    _asyncMethod();
   }
 
   Future<List<String>> _searchNearby() async {

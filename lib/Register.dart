@@ -145,7 +145,6 @@ class _RegisterState extends State<Register>{
           ),
         ),
       ),
-
     );
   }
 
@@ -154,6 +153,7 @@ class _RegisterState extends State<Register>{
     if(formState.validate()){
       formState.save();
       if(_password != _confirmPassword) {
+        //Popup när lösenord ej matchar
         showDialog(context: context,
         builder: (BuildContext context) {
           return AlertDialog(
