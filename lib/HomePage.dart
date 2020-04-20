@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage> {
         print("LoggedIn");
         FacebookAccessToken myToken = facebookLoginResult.accessToken;
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: myToken.token);
-        final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
+        AuthResult user = await _auth.signInWithCredential(credential);
 
 
         //_auth.signInWithCredential(credential);
