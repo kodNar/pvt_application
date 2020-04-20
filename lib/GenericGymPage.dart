@@ -1,11 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 
 class GenericGymPage extends StatelessWidget {
   String _name;
-  List <String> _equipment = [];
-
+  List<String> _equipment = [];
 
   GenericGymPage(String name, List<String> equipment) {
     this._name = name;
@@ -14,124 +11,154 @@ class GenericGymPage extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 132, 50, 155),
-        appBar: AppBar(
-            backgroundColor: Color.fromARGB(255, 132, 50, 155),
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text(_name),
-            actions: <Widget>[]),
-        body: Builder(
-          builder: (context) {
-            return Stack(children: [
+      backgroundColor: Color.fromARGB(255, 132, 50, 155),
+      appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 132, 50, 155),
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(_name),
+          actions: <Widget>[]),
+      body: Builder(builder: (context) {
+        return Stack(children: [
+          Container(
+            child: Column(children: <Widget>[
               Container(
-                child: ListView(children: <Widget>[
-                  Container(
-                    child: Text(_name),
-                  ),
-                Container(
-                  padding: EdgeInsets.only(top: 20),
-                  width: MediaQuery.of(context).size.width*0.5 ,
-                  height: MediaQuery.of(context).size.height* 0.5,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
+                padding: EdgeInsets.only(top: 20),
+                width: MediaQuery.of(context).size.width ,
+                height: MediaQuery.of(context).size.height * 0.5,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
                       image: AssetImage('assets/images/OutdoorGymPicture.png'),
-                      fit: BoxFit.fill
+                      fit: BoxFit.fill),
+                ),
+              ),
+              Container(child:Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        color: Colors.transparent,
+                        width: MediaQuery.of(context).size.width,
+                        height: 60,
+                        child: RaisedButton(
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0),
+                            ),
+                            onPressed: () {},
+                            color: Color.fromARGB(255, 132, 50, 155),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Image.asset(
+                                      'assets/images/Traning.png',
+                                      height: 40.0,
+                                      width: 40.0,
+                                    ),
+                                    Padding(
+                                        padding: EdgeInsets.only(left: 65.0),
+                                        child: new Text(
+                                          "Equipment",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold),
+                                        ))
+                                  ],
+                                ))),
+                      ),
+
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        color: Colors.transparent,
+                        width: MediaQuery.of(context).size.width,
+                        height: 60,
+                        child: RaisedButton(
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0),
+                            ),
+                            onPressed: () {},
+                            color: Color.fromARGB(255, 132, 50, 155),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Image.asset(
+                                    'assets/images/bok.png',
+                                    height: 40.0,
+                                    width: 40.0,
+                                  ),
+                                  Padding(
+                                      padding: EdgeInsets.only(left: 65.0),
+                                      child: new Text(
+                                        "Busy hours",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold),
+                                      ))
+                                ],
+                              ),
+                            )),
+                      ),
+                      Container(
+                          padding: EdgeInsets.all(5),
+                          color: Colors.transparent,
+                          width: MediaQuery.of(context).size.width,
+                          height: 60,
+                          child: RaisedButton(
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0),
+                            ),
+                            onPressed: () {},
+                            color: Color.fromARGB(255, 132, 50, 155),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Image.asset(
+                                    'assets/images/bok.png',
+                                    height: 40.0,
+                                    width: 40.0,
+                                  ),
+                                  Padding(
+                                      padding: EdgeInsets.only(left: 90.0),
+                                      child: new Text(
+
+                                        "About",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold),
+                                      ))
+                                ],
+                              ),
+                            ),
+                          )),
+                    ]),
+
+              ),
+                    ),
+              Container(
+                  child: Text(
+                    "Contact us / report",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.0,
 
                     ),
-                  ),
-                ),
-                Container(
-                  child: Column(
+                  )),
 
-                    mainAxisAlignment: MainAxisAlignment.center,
-
-                      children: <Widget>[
-
-                        Container(
-                          padding: const EdgeInsets.all(10.0),
-                          color: Colors.transparent,
-                          width: MediaQuery.of(context).size.width,
-                          height: 60,
-                          child: RaisedButton.icon(
-                            icon: Icon(
-                              Icons.airline_seat_legroom_extra,
-                              color: Colors.white,
-                            ),
-                            shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0),
-                            ),
-                            onPressed: () {},
-                            color: Color.fromARGB(255, 132, 50, 155),
-                            label: Text(
-                              "Equipments",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 22.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(10.0),
-                          color: Colors.transparent,
-                          width: MediaQuery.of(context).size.width,
-                          height: 60,
-                          child: RaisedButton.icon(
-                            icon: Icon(
-                              Icons.airline_seat_legroom_extra,
-                              color: Colors.white,
-                            ),
-                            shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0),
-                            ),
-                            onPressed: () {},
-                            color: Color.fromARGB(255, 132, 50, 155),
-                            label: Text(
-                              "About",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 22.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(10.0),
-                          color: Colors.transparent,
-                          width: MediaQuery.of(context).size.width,
-                          height: 60,
-                          child: RaisedButton.icon(
-                            icon: Icon(
-                              Icons.airline_seat_legroom_extra,
-                              color: Colors.white,
-                            ),
-                            shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0),
-                            ),
-                            onPressed: () {},
-                            color: Color.fromARGB(255, 132, 50, 155),
-                            label: Text(
-                              "More",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 22.0,
-                              ),
-                            ),
-                          ),
-                        )
-                        ]
-                  ),
-                  ),
-                ]
-            )
-              ,
-              ),
-              ]);
-            }
-            ),
+            ]),
+          ),
+        ]);
+      }),
     );
   }
 }
-
-
