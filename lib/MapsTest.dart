@@ -44,7 +44,6 @@ class MapSampleState extends State<MapSample> {
     return new Scaffold(
       body: GoogleMap(
         mapType: MapType.normal,
-
         initialCameraPosition: _kGooglePlex,
         markers: Set.from(allMarkers),
         onMapCreated: (GoogleMapController controller) {

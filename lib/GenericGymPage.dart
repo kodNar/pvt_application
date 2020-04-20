@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 
 class GenericGymPage extends StatelessWidget {
@@ -22,9 +24,22 @@ class GenericGymPage extends StatelessWidget {
         body: Builder(
           builder: (context) {
             return Stack(children: [
-              Container(child: ListView(children: <Widget>[
+              Container(
+                child: ListView(children: <Widget>[
+                  Container(
+                    child: Text(_name),
+                  ),
                 Container(
-                  height: 400,
+                  padding: EdgeInsets.only(top: 20),
+                  width: MediaQuery.of(context).size.width*0.5 ,
+                  height: MediaQuery.of(context).size.height* 0.5,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/OutdoorGymPicture.png'),
+                      fit: BoxFit.fill
+
+                    ),
+                  ),
                 ),
                 Container(
                   child: Column(
