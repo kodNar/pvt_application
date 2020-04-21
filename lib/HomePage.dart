@@ -1,16 +1,11 @@
 import 'dart:ui';
-
-import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/Constants.dart';
 import 'package:flutterapp/Login.dart';
 import 'package:flutterapp/MenuPage.dart';
-import 'package:flutterapp/Register.dart';
 import 'Settings.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
 
 class HomePage extends StatefulWidget {
@@ -213,19 +208,22 @@ class _HomePageState extends State<HomePage> {
 
   //Google login
   final GoogleSignIn googleSignIn = GoogleSignIn();
+
   Future<String> initiateGoogleLogin() async {
     FirebaseAuth _auth = FirebaseAuth.instance;
 
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+    GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn(); //Här den felar
 
+    final GoogleSignInAuthentication googleAuth =
+        await googleSignInAccount.authentication;
     final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
     );
 
-    final AuthResult authResult = await _auth.signInWithCredential(credential);
-    final FirebaseUser user = authResult.user;
+    AuthResult user = await _auth.signInWithCredential(credential);
+    /*
+    FirebaseUser user = authResult.user;
 
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
@@ -233,7 +231,9 @@ class _HomePageState extends State<HomePage> {
     final FirebaseUser currentUser = await _auth.currentUser();
     assert(user.uid == currentUser.uid);
 
-    return 'signInWithGoogle succeeded: $user';
+    */
+
+    return 'signInWithGoogle succeeded:';
   }
 
   void signOutGoogle() async {

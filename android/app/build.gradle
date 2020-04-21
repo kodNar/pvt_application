@@ -27,10 +27,11 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
-
-
 android {
     compileSdkVersion 28
+    defaultConfig{ //needed to run the app because of some limit...
+        multiDexEnabled true
+    }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
