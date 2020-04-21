@@ -11,6 +11,7 @@ import 'package:flutterapp/Register.dart';
 import 'Settings.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart' as http;
+import 'package:google_sign_in/google_sign_in.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -73,7 +74,7 @@ class _HomePageState extends State<HomePage> {
             Container(
               padding: EdgeInsets.only(bottom: 5),
               child: GestureDetector(
-                onTap: () => initiateFacebookLogin(),
+                onTap: () => initiateGoogleLogin(),
                 child: Image.asset(
                   'assets/images/googleLoggaKnapp.png',
                   width: 200,
@@ -198,15 +199,45 @@ class _HomePageState extends State<HomePage> {
       case FacebookLoginStatus.loggedIn:
         print("LoggedIn");
         FacebookAccessToken myToken = facebookLoginResult.accessToken;
-        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: myToken.token);
+        AuthCredential credential =
+            FacebookAuthProvider.getCredential(accessToken: myToken.token);
         AuthResult user = await _auth.signInWithCredential(credential);
     }
   }
-
 
   void onLoginStatusChanged(bool isLoggedIn) {
     setState(() {
       this.isLoggedIn = isLoggedIn;
     });
+  }
+
+  //Google login
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  Future<String> initiateGoogleLogin() async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final AuthResult authResult = await _auth.signInWithCredential(credential);
+    final FirebaseUser user = authResult.user;
+
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
+
+    final FirebaseUser currentUser = await _auth.currentUser();
+    assert(user.uid == currentUser.uid);
+
+    return 'signInWithGoogle succeeded: $user';
+  }
+
+  void signOutGoogle() async {
+    await googleSignIn.signOut();
+    print("User Sign Out");
   }
 }
