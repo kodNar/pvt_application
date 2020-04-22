@@ -88,8 +88,7 @@ class MapSampleState extends State<MapSample> {
       } });
     _addGymsToMarkers();
   }
-    _addGymsToMarkers() async{
-    print(allOutdoorGym.length);
+    _addGymsToMarkers(){
       for (int i = 0; i < allOutdoorGym.length; i++) {
         allMarkers.add(allOutdoorGym[i].marker);
       }
@@ -115,6 +114,6 @@ class MapSampleState extends State<MapSample> {
  */
 
   Future<String> loadAsset() async {
-    return await rootBundle.loadString('assets/files/test2.txt');
+    return await rootBundle.loadString('assets/files/OutdoorGyms.txt');
   }
 }
