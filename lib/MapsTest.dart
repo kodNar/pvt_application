@@ -56,6 +56,8 @@ class MapSampleState extends State<MapSample> {
           _controller.complete(controller);
         },
 
+
+
       ),
       floatingActionButton: FloatingActionButton.extended(
 
@@ -75,7 +77,6 @@ class MapSampleState extends State<MapSample> {
   void initState() {
     super.initState();
     _createMarkersFromString();
-
   }
 
   _createMarkersFromString() async{
@@ -92,6 +93,9 @@ class MapSampleState extends State<MapSample> {
       for (int i = 0; i < allOutdoorGym.length; i++) {
         allMarkers.add(allOutdoorGym[i].marker);
       }
+      setState((){
+        Set.from(allMarkers);
+      });
     }
 /*
   Future<List<String>> _searchNearby() async {
