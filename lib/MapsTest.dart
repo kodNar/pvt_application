@@ -1,15 +1,20 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/foundation.dart';
+
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Google Maps Demo',
-      home: MapSample(),
+      home: MapSample(
+      ),
     );
   }
 }
@@ -52,7 +57,8 @@ class MapSampleState extends State<MapSample> {
 
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
+
+        onPressed:_goToTheLake,
         label: Text('To the lake!'),
         icon: Icon(Icons.directions_boat),
       ),
@@ -67,6 +73,7 @@ class MapSampleState extends State<MapSample> {
 
   _asyncMethod() async {
     await _searchNearby();
+    print(await loadAsset(context));
     for (int i = 0; i < allOutdoorGym.length; i++) {
       allMarkers.add(allOutdoorGym[i].marker);
     }
@@ -93,6 +100,10 @@ class MapSampleState extends State<MapSample> {
         )
     );
     return null;
+  }
+
+  Future<String> loadAsset(BuildContext context) async {
+    return await DefaultAssetBundle.of(context).loadString('assets/test2.txt');
   }
 
 }
