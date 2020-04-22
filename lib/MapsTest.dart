@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 
 class MyApp extends StatelessWidget {
@@ -70,20 +71,30 @@ class MapSampleState extends State<MapSample> {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
-
-  _asyncMethod() async {
-    await _searchNearby();
-    print(await loadAsset(context));
-    for (int i = 0; i < allOutdoorGym.length; i++) {
-      allMarkers.add(allOutdoorGym[i].marker);
-    }
-  }
   @override
   void initState() {
     super.initState();
-    _asyncMethod();
+    _createMarkersFromString();
+
   }
 
+  _createMarkersFromString() async{
+    String file = await loadAsset();
+    List<String> list = file.split("\n");
+    list.forEach((e){
+      if(e != '') {
+        List <String> temp = e.split(',');
+        allOutdoorGym.add(new OutdoorGym(temp[0], temp[1], temp[2], context));
+      } });
+    _addGymsToMarkers();
+  }
+    _addGymsToMarkers() async{
+    print(allOutdoorGym.length);
+      for (int i = 0; i < allOutdoorGym.length; i++) {
+        allMarkers.add(allOutdoorGym[i].marker);
+      }
+    }
+/*
   Future<List<String>> _searchNearby() async {
     var dio = Dio();
     var url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$nycLat,$nycLng&radius=10000&keyword=utegym&key=$apiKey';
@@ -101,9 +112,9 @@ class MapSampleState extends State<MapSample> {
     );
     return null;
   }
+ */
 
-  Future<String> loadAsset(BuildContext context) async {
-    return await DefaultAssetBundle.of(context).loadString('assets/test2.txt');
+  Future<String> loadAsset() async {
+    return await rootBundle.loadString('assets/files/test2.txt');
   }
-
 }
