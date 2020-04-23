@@ -116,8 +116,6 @@ class _RegisterState extends State<Register>{
                   obscureText: true,
                 ),
               ),
-
-
               Container(
                 padding: EdgeInsets.all(20),
                 child: ButtonTheme(
@@ -142,9 +140,22 @@ class _RegisterState extends State<Register>{
                   ),
                 ),
               ),
+              Container(
+                padding: EdgeInsets.only(top: 20),
+                height: 75,
+                width: 75,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/images/Stockholm_endast_logga_vit.png'
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
+
       ),
     );
   }
