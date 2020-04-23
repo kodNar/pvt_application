@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/GenericGymPage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+// Init firestore and geoFlutterFire
+Geoflutterfire geo = Geoflutterfire();
+Firestore _firestore = Firestore.instance;
+
 class OutdoorGym{
   String _name;
-  double _lat;
-  double _lng;
+  GeoFirePoint _geo;
+
   //later be equipmmnt insted of string
   List<String> equipments= [];
   Marker _marker;
   //home/office/unknown
 
-  OutdoorGym(String name,String lat,String lng,context){
+  OutdoorGym(String name,GeoFirePoint geo,context){
     this._name= name;
-    this._lat = double.parse(lat);
-    this._lng = double.parse(lng);
+    this._geo = geo;
+
     this._marker = new Marker(
         markerId: MarkerId (name),
-        position: LatLng (this._lat,this._lng),
+        position: LatLng (this._geo.latitude,this._geo.longitude),
         onTap:(){
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => GenericGymPage(_name, equipments)));
@@ -29,7 +35,7 @@ class OutdoorGym{
 
   @override
   String toString() {
-    return 'OutdoorGym{_name: $_name, _lat: $_lat, _lng: $_lng}';
+    return 'OutdoorGym{_name: $_name, _geo: $_geo}';
   }
 
 }
