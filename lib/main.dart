@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/SplashScreenPage.dart';
-import 'HomePage.dart';
+import 'package:flutterapp/pages/SplashScreenPage.dart';
+import 'pages/HomePage.dart';
 import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
