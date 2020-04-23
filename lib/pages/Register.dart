@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/Login.dart';
+import 'package:flutterapp/pages/Login.dart';
 
 class Register extends StatefulWidget {
   @override

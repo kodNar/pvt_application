@@ -45,6 +45,5 @@ class Stump extends Equipment{
   Stump(int id, OutdoorGym location, int height) :
         _height = height,
         super(id, location);
-
 }
 

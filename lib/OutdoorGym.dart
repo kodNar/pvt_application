@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/GenericGymPage.dart';
+import 'package:flutterapp/pages/GenericGymPage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 class OutdoorGym{
   String _name;
