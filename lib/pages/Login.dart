@@ -24,19 +24,10 @@ class _LoginPageState extends State<LoginPage> {
       body: Form(
         key: _formKey,
         child: Container(
+          padding: EdgeInsets.all(20),
           color: Color.fromARGB(255, 132, 50, 155),
           child: Column(
             children: <Widget>[
-              Container(
-                margin: EdgeInsets.all(10.0),
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/Stockholm_endast_logga_vit.png'),
-                  ),
-                ),
-              ),
               Text("AppName",
                   style: TextStyle(
                       color: Colors.white,
@@ -45,8 +36,8 @@ class _LoginPageState extends State<LoginPage> {
                       fontSize: 30)),
               Container(
                 margin: EdgeInsets.all(10.0),
-                height: 100,
-                width: 100,
+                height: 125,
+                width: 125,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/images/applogga_vit_liten.png'),
@@ -120,11 +111,14 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Container(
                 padding: EdgeInsets.only(top: 20),
-                child: RaisedButton(
-                  onPressed: signIn,
-                  child: Text('Sign in'),
+                  width: 250,
+                  height: 55,
+                  child: RaisedButton(
+                    color: Color.fromARGB(255, 0, 110, 191),
+                    onPressed: signIn,
+                    child: Text('Login'),
+                  ),
                 ),
-              ),
               Container(
                 padding: EdgeInsets.only(top: 20),
                 child: GestureDetector(
@@ -176,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                     ;
                   },
                   child: Text(
-                    'Forgot password? Click here',
+                    'Forgot password?',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
@@ -193,12 +187,23 @@ class _LoginPageState extends State<LoginPage> {
                         MaterialPageRoute(builder: (context) => Register()));
                   },
                   child: Text(
-                    'No account? Click here',
+                    'Create account',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.all(20.0),
+                height: 75,
+                width: 75,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/images/Stockholm_endast_logga_vit.png'),
                   ),
                 ),
               ),
