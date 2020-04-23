@@ -148,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.only(top: 20),
                 child: GestureDetector(
                   onTap: (){
-                    Navigator.push(context,MaterialPageRoute(builder:(context) => MapSample() ));
+                    Navigator.push(context,MaterialPageRoute(builder:(context) => Register() ));
                   },
                   child: Text('No account? Click here',
                     style: TextStyle(

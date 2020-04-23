@@ -2,22 +2,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/Login.dart';
+import 'package:flutterapp/services/Database.dart';
 
 class Register extends StatefulWidget {
   @override
   _RegisterState createState() => new _RegisterState();
-
 }
 
-class _RegisterState extends State<Register>{
+class _RegisterState extends State<Register> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _email, _nickName, _password, _confirmPassword;
+  String _email, _password, _confirmPassword;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
       appBar: AppBar(title: Text("Register")),
-
       body: Form(
         key: _formKey,
         child: Container(
@@ -45,7 +45,7 @@ class _RegisterState extends State<Register>{
                   if (input.isEmpty) {
                     return 'Please provide an Email';
                   }
-                  if(!input.contains("@")) {
+                  if (!input.contains("@")) {
                     return 'Please provide a valid Email';
                   }
                 },
@@ -57,7 +57,7 @@ class _RegisterState extends State<Register>{
                   ),
                 ),
               ),
-             /* TextFormField(
+              /* TextFormField(
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -96,8 +96,7 @@ class _RegisterState extends State<Register>{
                 ),
                 obscureText: true,
               ),
-
-             TextFormField(
+              TextFormField(
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -116,7 +115,6 @@ class _RegisterState extends State<Register>{
                   labelStyle: TextStyle(
                     color: Colors.white,
                   ),
-
                 ),
                 obscureText: true,
               ),
@@ -189,38 +187,38 @@ class _RegisterState extends State<Register>{
     );
   }
 
-  Future<void> register() async{
+  Future<void> register() async {
     final formState = _formKey.currentState;
-    if(formState.validate()){
+    if (formState.validate()) {
       formState.save();
-      if(_password != _confirmPassword) {
+      if (_password != _confirmPassword) {
         //Popup när lösenord ej matchar
-        showDialog(context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: new Text(
-              "Confirm password"
-            ),
-            content: new Text(
-              "The passwords must be matching"
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: new Text("Ok"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        }
-        );
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: new Text("Confirm password"),
+                content: new Text("The passwords must be matching"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: new Text("Ok"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
       }
-      try{
-        AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(password: _password, email: _email);
-        user.user.sendEmailVerification();
+      try {
+        AuthResult authResult = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(password: _password, email: _email);
+        FirebaseUser user = authResult.user;
+        //creating a new document for the user with their UID
+        await DatabaseService(uid: user.uid).updateUserData("metal", "stump", 20);
+        user.sendEmailVerification();
         Navigator.of(context).pop();
-      }catch(e){
+      } catch (e) {
         print(e.message);
       }
     }
