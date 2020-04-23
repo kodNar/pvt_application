@@ -9,7 +9,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -27,9 +26,10 @@ class MapSample extends StatefulWidget {
 
 class MapSampleState extends State<MapSample> {
   List<Marker> allMarkers = [];
-  List <OutdoorGym> allOutdoorGym = [];
+  List<OutdoorGym> allOutdoorGym = [];
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
+
   //static const apiKey = 'AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
   bool mapToggle = false;
   var currentLocation;
@@ -49,76 +49,90 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar:  AppBar(
-        backgroundColor: Color.fromARGB(255, 132, 50, 155),
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(''),
+      drawer: NavDrawer(),
+      appBar: BaseAppBar(
+        title: Text("Stockholms outdoor gyms"),
       ),
-         body: mapToggle ? GoogleMap(
-        mapType: MapType.normal,
-   //     initialCameraPosition: _kGooglePlex,
-        initialCameraPosition:CameraPosition(
-          target: LatLng(currentLocation.latitude,currentLocation.longitude),
-          zoom: 14.4746,
-        ),
-        markers: Set.from(allMarkers),
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
+      body: Column(
+        children: <Widget>[
+        Container(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height - 350,
+        child: mapToggle
+            ? GoogleMap(
+                mapType: MapType.normal,
+                //     initialCameraPosition: _kGooglePlex,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(
+                      currentLocation.latitude, currentLocation.longitude),
+                  zoom: 14.4746,
+                ),
 
-      )
-          : Center(
-        child: Text(
-          'Loading...'
-        ),
+                markers: Set.from(allMarkers),
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+              )
+            : Center(
+                child: Text('Loading...'),
+              ),
       ),
+          Container(
+          ),
+        ]),
       floatingActionButton: FloatingActionButton.extended(
-
-        onPressed:_goToTheLake,
+        onPressed: _goToTheLake,
         label: Text('To the lake!'),
         icon: Icon(Icons.directions_boat),
       ),
     );
   }
 
-
   Future<void> _goToTheLake() async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
+
   @override
   void initState() {
     super.initState();
-    Geolocator().getCurrentPosition().then((currloc){
-         setState(() {
-           currentLocation = currloc;
-           mapToggle =true;
-         });
+    Geolocator().getCurrentPosition().then((currloc) {
+      setState(() {
+        currentLocation = currloc;
+        mapToggle = true;
+      });
     });
     _createMarkersFromString();
   }
 
+  _getNearestPlaces(){
+    allOutdoorGym.forEach((e){
 
+    });
+  }
 
-  _createMarkersFromString() async{
+///////////////////////create  and load markers//////////////////////////////////
+  _createMarkersFromString() async {
     String file = await loadAsset();
     List<String> list = file.split("\n");
-    list.forEach((e){
-      if(e != '') {
-        List <String> temp = e.split(',');
-        allOutdoorGym.add(new OutdoorGym(temp[0], temp[1], temp[2], context));
-      } });
+    list.forEach((e) {
+      if (e != '') {
+        List<String> temp = e.split(',');
+       //allOutdoorGym.add(new OutdoorGym(temp[0], temp[1], temp[2], context));
+      }
+    });
     _addGymsToMarkers();
   }
-    _addGymsToMarkers(){
-      for (int i = 0; i < allOutdoorGym.length; i++) {
-        allMarkers.add(allOutdoorGym[i].marker);
-      }
-      setState((){
-        Set.from(allMarkers);
-      });
+
+  _addGymsToMarkers() {
+    for (int i = 0; i < allOutdoorGym.length; i++) {
+      allMarkers.add(allOutdoorGym[i].marker);
     }
+    setState(() {
+      Set.from(allMarkers);
+    });
+  }
+
 /*
   Future<List<String>> _searchNearby() async {
     var dio = Dio();
@@ -141,5 +155,73 @@ class MapSampleState extends State<MapSample> {
 
   Future<String> loadAsset() async {
     return await rootBundle.loadString('assets/files/OutdoorGyms.txt');
+  }
+}
+////////////////////////////////////bar appbar//////////////////////////////////////////////
+class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final Color backgroundColor = Color.fromARGB(255, 132, 50, 155);
+  final Text title;
+  final AppBar appBar;
+  final List<Widget> widgets;
+
+  /// you can add more fields that meet your needs
+
+  BaseAppBar({Key key, this.title, this.appBar, this.widgets})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: title,
+      backgroundColor: backgroundColor,
+      actions: widgets,
+    );
+  }
+
+  @override
+  Size get preferredSize => new Size.fromHeight(50);
+}
+//////////////////////////////////Menu item////////////////////////////////////////////
+class NavDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Text(
+              'Stockholm',
+              style: TextStyle(color: Colors.white, fontSize: 25),
+            ),
+            decoration: BoxDecoration(
+                color: Colors.green,
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage('assets/images/bok.png'))),
+          ),
+          ListTile(
+            leading: Icon(Icons.verified_user),
+            title: Text('Profile'),
+            onTap: () => {},
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+            onTap: () => {},
+          ),
+          ListTile(
+            leading: Icon(Icons.border_color),
+            title: Text('About us'),
+            onTap: () => {},
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+            onTap: () => {},
+          ),
+        ],
+      ),
+    );
   }
 }
