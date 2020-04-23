@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/Login.dart';
+import 'package:flutterapp/pages/Login.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -32,8 +32,11 @@ class _RegisterState extends State<Register>{
                   fontSize: 45,
                 ),
               ),
+
               TextFormField(
+
                 style: TextStyle(
+
                   color: Colors.white,
                 ),
                 cursorColor: Colors.white,
@@ -141,6 +144,44 @@ class _RegisterState extends State<Register>{
                   ),
                 ),
               ),
+              Column(
+                children: <Widget>[
+                  Icon(
+                    Icons.live_help
+                  ),
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100),
+                    side: BorderSide(color: Colors.white, width: 2.5),
+                  ),
+                  color: Colors.black,
+                  onPressed: () {
+                    return AlertDialog(
+                      title: Text(
+                        "Info"
+                      ),
+                      content: Text(
+                        "There will be no e-mails sent out to you apart from if you need to reset your password."
+                      ),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text(
+                            "Ok"
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                ],
+
+
+
+
+              )
             ],
           ),
         ),

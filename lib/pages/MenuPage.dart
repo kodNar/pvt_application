@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/MapsTest.dart';
+import 'package:flutterapp/pages/MapsTest.dart';
 import 'Settings.dart';
 
 class MenuPage extends StatelessWidget {

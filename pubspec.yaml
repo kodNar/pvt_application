@@ -20,16 +20,15 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_auth: ^0.16.0
-  flutter_facebook_login: ^3.0.0
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  flutter_facebook_login: ^3.0.0 #Sign in with Facebook
   cupertino_icons: ^0.1.2
-  google_maps_flutter: ^0.5.11
+  google_maps_flutter: ^0.5.11 #Google Maps
   geolocator: ^5.1.4+2
   location: ^2.3.5
   dio: ^1.0.13
-  google_sign_in: ^4.4.3
+  google_sign_in: ^4.4.3 #Sign in with Google
   path_provider: ^0.4.0
+  cloud_firestore: ^0.13.5 #Database
 
 dev_dependencies:
   flutter_test:

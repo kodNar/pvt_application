@@ -15,8 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Google Maps Demo',
-      home: MapSample(
-      ),
+      home: MapSample(),
     );
   }
 }
@@ -50,7 +49,13 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: mapToggle ? GoogleMap(
+      appBar:  AppBar(
+        backgroundColor: Color.fromARGB(255, 132, 50, 155),
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(''),
+      ),
+         body: mapToggle ? GoogleMap(
         mapType: MapType.normal,
    //     initialCameraPosition: _kGooglePlex,
         initialCameraPosition:CameraPosition(
@@ -83,7 +88,6 @@ class MapSampleState extends State<MapSample> {
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
   @override
-
   void initState() {
     super.initState();
     Geolocator().getCurrentPosition().then((currloc){
@@ -91,7 +95,6 @@ class MapSampleState extends State<MapSample> {
            currentLocation = currloc;
            mapToggle =true;
          });
-
     });
     _createMarkersFromString();
   }

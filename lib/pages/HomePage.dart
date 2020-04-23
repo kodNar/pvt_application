@@ -2,11 +2,12 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/Login.dart';
-import 'package:flutterapp/MenuPage.dart';
+import 'package:flutterapp/pages/Login.dart';
+import 'package:flutterapp/pages/MenuPage.dart';
 import 'Settings.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutterapp/pages/MapsTest.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -197,8 +198,11 @@ class _HomePageState extends State<HomePage> {
         AuthCredential credential =
             FacebookAuthProvider.getCredential(accessToken: myToken.token);
         AuthResult user = await _auth.signInWithCredential(credential);
+        goToHomePage();
     }
   }
+  
+
 
   void onLoginStatusChanged(bool isLoggedIn) {
     setState(() {
@@ -222,6 +226,7 @@ class _HomePageState extends State<HomePage> {
     );
 
     AuthResult user = await _auth.signInWithCredential(credential);
+    goToHomePage();
     /*
     FirebaseUser user = authResult.user;
 
@@ -239,5 +244,10 @@ class _HomePageState extends State<HomePage> {
   void signOutGoogle() async {
     await googleSignIn.signOut();
     print("User Sign Out");
+  }
+
+  void goToHomePage() {
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => MapSample()));
   }
 }
