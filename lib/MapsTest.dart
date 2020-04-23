@@ -91,7 +91,6 @@ class MapSampleState extends State<MapSample> {
            currentLocation = currloc;
            mapToggle =true;
          });
-
     });
     _createMarkersFromString();
   }
