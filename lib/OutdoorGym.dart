@@ -14,6 +14,7 @@ class OutdoorGym{
   //later be equipmmnt insted of string
   List<String> equipments= [];
   Marker _marker;
+
   //home/office/unknown
 
   OutdoorGym(String name,GeoFirePoint geo,context){
@@ -29,10 +30,13 @@ class OutdoorGym{
         },
         draggable: false
     );
+
+
   }
 
   Marker get marker => _marker;
-
+  String get name => _name;
+  GeoFirePoint get geo => _geo;
   @override
   String toString() {
     return 'OutdoorGym{_name: $_name, _geo: $_geo}';

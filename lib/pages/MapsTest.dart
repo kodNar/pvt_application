@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:geoflutterfire/geoflutterfire.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -57,7 +58,7 @@ class MapSampleState extends State<MapSample> {
         children: <Widget>[
         Container(
         width: double.infinity,
-        height: MediaQuery.of(context).size.height - 350,
+        height: MediaQuery.of(context).size.height - 250,
         child: mapToggle
             ? GoogleMap(
                 mapType: MapType.normal,
@@ -74,23 +75,17 @@ class MapSampleState extends State<MapSample> {
                 },
               )
             : Center(
+
                 child: Text('Loading...'),
               ),
       ),
           Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height-508,
+              child:ClosestedPlaceContainer(allOutdoorGym)
           ),
         ]),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: Text('To the lake!'),
-        icon: Icon(Icons.directions_boat),
-      ),
     );
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 
   @override
@@ -105,14 +100,17 @@ class MapSampleState extends State<MapSample> {
     _createMarkersFromString();
   }
 
-  _getNearestPlaces(){
-    allOutdoorGym.forEach((e){
-
-    });
-  }
-
 ///////////////////////create  and load markers//////////////////////////////////
   _createMarkersFromString() async {
+    ////test////
+    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 1.960632, longitude: 77.641603), context));
+    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 13.960632, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 123.960632, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 123.0632, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 123.96632, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 123.9602, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 123.96632, longitude: 71.641603), context));
+    //////////////////////////////test////////////////////////////////////////
     String file = await loadAsset();
     List<String> list = file.split("\n");
     list.forEach((e) {
@@ -156,7 +154,43 @@ class MapSampleState extends State<MapSample> {
   Future<String> loadAsset() async {
     return await rootBundle.loadString('assets/files/OutdoorGyms.txt');
   }
+  Future<void> _goToTheLake() async {
+    final GoogleMapController controller = await _controller.future;
+    return controller;
+  }
+
 }
+class ClosestedPlaceContainer extends StatelessWidget{
+  List <OutdoorGym> _list;
+  ClosestedPlaceContainer(this._list);
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: _list.length,
+        itemBuilder: (context, index){
+          return Container(
+              color: Color.fromARGB(255, 132+index*30,50,155),
+              height: 50,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(_list[index].name),
+                    IconButton(
+                      icon: Icon(Icons.arrow_forward),
+                      onPressed: () {
+
+                      },
+                    ),
+
+                  ])
+          );
+        }
+    );
+  }
+}
+
+///////////////////////////lower listView/////////////////////////////////////////////
+
 ////////////////////////////////////bar appbar//////////////////////////////////////////////
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color backgroundColor = Color.fromARGB(255, 132, 50, 155);
