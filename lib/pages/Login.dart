@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutterapp/pages/MenuPage.dart';
-import 'package:flutterapp/pages/Register.dart';
+import 'package:flutterapp/MenuPage.dart';
+import 'package:flutterapp/Register.dart';
+import 'package:flutterapp/MapsTest.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -147,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.only(top: 20),
                 child: GestureDetector(
                   onTap: (){
-                    Navigator.push(context,MaterialPageRoute(builder:(context) => Register() ));
+                    Navigator.push(context,MaterialPageRoute(builder:(context) => MapSample() ));
                   },
                   child: Text('No account? Click here',
                     style: TextStyle(
@@ -180,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
 
       try {
         AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password); //Confirming the e-mail and password towards the firebase database
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MenuPage()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MapSample()));
 
       } catch (e) {
         print(e.message);
