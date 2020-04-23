@@ -7,7 +7,7 @@ import 'package:flutterapp/pages/MenuPage.dart';
 import 'Settings.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutterapp/MapsTest.dart';
+import 'package:flutterapp/pages/MapsTest.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
