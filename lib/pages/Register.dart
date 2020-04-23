@@ -21,6 +21,7 @@ class _RegisterState extends State<Register>{
       body: Form(
         key: _formKey,
         child: Container(
+          margin: EdgeInsets.only(top: 20),
           padding: EdgeInsets.only(top: 20),
           alignment: Alignment.center,
           child: Column(
@@ -32,96 +33,93 @@ class _RegisterState extends State<Register>{
                   fontSize: 45,
                 ),
               ),
-
-              TextFormField(
-
-                style: TextStyle(
-
-                  color: Colors.white,
+              IconButton(
+                padding: EdgeInsets.only(left: 330),
+                icon: Icon(
+                  Icons.help,
                 ),
-                cursorColor: Colors.white,
-                // ignore: missing_return
-                validator: (input) {
-                  if (input.isEmpty) {
-                    return 'Please provide an Email';
-                  }
-                  if(!input.contains("@")) {
-                    return 'Please provide a valid Email';
-                  }
+                color: Colors.white,
+                tooltip: 'Your e-mail will not be used for advertising. It will strcitly be used to reset your password',
+                onPressed: () {
                 },
-                onSaved: (input) => _email = input,
-                decoration: InputDecoration(
-                  labelText: 'E-mail:',
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-             /* TextFormField(
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-                validator: (input) {
-                  if (input.isEmpty) {
-                    return 'Please provide an nickname';
-                  }
-                },
-                onSaved: (input) => _nickName = input,
-                cursorColor: Colors.white,
-                decoration: InputDecoration(
-                  labelText: 'Nickname:',
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                  ),
-
-                ),
-              ),*/
-              TextFormField(
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-                // ignore: missing_return
-                validator: (input) {
-                  if (input.isEmpty) {
-                    return 'Please provide a password';
-                  }
-                },
-                onSaved: (input) => _password = input,
-                cursorColor: Colors.white,
-                decoration: InputDecoration(
-                  labelText: 'Password:',
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                obscureText: true,
               ),
 
-             TextFormField(
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-                // ignore: missing_return
-                validator: (input) {
-                  print(input);
-
-                  if (input.isEmpty) {
-                    return 'Please repeat your password';
-                  }
-                },
-                onSaved: (input) => _confirmPassword = input,
-                cursorColor: Colors.white,
-                decoration: InputDecoration(
-                  labelText: 'Confirm password:',
-                  labelStyle: TextStyle(
-                    color: Colors.white,
+              Container(
+                padding: EdgeInsets.all(10),
+                child: TextFormField(
+                  // ignore: missing_return
+                  validator: (input) {
+                    if(input.isEmpty) {
+                      return 'Please provide an E-mail';
+                    }
+                    if(!input.contains('@')) {
+                      return 'Please provide a valid E-mail';
+                    }
+                  },
+                  onSaved: (input) => _email = input,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                    ),
+                    prefixIcon: Icon(Icons.email),
+                    hintText: "E-mail",
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
-
                 ),
-                obscureText: true,
               ),
               Container(
-                padding: EdgeInsets.only(top: 20),
+                padding: EdgeInsets.all(10),
+                child: TextFormField(
+                  // ignore: missing_return
+                  validator: (input){
+                    if(input.isEmpty) {
+                      return 'Please provide a password';
+                    }
+                  },
+                  onSaved: (input) => _password = input,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                    ),
+                    prefixIcon: Icon(Icons.lock),
+                    hintText: 'Password',
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                  obscureText: true,
+                ),
+              ),
+
+              Container(
+                padding: EdgeInsets.all(10),
+                child: TextFormField(
+                  // ignore: missing_return
+                  validator: (input){
+                    if(input.isEmpty) {
+                      return 'Please repeat your password';
+                    }
+                  },
+                  onSaved: (input) => _confirmPassword = input,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                    ),
+                    prefixIcon: Icon(Icons.lock),
+                    hintText: 'Confirm password',
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                  obscureText: true,
+                ),
+              ),
+
+
+              Container(
+                padding: EdgeInsets.all(20),
                 child: ButtonTheme(
                   minWidth: 100,
                   height: 75,
@@ -144,44 +142,6 @@ class _RegisterState extends State<Register>{
                   ),
                 ),
               ),
-              Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.live_help
-                  ),
-                RaisedButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
-                    side: BorderSide(color: Colors.white, width: 2.5),
-                  ),
-                  color: Colors.black,
-                  onPressed: () {
-                    return AlertDialog(
-                      title: Text(
-                        "Info"
-                      ),
-                      content: Text(
-                        "There will be no e-mails sent out to you apart from if you need to reset your password."
-                      ),
-                      actions: <Widget>[
-                        FlatButton(
-                          child: Text(
-                            "Ok"
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                ],
-
-
-
-
-              )
             ],
           ),
         ),
