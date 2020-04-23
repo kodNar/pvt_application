@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -30,8 +31,9 @@ class MapSampleState extends State<MapSample> {
   List <OutdoorGym> allOutdoorGym = [];
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
-  static const apiKey = 'AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
-
+  //static const apiKey = 'AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
+  bool mapToggle = false;
+  var currentLocation;
   Completer<GoogleMapController> _controller = Completer();
 
   static final CameraPosition _kGooglePlex = CameraPosition(
@@ -48,14 +50,23 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: GoogleMap(
+      body: mapToggle ? GoogleMap(
         mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
+   //     initialCameraPosition: _kGooglePlex,
+        initialCameraPosition:CameraPosition(
+          target: LatLng(currentLocation.latitude,currentLocation.longitude),
+          zoom: 14.4746,
+        ),
         markers: Set.from(allMarkers),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
 
+      )
+          : Center(
+        child: Text(
+          'Loading...'
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
 
@@ -72,11 +83,19 @@ class MapSampleState extends State<MapSample> {
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
   @override
+
   void initState() {
     super.initState();
+    Geolocator().getCurrentPosition().then((currloc){
+         setState(() {
+           currentLocation = currloc;
+           mapToggle =true;
+         });
+    });
     _createMarkersFromString();
-
   }
+
+
 
   _createMarkersFromString() async{
     String file = await loadAsset();
@@ -92,6 +111,9 @@ class MapSampleState extends State<MapSample> {
       for (int i = 0; i < allOutdoorGym.length; i++) {
         allMarkers.add(allOutdoorGym[i].marker);
       }
+      setState((){
+        Set.from(allMarkers);
+      });
     }
 /*
   Future<List<String>> _searchNearby() async {
