@@ -63,7 +63,9 @@ class MapSampleState extends State<MapSample> {
         width: double.infinity,
         height: (MediaQuery.of(context).size.height/7)*5 - 80,
         child: mapToggle
-            ? GoogleMap(
+            ? Stack(
+          children: <Widget>[
+            GoogleMap(
                 mapType: MapType.normal,
                 //     initialCameraPosition: _kGooglePlex,
                 initialCameraPosition: CameraPosition(
@@ -76,7 +78,27 @@ class MapSampleState extends State<MapSample> {
                 onMapCreated: (GoogleMapController controller) {
                   _controller.complete(controller);
                 },
-              )
+              ),
+        Container(
+            alignment: Alignment.bottomCenter,
+            child:
+
+        RaisedButton.icon(
+
+            onPressed: null,
+            icon: Icon(Icons.arrow_forward_ios,
+             color: Colors.white,),
+            label: Text('Start', style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+            ),
+
+        )
+        )
+        ]
+        )
             : Center(
 
                 child: Text('Loading...'),
@@ -161,7 +183,6 @@ class MapSampleState extends State<MapSample> {
     final GoogleMapController controller = await _controller.future;
     return controller;
   }
-
 }
 class ClosestedPlaceContainer extends StatelessWidget{
   List <OutdoorGym> _list;
@@ -189,8 +210,12 @@ class ClosestedPlaceContainer extends StatelessWidget{
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text(_list[index].name),
-                            Text(" Distance: " + snapshot.data.toString()+ "m"),
+                            Text(_list[index].name+ " Distance: " + snapshot.data.toString()+ "m",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),),
                             IconButton(
                               icon: Icon(Icons.arrow_forward),
                               onPressed: () {
