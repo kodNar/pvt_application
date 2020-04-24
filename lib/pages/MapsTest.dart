@@ -51,14 +51,16 @@ class MapSampleState extends State<MapSample> {
   Widget build(BuildContext context) {
     return new Scaffold(
       drawer: NavDrawer(),
-      appBar: BaseAppBar(
+      appBar: AppBar(
         title: Text("Stockholms outdoor gyms"),
+        backgroundColor: Color.fromARGB(255, 132, 50, 155),
+
       ),
       body: Column(
         children: <Widget>[
         Container(
         width: double.infinity,
-        height: MediaQuery.of(context).size.height - 250,
+        height: (MediaQuery.of(context).size.height/7)*5 - 80,
         child: mapToggle
             ? GoogleMap(
                 mapType: MapType.normal,
@@ -81,7 +83,7 @@ class MapSampleState extends State<MapSample> {
       ),
           Container(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height-508,
+              height: (MediaQuery.of(context).size.height/7)*2,
               child:ClosestedPlaceContainer(allOutdoorGym)
           ),
         ]),
@@ -187,33 +189,6 @@ class ClosestedPlaceContainer extends StatelessWidget{
         }
     );
   }
-}
-
-///////////////////////////lower listView/////////////////////////////////////////////
-
-////////////////////////////////////bar appbar//////////////////////////////////////////////
-class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Color backgroundColor = Color.fromARGB(255, 132, 50, 155);
-  final Text title;
-  final AppBar appBar;
-  final List<Widget> widgets;
-
-  /// you can add more fields that meet your needs
-
-  BaseAppBar({Key key, this.title, this.appBar, this.widgets})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: title,
-      backgroundColor: backgroundColor,
-      actions: widgets,
-    );
-  }
-
-  @override
-  Size get preferredSize => new Size.fromHeight(50);
 }
 //////////////////////////////////Menu item////////////////////////////////////////////
 class NavDrawer extends StatelessWidget {
