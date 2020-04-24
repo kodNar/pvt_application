@@ -72,71 +72,81 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        prefixIcon: Icon(Icons.email),
+                        hintText: "Email",
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                      cursorColor: Colors.white,
+                      // ignore: missing_return
+                      validator: (input) {
+                        if (input.isEmpty) {
+                          //Check if auth sign or something
+                          return 'Please provide an Email';
+                        }
+                      },
+                      onSaved: (input) => _email = input,
+                    ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        prefixIcon: Icon(Icons.lock),
+                        hintText: "Password",
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                      cursorColor: Colors.white,
+                      // ignore: missing_return
+                      validator: (input) {
+                        if (input.isEmpty) {
+                          return 'Please provide a password';
+                        }
+                        if (input.length < 6) {
+                          return 'Your password must be atleast 6 characters';
+                        }
+                      },
+                      onSaved: (input) => _password = input,
+                      obscureText: true, //Döljer texten
+                    ),
                   ),
-                  prefixIcon: Icon(Icons.email),
-                  hintText: "Email",
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-                cursorColor: Colors.white,
-                // ignore: missing_return
-                validator: (input) {
-                  if (input.isEmpty) {
-                    //Check if auth sign or something
-                    return 'Please provide an Email';
-                  }
-                },
-                onSaved: (input) => _email = input,
+
+                ],
               ),
+
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  prefixIcon: Icon(Icons.lock),
-                  hintText: "Password",
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-                cursorColor: Colors.white,
-                // ignore: missing_return
-                validator: (input) {
-                  if (input.isEmpty) {
-                    return 'Please provide a password';
-                  }
-                  if (input.length < 6) {
-                    return 'Your password must be atleast 6 characters';
-                  }
-                },
-                onSaved: (input) => _password = input,
-                obscureText: true, //Döljer texten
-              ),
-            ),
+
             CheckboxListTile(
               title: Text("Remember login"),
               activeColor: Colors.green,
@@ -337,9 +347,7 @@ class _HomePageState extends State<HomePage> {
 
     final FirebaseUser currentUser = await _auth.currentUser();
     assert(user.uid == currentUser.uid);
-
     */
-
     return 'signInWithGoogle succeeded:';
   }
 
@@ -363,9 +371,12 @@ class _HomePageState extends State<HomePage> {
     if (formState.validate()) {
       //Checks so that the inputs are correct
       formState.save(); //ser till att vi kan hämta variablerna.
-
+      print(_email);
+      print(_password);
       try {
+        print('test #1');
         AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password); //Confirming the e-mail and password towards the firebase database
+        print('test #2');
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => MapSample()));
       } catch (e) {
