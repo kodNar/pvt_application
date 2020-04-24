@@ -7,6 +7,7 @@ class GenericGymPage extends StatelessWidget {
   GenericGymPage(String name, List<String> equipment) {
     this._name = name;
     this._equipment = equipment;
+
   }
 
   Widget build(BuildContext context) {

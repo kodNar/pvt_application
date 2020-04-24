@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:geoflutterfire/geoflutterfire.dart';
 
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -84,7 +85,7 @@ class MapSampleState extends State<MapSample> {
           Container(
               width: double.infinity,
               height: (MediaQuery.of(context).size.height/7)*2,
-              child:ClosestedPlaceContainer(allOutdoorGym)
+              child:ClosestedPlaceContainer(allOutdoorGym,_controller, currentLocation)
           ),
         ]),
     );
@@ -107,11 +108,11 @@ class MapSampleState extends State<MapSample> {
     ////test////
     allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 1.960632, longitude: 77.641603), context));
     allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 13.960632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 123.960632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 123.0632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 123.96632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 123.9602, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 123.96632, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 12.960632, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 13.0632, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 12.9632, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 23.9602, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 3.96632, longitude: 71.641603), context));
     //////////////////////////////test////////////////////////////////////////
     String file = await loadAsset();
     List<String> list = file.split("\n");
@@ -164,31 +165,62 @@ class MapSampleState extends State<MapSample> {
 }
 class ClosestedPlaceContainer extends StatelessWidget{
   List <OutdoorGym> _list;
-  ClosestedPlaceContainer(this._list);
+  Completer<GoogleMapController> _controller;
+  var _userPos;
+
+  ClosestedPlaceContainer(this._list, this._controller,this._userPos);
+
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return
+      ListView.builder(
         itemCount: _list.length,
         itemBuilder: (context, index){
-          return Container(
-              color: Color.fromARGB(255, 132+index*30,50,155),
-              height: 50,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(_list[index].name),
-                    IconButton(
-                      icon: Icon(Icons.arrow_forward),
-                      onPressed: () {
-
-                      },
-                    ),
-
-                  ])
+          return InkWell(
+              onTap: (){
+                _goToGym(_list[index]);
+              },
+              child:FutureBuilder<double> (
+                future: calculateDistance(index),
+                builder: (context, snapshot) {
+                  return snapshot.hasData ? Container(
+                      color: Color.fromARGB(255, 132 + index * 30, 50, 155),
+                      height: 50,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(_list[index].name),
+                            Text(" Distance: " + snapshot.data.toString()+ "m"),
+                            IconButton(
+                              icon: Icon(Icons.arrow_forward),
+                              onPressed: () {
+                                _goToGym(_list[index]);
+                              },
+                            ),
+                          ])
+                  )
+                      : Center(
+                      child: CircularProgressIndicator());
+                }
+              )
           );
         }
     );
   }
+    Future <double>calculateDistance (int i) async{
+    double distance =await Geolocator().distanceBetween( _userPos.latitude, _userPos.longitude, _list[i].geo.latitude, _list[i].geo.longitude);
+      return distance;
+  }
+
+  Future<void> _goToGym(OutdoorGym gym) async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        bearing: 0,
+        target: LatLng(gym.geo.latitude, gym.geo.longitude),
+        tilt: 0,
+        zoom: 10)));
+  }
+
 }
 //////////////////////////////////Menu item////////////////////////////////////////////
 class NavDrawer extends StatelessWidget {
