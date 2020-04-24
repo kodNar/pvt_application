@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterapp/pages/MenuPage.dart';
 import 'package:flutterapp/pages/Register.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
+import 'package:flutterapp/pages/ResetPassword.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -111,64 +112,23 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Container(
                 padding: EdgeInsets.only(top: 20),
-                  width: 250,
-                  height: 55,
-                  child: RaisedButton(
-                    color: Color.fromARGB(255, 0, 110, 191),
-                    onPressed: signIn,
-                    child: Text('Login'),
-                  ),
+                width: 250,
+                height: 55,
+                child: RaisedButton(
+                  color: Color.fromARGB(255, 0, 110, 191),
+                  onPressed: signIn,
+                  child: Text('Login'),
                 ),
+              ),
               Container(
                 padding: EdgeInsets.only(top: 20),
                 child: GestureDetector(
                   onTap: () {
-                    final formState = _formKey.currentState;
-                    formState.save();
-                    if (_email.isEmpty) {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text("Failed reset"),
-                              content: Text(
-                                  "Please input your e-mail in the e-mail field"),
-                              actions: <Widget>[
-                                new FlatButton(
-                                  child: Text("Ok"),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                )
-                              ],
-                            );
-                          });
-                    }
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ResetPassword()));
+                    },
+
                     // ignore: unnecessary_statements
-                    else {
-                      sendPasswordResetEmail(_email);
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text("Reset password"),
-                              content: Text(
-                                  "An e-mail to reset your password has been sent to your registered e-mail."),
-                              actions: <Widget>[
-                                new FlatButton(
-                                  child: Text(
-                                    "Ok",
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                )
-                              ],
-                            );
-                          });
-                    }
-                    ;
-                  },
                   child: Text(
                     'Forgot password?',
                     style: TextStyle(

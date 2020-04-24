@@ -25,16 +25,23 @@ class _ResetPassword extends State<ResetPassword> {
       body: Column(
         children: <Widget>[
           Container(
+            alignment: Alignment.center,
             padding: EdgeInsets.all(20),
-            child: Text(
-              'Forgot your password?',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 45,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Forgot your password?',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30
+                  ),
+                )
+              ],
             ),
           ),
           Container(
+            alignment: Alignment.center,
             padding: EdgeInsets.all(40),
             child: Text(
               'Please enter your email adress which you registered with and we will send you a link to recover your password',
@@ -60,9 +67,9 @@ class _ResetPassword extends State<ResetPassword> {
                   fillColor: Colors.white,
                 ),
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
-                cursorColor: Colors.white,
+                cursorColor: Colors.black,
                 //ignore: missing_return
                 validator: (input) {
                   if(input.isEmpty) {
@@ -80,6 +87,8 @@ class _ResetPassword extends State<ResetPassword> {
           ),
           Container(
             padding: EdgeInsets.all(20),
+            height: 90,
+            width: 225,
             child: RaisedButton(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
@@ -87,6 +96,12 @@ class _ResetPassword extends State<ResetPassword> {
               ),
               color: Colors.blue,
               onPressed: reset,
+              child: Text(
+                "Send",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
             ),
           )
         ],
@@ -101,5 +116,6 @@ class _ResetPassword extends State<ResetPassword> {
       formState.save();
     }
     await _firebaseAuth.sendPasswordResetEmail(email: _email);
+
   }
 }
