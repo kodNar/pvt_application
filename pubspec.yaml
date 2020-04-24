@@ -29,6 +29,7 @@ dependencies:
   google_sign_in: ^4.4.3 #Sign in with Google
   path_provider: ^0.4.0
   cloud_firestore: ^0.13.5 #Database
+  provider: ^4.0.5 #Firestore
   geoflutterfire:
     git: git://github.com/DarshanGowda0/GeoFlutterFire.git
 

@@ -26,8 +26,6 @@ class MapSample extends StatefulWidget {
   State<MapSample> createState() => MapSampleState();
 }
 
-
-
 class MapSampleState extends State<MapSample> {
   List<Marker> allMarkers = [];
   List<OutdoorGym> allOutdoorGym = [];
@@ -60,58 +58,58 @@ class MapSampleState extends State<MapSample> {
 
       ),
       body: Column(
-        children: <Widget>[
-        Container(
-        width: double.infinity,
-        height: (MediaQuery.of(context).size.height/7)*5 - 80,
-        child: mapToggle
-            ? Stack(
           children: <Widget>[
-            GoogleMap(
-                mapType: MapType.normal,
-                //     initialCameraPosition: _kGooglePlex,
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(
-                      currentLocation.latitude, currentLocation.longitude),
-                  zoom: 14.4746,
-                ),
+            Container(
+              width: double.infinity,
+              height: (MediaQuery.of(context).size.height/7)*5 - 80,
+              child: mapToggle
+                  ? Stack(
+                  children: <Widget>[
+                    GoogleMap(
+                      mapType: MapType.normal,
+                      //     initialCameraPosition: _kGooglePlex,
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(
+                            currentLocation.latitude, currentLocation.longitude),
+                        zoom: 14.4746,
+                      ),
 
-                markers: Set.from(allMarkers),
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
-              ),
-        Container(
-            alignment: Alignment.bottomCenter,
-            child:
+                      markers: Set.from(allMarkers),
+                      onMapCreated: (GoogleMapController controller) {
+                        _controller.complete(controller);
+                      },
+                    ),
+                    Container(
+                        alignment: Alignment.bottomCenter,
+                        child:
 
-        RaisedButton.icon(
+                        RaisedButton.icon(
 
-            onPressed: null,
-            icon: Icon(Icons.arrow_forward_ios,
-             color: Colors.white,),
-            label: Text('Start', style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-            ),
+                          onPressed: null,
+                          icon: Icon(Icons.arrow_forward_ios,
+                            color: Colors.white,),
+                          label: Text('Start', style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                          ),
 
-        )
-        )
-        ]
-        )
-            : Center(
+                        )
+                    )
+                  ]
+              )
+                  : Center(
 
                 child: Text('Loading...'),
               ),
-      ),
-          Container(
-              width: double.infinity,
-              height: (MediaQuery.of(context).size.height/7)*2,
-              child:ClosestedPlaceContainer(allOutdoorGym,_controller, currentLocation)
-          ),
-        ]),
+            ),
+            Container(
+                width: double.infinity,
+                height: (MediaQuery.of(context).size.height/7)*2,
+                child:ClosestedPlaceContainer(allOutdoorGym,_controller, currentLocation)
+            ),
+          ]),
     );
   }
 
@@ -144,7 +142,7 @@ class MapSampleState extends State<MapSample> {
     list.forEach((e) {
       if (e != '') {
         List<String> temp = e.split(',');
-       //allOutdoorGym.add(new OutdoorGym(temp[0], temp[1], temp[2], context));
+        //allOutdoorGym.add(new OutdoorGym(temp[0], temp[1], temp[2], context));
       }
     });
     _addGymsToMarkers();
@@ -198,47 +196,47 @@ class ClosestedPlaceContainer extends StatelessWidget{
   Widget build(BuildContext context) {
     return
       ListView.builder(
-        itemCount: _list.length,
-        itemBuilder: (context, index){
-          return InkWell(
-              onTap: (){
-                _goToGym(_list[index]);
-              },
-              child:FutureBuilder<double> (
-                future: calculateDistance(index),
-                builder: (context, snapshot) {
-                  return snapshot.hasData ? Container(
-                      color: Color.fromARGB(255, 132 + index * 30, 50, 155),
-                      height: 50,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(_list[index].name+ " Distance: " + snapshot.data.toString()+ "m",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),),
-                            IconButton(
-                              icon: Icon(Icons.arrow_forward),
-                              color:  Colors.white,
-                              onPressed: () {
-                                _goToGym(_list[index]);
-                              },
-                            ),
-                          ])
-                  )
-                      : Center(
-                      child: CircularProgressIndicator());
-                }
-              )
-          );
-        }
-    );
+          itemCount: _list.length,
+          itemBuilder: (context, index){
+            return InkWell(
+                onTap: (){
+                  _goToGym(_list[index]);
+                },
+                child:FutureBuilder<double> (
+                    future: calculateDistance(index),
+                    builder: (context, snapshot) {
+                      return snapshot.hasData ? Container(
+                          color: Color.fromARGB(255, 132 + index * 30, 50, 155),
+                          height: 50,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(_list[index].name+ " Distance: " + snapshot.data.toString()+ "m",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),),
+                                IconButton(
+                                  icon: Icon(Icons.arrow_forward),
+                                  color:  Colors.white,
+                                  onPressed: () {
+                                    _goToGym(_list[index]);
+                                  },
+                                ),
+                              ])
+                      )
+                          : Center(
+                          child: CircularProgressIndicator());
+                    }
+                )
+            );
+          }
+      );
   }
-    Future <double>calculateDistance (int i) async{
+  Future <double>calculateDistance (int i) async{
     double distance =await Geolocator().distanceBetween( _userPos.latitude, _userPos.longitude, _list[i].geo.latitude, _list[i].geo.longitude);
-      return distance;
+    return distance;
   }
 
   Future<void> _goToGym(OutdoorGym gym) async {
@@ -249,7 +247,6 @@ class ClosestedPlaceContainer extends StatelessWidget{
         tilt: 0,
         zoom: 10)));
   }
-
 }
 //////////////////////////////////Menu item////////////////////////////////////////////
 class NavDrawer extends StatelessWidget {

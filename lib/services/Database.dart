@@ -31,8 +31,8 @@ class DatabaseService{
 
  */
   //get User stream
-  Stream<QuerySnapshot> get equipment {
-    return equipmentCollection.snapshots();
+  Stream<QuerySnapshot> get gym {
+    return gymCollection.snapshots();
 
   }
 }
