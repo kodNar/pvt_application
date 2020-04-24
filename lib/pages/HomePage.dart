@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/Login.dart';
 import 'package:flutterapp/pages/MenuPage.dart';
+import 'Register.dart';
+import 'ResetPassword.dart';
 import 'Settings.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -18,9 +20,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String _email, _password;
   bool isLoggedIn = false;
   Map userProfile;
-  FirebaseAuth mAuth;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +32,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
       extendBodyBehindAppBar: true,
+      /*
       appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 132, 50, 155),
           // Here we take the value from the MyHomePage object that was created by
@@ -43,8 +48,8 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ]),
+       */
       body: Container(
-        padding: EdgeInsets.only(top: 70),
         width: size.width,
         height: size.height,
         alignment: Alignment.center,
@@ -58,86 +63,118 @@ class _HomePageState extends State<HomePage> {
                     fontStyle: FontStyle.italic,
                     fontSize: 45)),
             Container(
-              margin: EdgeInsets.all(50.0),
-              height: 150,
-              width: 150,
+              margin: EdgeInsets.all(10.0),
+              height: 100,
+              width: 100,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/applogga_vit_liten.png'),
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(bottom: 5),
-              child: GestureDetector(
-                onTap: () => initiateGoogleLogin(),
-                child: Image.asset(
-                  'assets/images/googleLoggaKnapp.png',
-                  width: 200,
-                  height: 50,
-                ),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        prefixIcon: Icon(Icons.email),
+                        hintText: "Email",
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                      cursorColor: Colors.white,
+                      // ignore: missing_return
+                      validator: (input) {
+                        if (input.isEmpty) {
+                          //Check if auth sign or something
+                          return 'Please provide an Email';
+                        }
+                      },
+                      onSaved: (input) => _email = input,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        prefixIcon: Icon(Icons.lock),
+                        hintText: "Password",
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                      cursorColor: Colors.white,
+                      // ignore: missing_return
+                      validator: (input) {
+                        if (input.isEmpty) {
+                          return 'Please provide a password';
+                        }
+                        if (input.length < 6) {
+                          return 'Your password must be atleast 6 characters';
+                        }
+                      },
+                      onSaved: (input) => _password = input,
+                      obscureText: true, //Döljer texten
+                    ),
+                  ),
+
+                ],
               ),
+
+            ),
+
+            CheckboxListTile(
+              title: Text("Remember login"),
+              activeColor: Colors.green,
+              value: true,
+              onChanged: (newValue) {
+
+              },
+              controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
             ),
             Container(
-              child: GestureDetector(
-                onTap: () => initiateFacebookLogin(),
-                child: Image.asset(
-                  'assets/images/facebookLoggaKnapp.png',
-                  width: 200,
-                  height: 50,
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 30),
+              padding: EdgeInsets.all(15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  ButtonTheme(
-                    minWidth: 150,
-                    height: 75,
+                  Container(
+                    width: 250,
+                    height: 50,
                     child: RaisedButton(
-                      //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        side: BorderSide(color: Colors.white, width: 2.5),
+                          borderRadius: new BorderRadius.circular(15.0),
+                          side: BorderSide(color: Colors.white),
                       ),
-                      color: Colors.transparent,
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()));
-                      },
+                      color: Color.fromARGB(255, 0, 110, 191),
+                      onPressed: signIn,
                       child: Text(
-                        'Sign in',
+                        'Login',
                         style: TextStyle(
-                          fontSize: 25.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  ButtonTheme(
-                    minWidth: 150,
-                    height: 75,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        //Gör knappen till en cirkel och sätter dit en vit border för tydlighet
-                        borderRadius: BorderRadius.circular(15),
-                        side: BorderSide(color: Colors.white, width: 2.5),
-                      ),
-                      color: Colors.transparent,
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MenuPage()));
-                      },
-                      child: new Text(
-                        'Guest',
-                        style: TextStyle(
-                          fontSize: 25.0,
+                          fontSize: 22,
                           color: Colors.white,
                         ),
                       ),
@@ -146,32 +183,108 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Color.fromARGB(255, 132, 50, 155),
-        elevation: 0, //tar bort liten linje
-        child: Row(
-          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(top:10),
+                  child: GestureDetector(
+                    onTap: () => initiateGoogleLogin(),
+                    child: Image.asset(
+                      'assets/images/googleLoggaKnapp.png',
+                      width: 180,
+                      height: 50,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(top:10),
+                  child: GestureDetector(
+                    onTap: () => initiateFacebookLogin(),
+                    child: Image.asset(
+                      'assets/images/facebookLoggaKnapp.png',
+                      width: 180,
+                      height: 50,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             Container(
-              margin: EdgeInsets.all(8.0),
-              width: 62,
-              height: 62,
+              padding: EdgeInsets.only(top: 20),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Register()));
+                },
+                child: Text(
+                  'Create account',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(0,10,0,10),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ResetPassword()));
+                },
+
+                // ignore: unnecessary_statements
+                child: Text(
+                  'Forgot password?',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              width: 175,
+              height: 75,
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(
-                          'assets/images/Stockholm_endast_logga_vit.png'),
-                      fit: BoxFit.fill)),
+                color: Color.fromARGB(255, 132, 50, 155),
+                image: DecorationImage(
+                  image: AssetImage('assets/images/StockholmStadLogga.png'),
+                ),
+              ),
             ),
-            Text(
-              "Stockholms Stad",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Stockholm',
-                  fontStyle: FontStyle.italic,
-                  fontSize: 29.0),
+
+            /*
+            BottomAppBar(
+              color: Color.fromARGB(255, 132, 50, 155),
+              elevation: 0, //tar bort liten linje
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.all(8.0),
+                    width: 62,
+                    height: 62,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(
+                                'assets/images/Stockholm_endast_logga_vit.png'),
+                            fit: BoxFit.fill)),
+                  ),
+                  Text("Stockholms Stad",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Stockholm',
+                        fontStyle: FontStyle.italic,
+                        fontSize: 29.0),
+                  ),
+                ],
+              ),
             ),
+            */
           ],
         ),
       ),
@@ -201,8 +314,6 @@ class _HomePageState extends State<HomePage> {
         goToHomePage();
     }
   }
-  
-
 
   void onLoginStatusChanged(bool isLoggedIn) {
     setState(() {
@@ -216,7 +327,8 @@ class _HomePageState extends State<HomePage> {
   Future<String> initiateGoogleLogin() async {
     FirebaseAuth _auth = FirebaseAuth.instance;
 
-    GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn(); //Här den felar
+    GoogleSignInAccount googleSignInAccount =
+        await googleSignIn.signIn(); //Här den felar
 
     final GoogleSignInAuthentication googleAuth =
         await googleSignInAccount.authentication;
@@ -235,9 +347,7 @@ class _HomePageState extends State<HomePage> {
 
     final FirebaseUser currentUser = await _auth.currentUser();
     assert(user.uid == currentUser.uid);
-
     */
-
     return 'signInWithGoogle succeeded:';
   }
 
@@ -247,7 +357,31 @@ class _HomePageState extends State<HomePage> {
   }
 
   void goToHomePage() {
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => MapSample()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MapSample()));
+  }
+
+  Future sendPasswordResetEmail(String email) async {
+    return _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<void> signIn() async {
+    final formState = _formKey.currentState;
+
+    if (formState.validate()) {
+      //Checks so that the inputs are correct
+      formState.save(); //ser till att vi kan hämta variablerna.
+      print(_email);
+      print(_password);
+      try {
+        print('test #1');
+        AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password); //Confirming the e-mail and password towards the firebase database
+        print('test #2');
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MapSample()));
+      } catch (e) {
+        print(e.message);
+      }
+    }
   }
 }
