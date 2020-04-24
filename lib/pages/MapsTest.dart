@@ -26,6 +26,8 @@ class MapSample extends StatefulWidget {
   State<MapSample> createState() => MapSampleState();
 }
 
+
+
 class MapSampleState extends State<MapSample> {
   List<Marker> allMarkers = [];
   List<OutdoorGym> allOutdoorGym = [];
@@ -128,6 +130,7 @@ class MapSampleState extends State<MapSample> {
 ///////////////////////create  and load markers//////////////////////////////////
   _createMarkersFromString() async {
     ////test////
+
     allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 1.960632, longitude: 77.641603), context));
     allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 13.960632, longitude: 71.641603), context));
     allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 12.960632, longitude: 71.641603), context));

@@ -50,6 +50,7 @@ class _HomePageState extends State<HomePage> {
           ]),
        */
       body: Container(
+        padding: EdgeInsets.only(top:20),
         width: size.width,
         height: size.height,
         alignment: Alignment.center,
@@ -63,9 +64,9 @@ class _HomePageState extends State<HomePage> {
                     fontStyle: FontStyle.italic,
                     fontSize: 45)),
             Container(
-              margin: EdgeInsets.all(10.0),
-              height: 100,
-              width: 100,
+              margin: EdgeInsets.all(5.0),
+              height: 120,
+              width: 120,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/applogga_vit_liten.png'),
@@ -371,12 +372,8 @@ class _HomePageState extends State<HomePage> {
     if (formState.validate()) {
       //Checks so that the inputs are correct
       formState.save(); //ser till att vi kan hämta variablerna.
-      print(_email);
-      print(_password);
       try {
-        print('test #1');
         AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password); //Confirming the e-mail and password towards the firebase database
-        print('test #2');
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => MapSample()));
       } catch (e) {
