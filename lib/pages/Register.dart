@@ -20,7 +20,6 @@ class _RegisterState extends State<Register>{
 
       body: Form(
         key: _formKey,
-
         child: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.only(top: 20),
