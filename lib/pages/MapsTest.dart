@@ -218,6 +218,7 @@ class ClosestedPlaceContainer extends StatelessWidget{
                               ),),
                             IconButton(
                               icon: Icon(Icons.arrow_forward),
+                              color:  Colors.white,
                               onPressed: () {
                                 _goToGym(_list[index]);
                               },
