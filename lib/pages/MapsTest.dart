@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
+import 'package:google_map_polyline/google_map_polyline.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
@@ -32,7 +33,12 @@ class MapSampleState extends State<MapSample> {
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
 
-  //static const apiKey = 'AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
+
+  GoogleMapPolyline _googleMapPolyline = new GoogleMapPolyline(apiKey: (apiKey));
+  List <LatLng> routeCoords;
+
+
+  static const apiKey = 'AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
   bool mapToggle = false;
   var currentLocation;
   Completer<GoogleMapController> _controller = Completer();
@@ -41,6 +47,7 @@ class MapSampleState extends State<MapSample> {
     target: LatLng(nycLat, nycLng),
     zoom: 14.4746,
   );
+
 
   static final CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
@@ -121,6 +128,7 @@ class MapSampleState extends State<MapSample> {
       });
     });
     _createMarkersFromString();
+    getSomePoints();
   }
 
 ///////////////////////create  and load markers//////////////////////////////////
@@ -197,6 +205,13 @@ class MapSampleState extends State<MapSample> {
         tilt: 0,
         zoom: 10)));
   }
+  getSomePoints() async{
+    routeCoords = await _googleMapPolyline.getCoordinatesWithLocation(
+        origin: LatLng(currentLocation.latitude, currentLocation.longitude),
+        destination: LatLng(40, -10),
+        mode: RouteMode.walking);
+  }
+
 }
 
 class ClosestedPlaceContainer extends StatelessWidget {
@@ -321,6 +336,16 @@ class NavDrawer extends StatelessWidget {
                 ))
         ],
       ),
+    );
+  }
+}
+
+class PolyLine extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
     );
   }
 }
