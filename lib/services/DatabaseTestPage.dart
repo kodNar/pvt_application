@@ -17,11 +17,32 @@ class _DatabaseTestPageState extends State<DatabaseTestPage> {
     return StreamProvider<QuerySnapshot>.value(
       value: DatabaseService().users,//Value need no UID for this stream
       child: Scaffold(
+        backgroundColor: Colors.grey,
       body: Form(
         child: Column(
           children: <Widget>[
-          UserList()
-
+          UserList(),
+            Container(
+              padding: EdgeInsets.all(50),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Container(
+              width: 200 ,
+              height: 200,
+              color: Colors.green,
+            )
           ],
         ),
 

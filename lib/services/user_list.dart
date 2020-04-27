@@ -1,3 +1,6 @@
+
+
+
 /** This WIDGET responsible for cycling through and outputting them on the page **/
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,8 +18,11 @@ class _UserListState extends State<UserList> {
   Widget build(BuildContext context) {
 
     /** Trying to access the data from the stream **/
-    final userCollection = Provider.of<QuerySnapshot>(context);
+    final userCollection = Provider.of<QuerySnapshot>(context); //Gets a snapshot of the userCollection
     print(userCollection.documents);
+    for(var doc in userCollection.documents){
+      print(doc.data);
+    }
 
     return Container();
   }

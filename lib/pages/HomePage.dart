@@ -11,6 +11,7 @@ import 'Settings.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
+import 'package:flutterapp/EquipmentSelection.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -236,7 +237,6 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => ResetPassword()));
                 },
-
                 // ignore: unnecessary_statements
                 child: Text(
                   'Forgot password?',
@@ -287,9 +287,44 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             */
+            Container(
+              padding: EdgeInsets.fromLTRB(0,10,0,10),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => DatabaseTestPage()));
+                },
+                child: Text(
+                  'Einar testknapp',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(0,10,0,10),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => DatabaseTestPage()/**ListPage()**/));
+                },
+                child: Text(
+                  'Martins testknapp',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
+
     );
   }
 
