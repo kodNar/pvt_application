@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/EquipmentSelection.dart';
 import 'package:flutterapp/services/DatabaseTestPage.dart';
 
 class TestPage extends StatefulWidget {
@@ -40,7 +41,7 @@ class _TestPageState extends State<TestPage> {
               padding: EdgeInsets.all(20),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => DatabaseTestPage() )); /** Sätt din testsida här! **/
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyTestPage() )); /** Sätt din testsida här! **/
                 },
                 child: Text(
                   'Martins testknapp',

@@ -26,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Form(
         key: _formKey,
         child: Container(
+          height: MediaQuery.of(context).size.height/10 *7,
           padding: EdgeInsets.all(20),
           color: Color.fromARGB(255, 132, 50, 155),
           child: Column(
@@ -127,9 +128,9 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => DatabaseTestPage())); /*ResetPassword()*/
-                    },
+                  },
 
-                    // ignore: unnecessary_statements
+                  // ignore: unnecessary_statements
                   child: Text(
                     'Forgot password?',
                     style: TextStyle(
@@ -159,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Container(
                 margin: EdgeInsets.all(20.0),
-                height: 75,
+                height: MediaQuery.of(context).size.height/10*2,
                 width: 75,
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -191,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
         AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: _email,
             password:
-                _password); //Confirming the e-mail and password towards the firebase database
+            _password); //Confirming the e-mail and password towards the firebase database
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => MapSample()));
       } catch (e) {

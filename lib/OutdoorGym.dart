@@ -3,6 +3,7 @@ import 'package:flutterapp/pages/GenericGymPage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 // Init firestore and geoFlutterFire
 Geoflutterfire geo = Geoflutterfire();
 Firestore _firestore = Firestore.instance;
@@ -33,6 +34,8 @@ class OutdoorGym{
 
 
   }
+
+
 
   Marker get marker => _marker;
   String get name => _name;
