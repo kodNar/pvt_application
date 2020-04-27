@@ -131,7 +131,6 @@ class _RegisterState extends State<Register>{
                       ),
                       color: Colors.transparent,
                       onPressed: register,
-
                       child: Text(
                         'Register',
                         style: TextStyle(
