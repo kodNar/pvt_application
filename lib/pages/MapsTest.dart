@@ -50,19 +50,21 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
+    AppBar appBar = AppBar(
+      title: Text("Stockholms outdoor gyms"),
+      backgroundColor: Color.fromARGB(255, 132, 50, 155),
+    );
     return new Scaffold(
       drawer: NavDrawer(),
-      appBar: AppBar(
-        title: Text("Stockholms outdoor gyms"),
-        backgroundColor: Color.fromARGB(255, 132, 50, 155),
-      ),
+      appBar: appBar,
       body: Column(children: <Widget>[
         Container(
           width: double.infinity,
-          height: (MediaQuery.of(context).size.height / 7) * 5 - 80,
+          height: (MediaQuery.of(context).size.height / 7) * 5 -appBar.preferredSize.height -MediaQuery.of(context).padding.top,
           child: mapToggle
               ? Stack(children: <Widget>[
                   GoogleMap(
+                    myLocationEnabled: true,
                     myLocationButtonEnabled: true,
                     mapType: MapType.normal,
                     //     initialCameraPosition: _kGooglePlex,
@@ -95,30 +97,6 @@ class MapSampleState extends State<MapSample> {
                       ),
                     ),
                   ),
-                  RaisedButton.icon(
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
-                    ),
-                    onPressed: () {
-                      Geolocator().getCurrentPosition().then((currloc) {
-                        setState(() {
-                          _moveCameraToSelf();
-                        });
-                      });
-                    },
-                    icon: Icon(
-                      Icons.accessibility,
-                      color: Colors.black,
-                    ),
-                    label: Text(
-                      '',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  )
                 ])
               : Center(
                   child: Text('Loading...'),
