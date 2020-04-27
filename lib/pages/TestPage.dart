@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/EquipmentSelection.dart';
 import 'package:flutterapp/services/DatabaseTestPage.dart';
 
+import 'JacobTest.dart';
+
 class TestPage extends StatefulWidget {
   @override
   _TestPageState createState() => _TestPageState();
@@ -92,7 +94,7 @@ class _TestPageState extends State<TestPage> {
               padding: EdgeInsets.fromLTRB(0,10,0,10),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => DatabaseTestPage() )); /** Sätt din testsida här! **/
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MapSampleJacobo() )); /** Sätt din testsida här! **/
                 },
                 child: Text(
                   'Jacobs testknapp',

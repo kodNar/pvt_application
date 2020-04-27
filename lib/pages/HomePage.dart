@@ -156,16 +156,12 @@ class _HomePageState extends State<HomePage> {
               activeColor: Colors.green,
               value: true,
               onChanged: (newValue) {
-
               },
               controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
             ),
             Container(
-              padding: EdgeInsets.all(12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
+              padding: EdgeInsets.all(8),
+              child: Container(
                     width: 250,
                     height: 50,
                     child: RaisedButton(
@@ -184,14 +180,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                ],
               ),
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.only(top:10),
+                  padding: EdgeInsets.only(top:8),
                   child: GestureDetector(
                     onTap: () => initiateGoogleLogin(),
                     child: Image.asset(
@@ -202,7 +196,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(top:10),
+                  padding: EdgeInsets.only(top:8),
                   child: GestureDetector(
                     onTap: () => initiateFacebookLogin(),
                     child: Image.asset(

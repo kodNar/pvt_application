@@ -17,17 +17,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Google Maps Demo',
-      home: MapSample(),
+      home: MapSampleJacobo(),
     );
   }
 }
 
-class MapSample extends StatefulWidget {
+class MapSampleJacobo extends StatefulWidget {
   @override
-  State<MapSample> createState() => MapSampleState();
+  State<MapSampleJacobo> createState() => MapSampleState();
 }
 
-class MapSampleState extends State<MapSample> {
+class MapSampleState extends State<MapSampleJacobo> {
   List<Marker> allMarkers = [];
   List<OutdoorGym> allOutdoorGym = [];
   static const nycLat = 59.328560;
@@ -36,7 +36,7 @@ class MapSampleState extends State<MapSample> {
 
   GoogleMapPolyline _googleMapPolyline = new GoogleMapPolyline(apiKey: (apiKey));
   List <LatLng> routeCoords;
-
+  final Set<Polyline> polyline = {};
 
   static const apiKey = 'AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
   bool mapToggle = false;
@@ -71,6 +71,7 @@ class MapSampleState extends State<MapSample> {
           child: mapToggle
               ? Stack(children: <Widget>[
             GoogleMap(
+
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
               mapType: MapType.normal,
@@ -81,9 +82,11 @@ class MapSampleState extends State<MapSample> {
                 zoom: 14.4746,
               ),
 
+              polylines: polyline,
               markers: Set.from(allMarkers),
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
+
               },
             ),
             Container(
@@ -125,10 +128,12 @@ class MapSampleState extends State<MapSample> {
       setState(() {
         currentLocation = currloc;
         mapToggle = true;
+
       });
     });
-    _createMarkersFromString();
     getSomePoints();
+    _createMarkersFromString();
+
   }
 
 ///////////////////////create  and load markers//////////////////////////////////
@@ -205,11 +210,28 @@ class MapSampleState extends State<MapSample> {
         tilt: 0,
         zoom: 10)));
   }
+
   getSomePoints() async{
-    routeCoords = await _googleMapPolyline.getCoordinatesWithLocation(
-        origin: LatLng(currentLocation.latitude, currentLocation.longitude),
-        destination: LatLng(40, -10),
-        mode: RouteMode.walking);
+    List<LatLng> points = await _googleMapPolyline.getCoordinatesWithLocation(
+        origin: LatLng(40.6782, -73.9442),
+        destination: LatLng(40.6944, -73.9212),
+        mode: RouteMode.driving);
+
+    setState(() {
+      routeCoords = points;
+      // change position from onMapCreated(GoogleMapController controller) method
+      polyline.add(
+          Polyline(
+            polylineId: PolylineId('route1'),
+            visible: true,
+            points: routeCoords,
+            width: 4,
+            color: Colors.blue,
+            startCap: Cap.roundCap,
+            endCap: Cap.buttCap,
+          )
+      );
+    });
   }
 
 }

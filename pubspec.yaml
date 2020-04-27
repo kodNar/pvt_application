@@ -28,7 +28,7 @@ dependencies:
   dio: ^3.0.2 #Connection to Google API
   google_sign_in: ^4.4.3 #Sign in with Google
   path_provider: ^0.4.0
-  google_map_polyline: ^0.0.4
+  google_map_polyline: ^0.2.0
 
   cloud_firestore: ^0.13.5 #Database
   provider: ^4.0.5 #Firestore
