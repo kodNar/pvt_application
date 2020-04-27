@@ -234,7 +234,7 @@ class _HomePageState extends State<HomePage> {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DatabaseTestPage()/*ResetPassword()*/));
+                      MaterialPageRoute(builder: (context) => ResetPassword()));
                 },
 
                 // ignore: unnecessary_statements
