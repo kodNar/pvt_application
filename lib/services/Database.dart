@@ -19,9 +19,12 @@ class DatabaseService{
 
   }
 
+  //get the users stream Notifying any changes in the users collection
+  Stream<QuerySnapshot> get users { //gives us a snapshot of the current documents in the users collection
 
+    return userCollection.snapshots(); //returns us a stram
 
-
+  }
 
 /*
   Future updateOutdoorGym(List<String> equipment, String name, GeoPoint position) async{

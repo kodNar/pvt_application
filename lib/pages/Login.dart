@@ -5,6 +5,7 @@ import 'package:flutterapp/pages/MenuPage.dart';
 import 'package:flutterapp/pages/Register.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
 import 'package:flutterapp/pages/ResetPassword.dart';
+import 'package:flutterapp/services/DatabaseTestPage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -125,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ResetPassword()));
+                        MaterialPageRoute(builder: (context) => DatabaseTestPage())); /*ResetPassword()*/
                     },
 
                     // ignore: unnecessary_statements
