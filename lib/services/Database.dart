@@ -7,19 +7,22 @@ class DatabaseService{
 
   final String uid;
   DatabaseService({this.uid});
+
   //a reference to a collection in our firestore database.
-  final CollectionReference equipmentCollection = Firestore.instance.collection('equipment');
-  final CollectionReference gymCollection = Firestore.instance.collection('gym');
-
-
-
-  Future updateUserData(String material, String name, int reps) async{
-    return await equipmentCollection.document(uid).setData({
-      'material': material,
-      'name' : name,
-      'reps' : reps,
+ final CollectionReference userCollection = Firestore.instance.collection('users'); //Creates a collection
+  Future updateUserData(String userID, String email, String nickName) async{
+    return await userCollection.document(uid).setData({
+      'userID': userID,
+      'email': email,
+      'nickName': nickName,
     });
+
   }
+
+
+
+
+
 /*
   Future updateOutdoorGym(List<String> equipment, String name, GeoPoint position) async{
     return await gymCollection.document(name).setData({
@@ -31,8 +34,5 @@ class DatabaseService{
 
  */
   //get User stream
-  Stream<QuerySnapshot> get gym {
-    return gymCollection.snapshots();
 
-  }
 }
