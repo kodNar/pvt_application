@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/Login.dart';
 import 'package:flutterapp/pages/MenuPage.dart';
+import 'package:flutterapp/pages/TestPage.dart';
 import 'package:flutterapp/services/DatabaseTestPage.dart';
 import 'Register.dart';
 import 'ResetPassword.dart';
@@ -160,7 +161,7 @@ class _HomePageState extends State<HomePage> {
               controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
             ),
             Container(
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.all(12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -288,14 +289,13 @@ class _HomePageState extends State<HomePage> {
             ),
             */
             Container(
-              padding: EdgeInsets.fromLTRB(0,10,0,10),
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DatabaseTestPage()));
+                      MaterialPageRoute(builder: (context) => TestPage()));
                 },
                 child: Text(
-                  'Einar testknapp',
+                  'Testknappar',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -304,27 +304,10 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(0,10,0,10),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DatabaseTestPage()/**ListPage()**/));
-                },
-                child: Text(
-                  'Martins testknapp',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
+
           ],
         ),
       ),
-
     );
   }
 
