@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/Login.dart';
 import 'package:flutterapp/pages/MenuPage.dart';
+import 'package:flutterapp/services/DatabaseTestPage.dart';
 import 'Register.dart';
 import 'ResetPassword.dart';
 import 'Settings.dart';
@@ -233,7 +234,7 @@ class _HomePageState extends State<HomePage> {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ResetPassword()));
+                      MaterialPageRoute(builder: (context) => DatabaseTestPage()/*ResetPassword()*/));
                 },
 
                 // ignore: unnecessary_statements
