@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/HomePage.dart';
-
+import 'package:flutterapp/pages/MapsTest.dart';
 class SplashScreenPage extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreenPage> {
     Timer(
         Duration(seconds: 3),
             () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => HomePage(title: 'Stockholm outdoor gym',))));
+            builder: (BuildContext context) => MapSample())));
   }
 
   @override

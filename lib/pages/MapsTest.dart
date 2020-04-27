@@ -42,6 +42,7 @@ class MapSampleState extends State<MapSample> {
     zoom: 14.4746,
   );
 
+
   static final CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
       target: LatLng(59.328560, 18.065836),
@@ -95,7 +96,31 @@ class MapSampleState extends State<MapSample> {
                           ),
                           ),
 
-                        )
+                        ),
+
+                    ),
+                        RaisedButton.icon(
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(30.0),
+                          ),
+                          onPressed:() {
+                            Geolocator().getCurrentPosition().then((currloc) {
+                              setState(() {
+                               _moveCameraToSelf();
+                              });
+                            });
+                          },
+
+                          icon: Icon(Icons.accessibility,
+                            color: Colors.black,),
+                          label: Text('', style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+
+                          ),
+                          ),
+
                     )
                   ]
               )
@@ -128,14 +153,13 @@ class MapSampleState extends State<MapSample> {
 ///////////////////////create  and load markers//////////////////////////////////
   _createMarkersFromString() async {
     ////test////
-
     allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 1.960632, longitude: 77.641603), context));
-    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 13.960632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 12.960632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 13.0632, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('tqqweewfsto',geo.point(latitude: 13.960632, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('tefsto',geo.point(latitude: 12.960632, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('tewhjtfesto',geo.point(latitude: 13.0632, longitude: 71.641603), context));
     allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 12.9632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 23.9602, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('testo',geo.point(latitude: 3.96632, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('tewgggfesto',geo.point(latitude: 23.9602, longitude: 71.641603), context));
+    allOutdoorGym.add(new OutdoorGym('qqq',geo.point(latitude: 3.96632, longitude: 71.641603), context));
     //////////////////////////////test////////////////////////////////////////
     String file = await loadAsset();
     List<String> list = file.split("\n");
@@ -162,7 +186,6 @@ class MapSampleState extends State<MapSample> {
     var dio = Dio();
     var url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$nycLat,$nycLng&radius=10000&keyword=utegym&key=$apiKey';
     var response = await dio.get(url, data: null);
-
     List data1 = response.data['results'];
     data1.forEach((f) =>
         allOutdoorGym.add(new OutdoorGym (
@@ -184,6 +207,17 @@ class MapSampleState extends State<MapSample> {
     final GoogleMapController controller = await _controller.future;
     return controller;
   }
+
+  Future<void> _moveCameraToSelf() async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        bearing: 0,
+        target: LatLng(currentLocation.latitude, currentLocation.longitude),
+        tilt: 0,
+        zoom: 10)));
+  }
+
+
 }
 class ClosestedPlaceContainer extends StatelessWidget{
   List <OutdoorGym> _list;
@@ -247,9 +281,11 @@ class ClosestedPlaceContainer extends StatelessWidget{
         tilt: 0,
         zoom: 10)));
   }
+
 }
 //////////////////////////////////Menu item////////////////////////////////////////////
 class NavDrawer extends StatelessWidget {
+  bool _loggedin = false;
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -258,14 +294,13 @@ class NavDrawer extends StatelessWidget {
         children: <Widget>[
           DrawerHeader(
             child: Text(
-              'Stockholm',
+              '',
               style: TextStyle(color: Colors.white, fontSize: 25),
             ),
             decoration: BoxDecoration(
-                color: Colors.green,
+                color: Colors.purple,
                 image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('assets/images/bok.png'))),
+                    image: AssetImage('assets/images/Stockholm_endast_logga_vit.png'))),
           ),
           ListTile(
             leading: Icon(Icons.verified_user),
@@ -282,11 +317,17 @@ class NavDrawer extends StatelessWidget {
             title: Text('About us'),
             onTap: () => {},
           ),
-          ListTile(
+          _loggedin ? ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
             onTap: () => {},
-          ),
+          ) : Center(
+              child: ListTile(
+                leading: Icon(Icons.exit_to_app),
+                title: Text('Login'),
+                onTap: () => {},
+              )
+          )
         ],
       ),
     );
