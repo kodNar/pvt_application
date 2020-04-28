@@ -11,6 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'Login.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -61,7 +62,7 @@ class MapSampleState extends State<MapSample> {
       title: Text("Stockholms outdoor gyms"),
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
     );
-    return new Scaffold(
+    return Scaffold(
       drawer: NavDrawer(),
       appBar: appBar,
       body: Column(children: <Widget>[
@@ -127,27 +128,27 @@ class MapSampleState extends State<MapSample> {
         mapToggle = true;
       });
     });
+    populateOutdoorGymList();
     _createMarkersFromString();
     getSomePoints();
+  }
+  /// Loads the outdoorgyms from the database and populates the outdoor gym list.
+  populateOutdoorGymList() async {
+    QuerySnapshot outdoorGymCollection = await Firestore.instance.collection("OutdoorGyms").getDocuments();
+    for (var doc in outdoorGymCollection.documents) {
+      String name = doc.data['Name'];
+      GeoPoint geoPoint = doc.data['GeoPoint'];
+      allOutdoorGym.add(new OutdoorGym(name, geoPoint, context));
+    }
+    _addGymsToMarkers();
+
   }
 
 ///////////////////////create  and load markers//////////////////////////////////
   _createMarkersFromString() async {
     ////test////
-    allOutdoorGym.add(new OutdoorGym(
-        'testo', geo.point(latitude: 1.960632, longitude: 77.641603), context));
-    allOutdoorGym.add(new OutdoorGym('tqqweewfsto',
-        geo.point(latitude: 13.960632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('tefsto',
-        geo.point(latitude: 12.960632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('tewhjtfesto',
-        geo.point(latitude: 13.0632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym(
-        'testo', geo.point(latitude: 12.9632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('tewgggfesto',
-        geo.point(latitude: 23.9602, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym(
-        'qqq', geo.point(latitude: 3.96632, longitude: 71.641603), context));
+
+
     //////////////////////////////test////////////////////////////////////////
     String file = await loadAsset();
     List<String> list = file.split("\n");
