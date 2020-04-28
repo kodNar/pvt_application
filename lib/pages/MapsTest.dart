@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
@@ -21,7 +20,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 class MapSample extends StatefulWidget {
   @override
   State<MapSample> createState() => MapSampleState();
@@ -280,11 +278,9 @@ class ClosestedPlaceContainer extends StatelessWidget {
         zoom: 10)));
   }
 }
-
 //////////////////////////////////Menu item////////////////////////////////////////////
 class NavDrawer extends StatelessWidget {
   bool _loggedin = false;
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -331,7 +327,7 @@ class NavDrawer extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>LoginPage()))
+                          builder: (context) => LoginPage()))
                 ],
               ))
         ],

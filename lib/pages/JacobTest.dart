@@ -34,9 +34,9 @@ class MapSampleState extends State<MapSampleJacobo> {
   static const nycLng = 18.065836;
   bool _loggedIn = false;
 
-
-  GoogleMapPolyline _googleMapPolyline = new GoogleMapPolyline(apiKey: (apiKey));
-  List <LatLng> routeCoords;
+  GoogleMapPolyline _googleMapPolyline =
+      new GoogleMapPolyline(apiKey: (apiKey));
+  List<LatLng> routeCoords;
   final Set<Polyline> polyline = {};
 
   static const apiKey = 'AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
@@ -48,7 +48,6 @@ class MapSampleState extends State<MapSampleJacobo> {
     target: LatLng(nycLat, nycLng),
     zoom: 14.4746,
   );
-
 
   static final CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
@@ -68,50 +67,50 @@ class MapSampleState extends State<MapSampleJacobo> {
       body: Column(children: <Widget>[
         Container(
           width: double.infinity,
-          height: (MediaQuery.of(context).size.height / 7) * 5 -appBar.preferredSize.height -MediaQuery.of(context).padding.top,
+          height: (MediaQuery.of(context).size.height / 7) * 5 -
+              appBar.preferredSize.height -
+              MediaQuery.of(context).padding.top,
           child: mapToggle
               ? Stack(children: <Widget>[
-            GoogleMap(
+                  GoogleMap(
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                    mapType: MapType.normal,
+                    //     initialCameraPosition: _kGooglePlex,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(
+                          currentLocation.latitude, currentLocation.longitude),
+                      zoom: 14.4746,
+                    ),
 
-              myLocationEnabled: true,
-              myLocationButtonEnabled: true,
-              mapType: MapType.normal,
-              //     initialCameraPosition: _kGooglePlex,
-              initialCameraPosition: CameraPosition(
-                target: LatLng(
-                    currentLocation.latitude, currentLocation.longitude),
-                zoom: 14.4746,
-              ),
-
-              polylines: polyline,
-              markers: Set.from(allMarkers),
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-
-              },
-            ),
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: RaisedButton.icon(
-                onPressed: null,
-                icon: Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.white,
-                ),
-                label: Text(
-                  'Start',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    polylines: polyline,
+                    markers: Set.from(allMarkers),
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
                   ),
-                ),
-              ),
-            ),
-          ])
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    child: RaisedButton.icon(
+                      onPressed: null,
+                      icon: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        'Start',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ])
               : Center(
-            child: Text('Loading...'),
-          ),
+                  child: Text('Loading...'),
+                ),
         ),
         Container(
             width: double.infinity,
@@ -127,25 +126,23 @@ class MapSampleState extends State<MapSampleJacobo> {
     Geolocator().getCurrentPosition().then((currloc) {
       setState(() {
         //currentLocation = currloc;
-        currentLocation = LatLng(59.3274,18.055);
+        currentLocation = LatLng(59.3274, 18.055);
 
         mapToggle = true;
-
       });
     });
 
     _createMarkersFromString();
-
   }
 
 ///////////////////////create  and load markers//////////////////////////////////
   _createMarkersFromString() async {
     ////test////
 
-    allOutdoorGym.add(new OutdoorGym(
-        'wd', geo.point(latitude:3, longitude: 30), context));
-    allOutdoorGym.add(new OutdoorGym(
-        'wd', geo.point(latitude:0, longitude: 30), context));
+    allOutdoorGym.add(
+        new OutdoorGym('wd', geo.point(latitude: 3, longitude: 30), context));
+    allOutdoorGym.add(
+        new OutdoorGym('wd', geo.point(latitude: 0, longitude: 30), context));
     allOutdoorGym.add(new OutdoorGym(
         'testo', geo.point(latitude: 1.960632, longitude: 77.641603), context));
     allOutdoorGym.add(new OutdoorGym('tqqweewfsto',
@@ -217,30 +214,31 @@ class MapSampleState extends State<MapSampleJacobo> {
         tilt: 0,
         zoom: 10)));
   }
-  getSomePoints(var goal) async{
+
+  getSomePoints(var goal) async {
     List<LatLng> points = await _googleMapPolyline.getCoordinatesWithLocation(
         origin: LatLng(currentLocation.latitude, currentLocation.longitude),
-        destination: LatLng( goal.latitude,goal.longitude),
+        destination: LatLng(goal.latitude, goal.longitude),
         //destination: LatLng( 32.7764749,-79.9310512,),
         mode: RouteMode.walking);
 
     setState(() {
       routeCoords = points;
       // change position from onMapCreated(GoogleMapController controller) method
-      polyline.add(
-          Polyline(
-            polylineId: PolylineId('route1'),
-            visible: true,
-            points: routeCoords,
-            width: 4,
-            color: Colors.blue,
-            startCap: Cap.roundCap,
-            endCap: Cap.buttCap,
-          )
-      );
+      polyline.add(Polyline(
+        polylineId: PolylineId('route1'),
+        visible: true,
+        points: routeCoords,
+        width: 4,
+        color: Colors.blue,
+        startCap: Cap.roundCap,
+        endCap: Cap.buttCap,
+      ));
     });
   }
-  Widget listView(){
+
+  Widget listView() {
+    bool route = true;
     return ListView.builder(
         itemCount: allOutdoorGym.length,
         itemBuilder: (context, index) {
@@ -249,52 +247,74 @@ class MapSampleState extends State<MapSampleJacobo> {
               builder: (context, snapshot) {
                 return snapshot.hasData
                     ? Container(
-                    color: Color.fromARGB(255, 132 + index * 30, 50, 155),
-                    height: 50,
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          InkWell(
-                            onTap: (){
-                              _goToGym(allOutdoorGym[index]);
-                            },
-                            child: Text(
-                              allOutdoorGym[index].name +
-                                  " Distance: " +
-                                  snapshot.data.toString() +
-                                  "m",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                        color: Color.fromARGB(255, 132 + index * 30, 50, 155),
+                        height: 50,
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () {
+                                  _goToGym(allOutdoorGym[index]);
+                                },
+                                child: Text(
+                                  allOutdoorGym[index].name +
+                                      " Distance: " +
+                                      snapshot.data.toString() +
+                                      "m",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
+                              InkWell(
+                                  child: route
+                                      ? RaisedButton.icon(
+                                          icon: Icon(Icons.play_arrow),
+                                          color: Color.fromARGB(
+                                              255, 200 + index * 30, 50, 155),
+                                          label: Text(' '),
+                                          onPressed: () {
+                                            setState(() {
+                                              print("walla");
+                                              route = !route;
+                                            }
+                                            );
+                                            // getSomePoints( LatLng(allOutdoorGym[index].geo.latitude,allOutdoorGym[index].geo.longitude));
+                                          },
+                                        ) : Center(
+                                          child: RaisedButton.icon(
+                                          icon: Icon(Icons.cancel),
+                                          color: Color.fromARGB(255, 200 + index * 30, 50, 155),
+                                          label: Text(' '),
+                                          onPressed: () {
+                                           // getSomePoints(LatLng(allOutdoorGym[index].geo.latitude, allOutdoorGym[index].geo.longitude));
+                                            setState(() {
+                                              route =!route;
+                                            });
 
-                          InkWell(
-                            child:
-                            RaisedButton.icon(
-                              icon: Icon(Icons.arrow_forward),
-                              color: Color.fromARGB(255, 200 + index * 30, 50, 155),
-                              label: Text(' '),
-                              onPressed: () {
-                                getSomePoints( LatLng(allOutdoorGym[index].geo.latitude,allOutdoorGym[index].geo.longitude));
-                              },
-                            ),
-                          )
+                                          },
+                                        )),
 
-                        ]))
+
+                              ),
+
+                            ]))
                     : Center(child: CircularProgressIndicator());
               });
         });
-
   }
   Future<double> calculateDistance(int i) async {
-    double distance = await Geolocator().distanceBetween(currentLocation.latitude,
-        currentLocation.longitude, allOutdoorGym[i].geo.latitude, allOutdoorGym[i].geo.longitude);
+    double distance = await Geolocator().distanceBetween(
+        currentLocation.latitude,
+        currentLocation.longitude,
+        allOutdoorGym[i].geo.latitude,
+        allOutdoorGym[i].geo.longitude);
     return distance;
   }
+
   Future<void> _goToGym(OutdoorGym gym) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -304,7 +324,7 @@ class MapSampleState extends State<MapSampleJacobo> {
         zoom: 10)));
   }
   /////////////////////////////////////////
-  Widget navDrawer(){
+  Widget navDrawer() {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -337,28 +357,23 @@ class MapSampleState extends State<MapSampleJacobo> {
           ),
           _loggedIn
               ? ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-            onTap: () => {},
-          )
+                  leading: Icon(Icons.exit_to_app),
+                  title: Text('Logout'),
+                  onTap: () => {},
+                )
               : Center(
-              child: ListTile(
-                leading: Icon(Icons.exit_to_app),
-                title: Text('Login'),
-                onTap: () => [
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>LoginPage()))
-                ],
-              ))
+                  child: ListTile(
+                  leading: Icon(Icons.exit_to_app),
+                  title: Text('Login'),
+                  onTap: () => [
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()))
+                  ],
+                ))
         ],
       ),
     );
   }
 ////////////////////////////////////////////////////////=
 
-
 }
-
-
