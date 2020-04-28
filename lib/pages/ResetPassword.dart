@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterapp/pages/ReportPage.dart';
 
 
+
+
 class ResetPassword extends StatefulWidget {
   @override
   _ResetPassword createState() => new _ResetPassword();
@@ -108,7 +110,7 @@ class _ResetPassword extends State<ResetPassword> {
               color: Colors.blue,
               onPressed: () {
                 //reset();
-                final snackBar = SnackBar(
+                /*final snackBar = SnackBar(
                   content: Text("An e-mail has been sent to " + _email,
                     style: TextStyle(
                       color: Colors.white,
@@ -117,7 +119,7 @@ class _ResetPassword extends State<ResetPassword> {
                   duration: Duration(seconds: 5),
 
                 );
-                _scaffoldKey.currentState.showSnackBar(snackBar);
+                _scaffoldKey.currentState.showSnackBar(snackBar);*/
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ReportPage()));
 
                 },
