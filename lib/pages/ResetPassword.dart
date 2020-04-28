@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutterapp/pages/ReportPage.dart';
 
 
 class ResetPassword extends StatefulWidget {
@@ -106,7 +107,7 @@ class _ResetPassword extends State<ResetPassword> {
               ),
               color: Colors.blue,
               onPressed: () {
-                reset();
+                //reset();
                 final snackBar = SnackBar(
                   content: Text("An e-mail has been sent to " + _email,
                     style: TextStyle(
@@ -117,6 +118,7 @@ class _ResetPassword extends State<ResetPassword> {
 
                 );
                 _scaffoldKey.currentState.showSnackBar(snackBar);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ReportPage()));
 
                 },
               child: Text(
