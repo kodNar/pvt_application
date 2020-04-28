@@ -32,6 +32,7 @@ class MapSampleState extends State<MapSampleJacobo> {
   List<OutdoorGym> allOutdoorGym = [];
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
+  bool _loggedIn = false;
 
 
   GoogleMapPolyline _googleMapPolyline = new GoogleMapPolyline(apiKey: (apiKey));
@@ -62,7 +63,7 @@ class MapSampleState extends State<MapSampleJacobo> {
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
     );
     return new Scaffold(
-      drawer: NavDrawer(),
+      drawer: navDrawer(),
       appBar: appBar,
       body: Column(children: <Widget>[
         Container(
@@ -81,8 +82,7 @@ class MapSampleState extends State<MapSampleJacobo> {
                     currentLocation.latitude, currentLocation.longitude),
                 zoom: 14.4746,
               ),
-
-              polylines: polyline,
+ //             polylines: polyline,
               markers: Set.from(allMarkers),
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
@@ -115,8 +115,7 @@ class MapSampleState extends State<MapSampleJacobo> {
         Container(
             width: double.infinity,
             height: (MediaQuery.of(context).size.height / 7) * 2,
-            child: ClosestedPlaceContainer(
-                allOutdoorGym, _controller, currentLocation)),
+            child: listView()),
       ]),
     );
   }
@@ -128,10 +127,8 @@ class MapSampleState extends State<MapSampleJacobo> {
       setState(() {
         currentLocation = currloc;
         mapToggle = true;
-
       });
     });
-    getSomePoints();
     _createMarkersFromString();
 
   }
@@ -211,12 +208,11 @@ class MapSampleState extends State<MapSampleJacobo> {
         zoom: 10)));
   }
 
-  getSomePoints() async{
+  getSomePoints(LatLng endPos) async{
     List<LatLng> points = await _googleMapPolyline.getCoordinatesWithLocation(
-        origin: LatLng(40.6782, -73.9442),
-        destination: LatLng(40.6944, -73.9212),
+        origin: LatLng(currentLocation.latitude,currentLocation.longitude),
+        destination: LatLng(endPos.latitude, endPos.longitude),
         mode: RouteMode.driving);
-
     setState(() {
       routeCoords = points;
       // change position from onMapCreated(GoogleMapController controller) method
@@ -233,38 +229,28 @@ class MapSampleState extends State<MapSampleJacobo> {
       );
     });
   }
-
-}
-
-class ClosestedPlaceContainer extends StatelessWidget {
-  List<OutdoorGym> _list;
-  Completer<GoogleMapController> _controller;
-  var _userPos;
-
-  ClosestedPlaceContainer(this._list, this._controller, this._userPos);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: _list.length,
-        itemBuilder: (context, index) {
-          return InkWell(
-              onTap: () {
-                _goToGym(_list[index]);
-              },
-              child: FutureBuilder<double>(
-                  future: calculateDistance(index),
-                  builder: (context, snapshot) {
-                    return snapshot.hasData
-                        ? Container(
-                        color:
-                        Color.fromARGB(255, 132 + index * 30, 50, 155),
-                        height: 50,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                _list[index].name +
+  ///////////////////////////////////////////////////////////
+  Widget listView(){
+      return ListView.builder(
+          itemCount: allOutdoorGym.length,
+          itemBuilder: (context, index) {
+            return FutureBuilder<double>(
+                future: calculateDistance(index),
+                builder: (context, snapshot) {
+                  return snapshot.hasData
+                      ? Container(
+                      color: Color.fromARGB(255, 132 + index * 30, 50, 155),
+                      height: 50,
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            InkWell(
+                              onTap: (){
+                                _goToGym(allOutdoorGym[index]);
+                              },
+                              child: Text(
+                                allOutdoorGym[index].name +
                                     " Distance: " +
                                     snapshot.data.toString() +
                                     "m",
@@ -274,25 +260,31 @@ class ClosestedPlaceContainer extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                               ),
-                              IconButton(
+                            ),
+
+                            InkWell(
+                              child:
+                              RaisedButton.icon(
                                 icon: Icon(Icons.arrow_forward),
-                                color: Colors.white,
+                                color: Color.fromARGB(255, 200 + index * 30, 50, 155),
+                                label: Text(' '),
                                 onPressed: () {
-                                  _goToGym(_list[index]);
+                                  getSomePoints(LatLng(allOutdoorGym[index].geo.latitude,allOutdoorGym[index].geo.longitude));
                                 },
                               ),
-                            ]))
-                        : Center(child: CircularProgressIndicator());
-                  }));
-        });
-  }
+                            )
 
+                          ]))
+                      : Center(child: CircularProgressIndicator());
+                });
+          });
+
+  }
   Future<double> calculateDistance(int i) async {
-    double distance = await Geolocator().distanceBetween(_userPos.latitude,
-        _userPos.longitude, _list[i].geo.latitude, _list[i].geo.longitude);
+    double distance = await Geolocator().distanceBetween(currentLocation.latitude,
+        currentLocation.longitude, allOutdoorGym[i].geo.latitude, allOutdoorGym[i].geo.longitude);
     return distance;
   }
-
   Future<void> _goToGym(OutdoorGym gym) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -301,14 +293,8 @@ class ClosestedPlaceContainer extends StatelessWidget {
         tilt: 0,
         zoom: 10)));
   }
-}
-
-//////////////////////////////////Menu item////////////////////////////////////////////
-class NavDrawer extends StatelessWidget {
-  bool _loggedin = false;
-
-  @override
-  Widget build(BuildContext context) {
+  /////////////////////////////////////////
+  Widget navDrawer(){
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -339,7 +325,7 @@ class NavDrawer extends StatelessWidget {
             title: Text('About us'),
             onTap: () => {},
           ),
-          _loggedin
+          _loggedIn
               ? ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
@@ -360,4 +346,7 @@ class NavDrawer extends StatelessWidget {
       ),
     );
   }
+////////////////////////////////////////////////////////=
+
+
 }
