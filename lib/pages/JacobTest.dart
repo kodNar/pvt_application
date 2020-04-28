@@ -82,7 +82,8 @@ class MapSampleState extends State<MapSampleJacobo> {
                     currentLocation.latitude, currentLocation.longitude),
                 zoom: 14.4746,
               ),
- //             polylines: polyline,
+
+              polylines: polyline,
               markers: Set.from(allMarkers),
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
@@ -125,10 +126,14 @@ class MapSampleState extends State<MapSampleJacobo> {
     super.initState();
     Geolocator().getCurrentPosition().then((currloc) {
       setState(() {
-        currentLocation = currloc;
+        //currentLocation = currloc;
+        currentLocation = LatLng(59.3274,18.055);
+
         mapToggle = true;
+
       });
     });
+
     _createMarkersFromString();
 
   }
@@ -136,6 +141,11 @@ class MapSampleState extends State<MapSampleJacobo> {
 ///////////////////////create  and load markers//////////////////////////////////
   _createMarkersFromString() async {
     ////test////
+
+    allOutdoorGym.add(new OutdoorGym(
+        'wd', geo.point(latitude:3, longitude: 30), context));
+    allOutdoorGym.add(new OutdoorGym(
+        'wd', geo.point(latitude:0, longitude: 30), context));
     allOutdoorGym.add(new OutdoorGym(
         'testo', geo.point(latitude: 1.960632, longitude: 77.641603), context));
     allOutdoorGym.add(new OutdoorGym('tqqweewfsto',
@@ -207,12 +217,13 @@ class MapSampleState extends State<MapSampleJacobo> {
         tilt: 0,
         zoom: 10)));
   }
-
-  getSomePoints(LatLng endPos) async{
+  getSomePoints(var goal) async{
     List<LatLng> points = await _googleMapPolyline.getCoordinatesWithLocation(
-        origin: LatLng(currentLocation.latitude,currentLocation.longitude),
-        destination: LatLng(endPos.latitude, endPos.longitude),
-        mode: RouteMode.driving);
+        origin: LatLng(currentLocation.latitude, currentLocation.longitude),
+        destination: LatLng( goal.latitude,goal.longitude),
+        //destination: LatLng( 32.7764749,-79.9310512,),
+        mode: RouteMode.walking);
+
     setState(() {
       routeCoords = points;
       // change position from onMapCreated(GoogleMapController controller) method
@@ -229,55 +240,54 @@ class MapSampleState extends State<MapSampleJacobo> {
       );
     });
   }
-  ///////////////////////////////////////////////////////////
   Widget listView(){
-      return ListView.builder(
-          itemCount: allOutdoorGym.length,
-          itemBuilder: (context, index) {
-            return FutureBuilder<double>(
-                future: calculateDistance(index),
-                builder: (context, snapshot) {
-                  return snapshot.hasData
-                      ? Container(
-                      color: Color.fromARGB(255, 132 + index * 30, 50, 155),
-                      height: 50,
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            InkWell(
-                              onTap: (){
-                                _goToGym(allOutdoorGym[index]);
-                              },
-                              child: Text(
-                                allOutdoorGym[index].name +
-                                    " Distance: " +
-                                    snapshot.data.toString() +
-                                    "m",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+    return ListView.builder(
+        itemCount: allOutdoorGym.length,
+        itemBuilder: (context, index) {
+          return FutureBuilder<double>(
+              future: calculateDistance(index),
+              builder: (context, snapshot) {
+                return snapshot.hasData
+                    ? Container(
+                    color: Color.fromARGB(255, 132 + index * 30, 50, 155),
+                    height: 50,
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          InkWell(
+                            onTap: (){
+                              _goToGym(allOutdoorGym[index]);
+                            },
+                            child: Text(
+                              allOutdoorGym[index].name +
+                                  " Distance: " +
+                                  snapshot.data.toString() +
+                                  "m",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
                             ),
+                          ),
 
-                            InkWell(
-                              child:
-                              RaisedButton.icon(
-                                icon: Icon(Icons.arrow_forward),
-                                color: Color.fromARGB(255, 200 + index * 30, 50, 155),
-                                label: Text(' '),
-                                onPressed: () {
-                                  getSomePoints(LatLng(allOutdoorGym[index].geo.latitude,allOutdoorGym[index].geo.longitude));
-                                },
-                              ),
-                            )
+                          InkWell(
+                            child:
+                            RaisedButton.icon(
+                              icon: Icon(Icons.arrow_forward),
+                              color: Color.fromARGB(255, 200 + index * 30, 50, 155),
+                              label: Text(' '),
+                              onPressed: () {
+                                getSomePoints( LatLng(allOutdoorGym[index].geo.latitude,allOutdoorGym[index].geo.longitude));
+                              },
+                            ),
+                          )
 
-                          ]))
-                      : Center(child: CircularProgressIndicator());
-                });
-          });
+                        ]))
+                    : Center(child: CircularProgressIndicator());
+              });
+        });
 
   }
   Future<double> calculateDistance(int i) async {
@@ -350,3 +360,5 @@ class MapSampleState extends State<MapSampleJacobo> {
 
 
 }
+
+
