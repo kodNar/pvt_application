@@ -1,14 +1,16 @@
 class User {
   final String email;
   final String nickName;
-  final String uID;
+  final String userID;
 
 
-  /** Constructor **/
   User({
     this.email,
     this.nickName,
-    this.uID,
+    this.userID,
 
   });
+
+
+
 }

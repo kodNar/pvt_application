@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,10 +14,17 @@ class _ResetPassword extends State<ResetPassword> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _email;
+  bool _show = false;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+
 
   @override
   Widget build(BuildContext context) {
+    _show = false;
+
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
       appBar: AppBar(
         title: Text(
@@ -85,6 +94,7 @@ class _ResetPassword extends State<ResetPassword> {
             ),
 
           ),
+
           Container(
             margin: EdgeInsets.only(top: 40),
             height: 50,
@@ -95,7 +105,20 @@ class _ResetPassword extends State<ResetPassword> {
                 side: BorderSide(color: Colors.white, width: 2.5),
               ),
               color: Colors.blue,
-              onPressed: reset,
+              onPressed: () {
+                reset();
+                final snackBar = SnackBar(
+                  content: Text("An e-mail has been sent to " + _email,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  duration: Duration(seconds: 5),
+
+                );
+                _scaffoldKey.currentState.showSnackBar(snackBar);
+
+                },
               child: Text(
                 "Send",
                 style: TextStyle(
@@ -115,12 +138,15 @@ class _ResetPassword extends State<ResetPassword> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
 
+
     );
   }
+
+
 
 
   Future<void> reset() async{
@@ -130,5 +156,8 @@ class _ResetPassword extends State<ResetPassword> {
     }
     await _firebaseAuth.sendPasswordResetEmail(email: _email);
 
+
   }
+
+
 }
