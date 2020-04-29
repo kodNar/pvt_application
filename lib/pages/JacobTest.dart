@@ -139,24 +139,6 @@ class MapSampleState extends State<MapSampleJacobo> {
   _createMarkersFromString() async {
     ////test////
 
-    allOutdoorGym.add(
-        new OutdoorGym('wd', geo.point(latitude: 3, longitude: 30), context));
-    allOutdoorGym.add(
-        new OutdoorGym('wd', geo.point(latitude: 0, longitude: 30), context));
-    allOutdoorGym.add(new OutdoorGym(
-        'testo', geo.point(latitude: 1.960632, longitude: 77.641603), context));
-    allOutdoorGym.add(new OutdoorGym('tqqweewfsto',
-        geo.point(latitude: 13.960632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('tefsto',
-        geo.point(latitude: 12.960632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('tewhjtfesto',
-        geo.point(latitude: 13.0632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym(
-        'testo', geo.point(latitude: 12.9632, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym('tewgggfesto',
-        geo.point(latitude: 23.9602, longitude: 71.641603), context));
-    allOutdoorGym.add(new OutdoorGym(
-        'qqq', geo.point(latitude: 3.96632, longitude: 71.641603), context));
     //////////////////////////////test////////////////////////////////////////
     String file = await loadAsset();
     List<String> list = file.split("\n");
