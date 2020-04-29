@@ -13,6 +13,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'Login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'HomePage.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -352,7 +353,10 @@ class MapSampleState extends State< MapSample> {
               ? ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
-            onTap: () => {},
+            onTap: () => [
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => HomePage()))
+            ],
           )
               : Center(
               child: ListTile(
@@ -360,7 +364,7 @@ class MapSampleState extends State< MapSample> {
                 title: Text('Login'),
                 onTap: () => [
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()))
+                      MaterialPageRoute(builder: (context) => HomePage()))
                 ],
               ))
         ],
