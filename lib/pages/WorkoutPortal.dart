@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/Login.dart';
+import 'package:flutterapp/pages/MapsTest.dart';
 
 class WorkoutPortal extends StatefulWidget {
   @override
@@ -25,11 +26,16 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
               ),
             ),
           ),
-          leading: Icon(
-            Icons.home,
-            color: Colors.black,
-            size: 40,
-            semanticLabel: 'Home button',
+          leading: InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MapSample()));
+            },
+            child: Icon(
+              Icons.home,
+              color: Colors.black,
+              size: 40,
+              semanticLabel: 'Home button',
+            ),
           ),
         ),
         body: Center(
