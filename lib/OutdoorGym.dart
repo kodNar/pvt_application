@@ -30,8 +30,8 @@ class OutdoorGym{
               MaterialPageRoute(builder: (context) => GenericGymPage(_name, equipments)));
         },
         draggable: false
-    );
 
+    );
 
   }
 

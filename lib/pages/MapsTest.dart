@@ -139,7 +139,6 @@ class MapSampleState extends State<MapSample> {
       allOutdoorGym.add(new OutdoorGym(name, geoPoint, context));
     }
     _addGymsToMarkers();
-
   }
 
 ///////////////////////create  and load markers//////////////////////////////////
@@ -204,13 +203,13 @@ class MapSampleState extends State<MapSample> {
         tilt: 0,
         zoom: 10)));
   }
+
   getSomePoints() async{
     routeCoords = await _googleMapPolyline.getCoordinatesWithLocation(
         origin: LatLng(currentLocation.latitude, currentLocation.longitude),
         destination: LatLng(40, -10),
         mode: RouteMode.walking);
   }
-
 }
 
 class ClosestedPlaceContainer extends StatelessWidget {
