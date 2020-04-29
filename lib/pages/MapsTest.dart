@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
@@ -93,7 +94,9 @@ class MapSampleState extends State< MapSample> {
             Container(
               alignment: Alignment.bottomCenter,
               child: RaisedButton.icon(
-                onPressed: null,
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutPortal()));
+                },
                 icon: Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.white,
