@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
@@ -11,32 +12,33 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'Login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutterapp/pages/WorkoutPortal.dart';
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Google Maps Demo',
-      home: MapSample(),
+      home: MapSampleJacobo(),
     );
   }
 }
-class MapSample extends StatefulWidget {
+
+class MapSampleJacobo extends StatefulWidget {
   @override
-  State<MapSample> createState() => MapSampleState();
+  State<MapSampleJacobo> createState() => MapSampleState();
 }
 
-class MapSampleState extends State<MapSample> {
+class MapSampleState extends State<MapSampleJacobo> {
   List<Marker> allMarkers = [];
   List<OutdoorGym> allOutdoorGym = [];
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
+  bool _loggedIn = false;
 
-
-  GoogleMapPolyline _googleMapPolyline = new GoogleMapPolyline(apiKey: (apiKey));
-  List <LatLng> routeCoords;
-
+  GoogleMapPolyline _googleMapPolyline =
+  new GoogleMapPolyline(apiKey: (apiKey));
+  List<LatLng> routeCoords;
+  final Set<Polyline> polyline = {};
 
   static const apiKey = 'AIzaSyCzAqwpJiXg8YdVDxNGB4BHm2oMslsMTqs';
   bool mapToggle = false;
@@ -47,7 +49,6 @@ class MapSampleState extends State<MapSample> {
     target: LatLng(nycLat, nycLng),
     zoom: 14.4746,
   );
-
 
   static final CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
@@ -61,13 +62,15 @@ class MapSampleState extends State<MapSample> {
       title: Text("Stockholms outdoor gyms"),
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
     );
-    return Scaffold(
-      drawer: NavDrawer(),
+    return new Scaffold(
+      drawer: _navDrawer(),
       appBar: appBar,
       body: Column(children: <Widget>[
         Container(
           width: double.infinity,
-          height: (MediaQuery.of(context).size.height / 7) * 5 -appBar.preferredSize.height -MediaQuery.of(context).padding.top,
+          height: (MediaQuery.of(context).size.height / 7) * 5 -
+              appBar.preferredSize.height -
+              MediaQuery.of(context).padding.top,
           child: mapToggle
               ? Stack(children: <Widget>[
             GoogleMap(
@@ -81,6 +84,7 @@ class MapSampleState extends State<MapSample> {
                 zoom: 14.4746,
               ),
 
+              polylines: polyline,
               markers: Set.from(allMarkers),
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
@@ -89,9 +93,7 @@ class MapSampleState extends State<MapSample> {
             Container(
               alignment: Alignment.bottomCenter,
               child: RaisedButton.icon(
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutPortal()));
-                  },
+                onPressed: null,
                 icon: Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.white,
@@ -114,8 +116,7 @@ class MapSampleState extends State<MapSample> {
         Container(
             width: double.infinity,
             height: (MediaQuery.of(context).size.height / 7) * 2,
-            child: ClosestedPlaceContainer(
-                allOutdoorGym, _controller, currentLocation)),
+            child: listView2()),
       ]),
     );
   }
@@ -125,39 +126,27 @@ class MapSampleState extends State<MapSample> {
     super.initState();
     Geolocator().getCurrentPosition().then((currloc) {
       setState(() {
-        currentLocation = currloc;
+        //currentLocation = currloc;
+        currentLocation = LatLng(59.3274, 18.055);
         mapToggle = true;
       });
     });
     populateOutdoorGymList();
-    _createMarkersFromString();
-    getSomePoints();
+
   }
+
   /// Loads the outdoorgyms from the database and populates the outdoor gym list.
   populateOutdoorGymList() async {
     QuerySnapshot outdoorGymCollection = await Firestore.instance.collection("OutdoorGyms").getDocuments();
     for (var doc in outdoorGymCollection.documents) {
       String name = doc.data['Name'];
       GeoPoint geoPoint = doc.data['GeoPoint'];
-      allOutdoorGym.add(new OutdoorGym(name, geoPoint, context));
-    }
-    _addGymsToMarkers();
-  }
-
-///////////////////////create  and load markers//////////////////////////////////
-  _createMarkersFromString() async {
-    ////test////
-
-
-    //////////////////////////////test////////////////////////////////////////
-    String file = await loadAsset();
-    List<String> list = file.split("\n");
-    list.forEach((e) {
-      if (e != '') {
-        List<String> temp = e.split(',');
-        //allOutdoorGym.add(new OutdoorGym(temp[0], temp[1], temp[2], context));
+      try {
+        allOutdoorGym.add(new OutdoorGym(name, geoPoint, context));
+      }catch(e){
+        print ("Error creating gym");
       }
-    });
+    }
     _addGymsToMarkers();
   }
 
@@ -170,32 +159,8 @@ class MapSampleState extends State<MapSample> {
     });
   }
 
-/*
-  Future<List<String>> _searchNearby() async {
-    var dio = Dio();
-    var url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$nycLat,$nycLng&radius=10000&keyword=utegym&key=$apiKey';
-    var response = await dio.get(url, data: null);
-    List data1 = response.data['results'];
-    data1.forEach((f) =>
-        allOutdoorGym.add(new OutdoorGym (
-            f["name"].toString(),
-            f["geometry"]["location"]["lat"].toString(),
-            f["geometry"]["location"]["lng"].toString(),
-            context
-        )
-        )
-    );
-    return null;
-  }
- */
-
   Future<String> loadAsset() async {
     return await rootBundle.loadString('assets/files/OutdoorGyms.txt');
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    return controller;
   }
 
   Future<void> _moveCameraToSelf() async {
@@ -204,72 +169,137 @@ class MapSampleState extends State<MapSample> {
         bearing: 0,
         target: LatLng(currentLocation.latitude, currentLocation.longitude),
         tilt: 0,
-        zoom: 10)));
+        zoom: 15)));
   }
 
-  getSomePoints() async{
-    routeCoords = await _googleMapPolyline.getCoordinatesWithLocation(
+  getSomePoints(var goal) async {
+    List<LatLng> points = await _googleMapPolyline.getCoordinatesWithLocation(
         origin: LatLng(currentLocation.latitude, currentLocation.longitude),
-        destination: LatLng(40, -10),
+        destination: LatLng(goal.latitude, goal.longitude),
+        //destination: LatLng( 32.7764749,-79.9310512,),
         mode: RouteMode.walking);
+
+    setState(() {
+      routeCoords = points;
+      // change position from onMapCreated(GoogleMapController controller) method
+      polyline.add(Polyline(
+        polylineId: PolylineId('route1'),
+        visible: true,
+        points: routeCoords,
+        width: 4,
+        color: Colors.blue,
+        startCap: Cap.roundCap,
+        endCap: Cap.buttCap,
+      ));
+    });
   }
-}
+  Widget listView2() {
+    bool route = true;
+    return FutureBuilder<SplayTreeMap>(
+        future:_getSortedListOnDistance(),
+        builder: (context, snapshot) {
+          int lenght = 30;
+          return snapshot.hasData
+              ? Container(child:ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                int key = snapshot.data.keys.elementAt(index);
+                OutdoorGym value = snapshot.data.values.elementAt(index);
+                return Container(
+                    color: Color.fromARGB(255, 132 + index * 30, 50, 155),
+                    height: 50,
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Flexible(
+                            fit: FlexFit.tight,
+                            flex: 5,
+                            child:InkWell(
+                              onTap: () {
+                                _goToGym(value);
+                              },
+                              child:RichText(
 
-class ClosestedPlaceContainer extends StatelessWidget {
-  List<OutdoorGym> _list;
-  Completer<GoogleMapController> _controller;
-  var _userPos;
-
-  ClosestedPlaceContainer(this._list, this._controller, this._userPos);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: _list.length,
-        itemBuilder: (context, index) {
-          return InkWell(
-              onTap: () {
-                _goToGym(_list[index]);
-              },
-              child: FutureBuilder<double>(
-                  future: calculateDistance(index),
-                  builder: (context, snapshot) {
-                    return snapshot.hasData
-                        ? Container(
-                        color:
-                        Color.fromARGB(255, 132 + index * 30, 50, 155),
-                        height: 50,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                _list[index].name +
-                                    " Distance: " +
-                                    snapshot.data.toString() +
-                                    "m",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                                overflow: TextOverflow.ellipsis,
+                                strutStyle: StrutStyle(fontSize: 16.0),
+                                text: TextSpan(
+                                    style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                    text: value.name),
                               ),
-                              IconButton(
-                                icon: Icon(Icons.arrow_forward),
-                                color: Colors.white,
-                                onPressed: () {
-                                  _goToGym(_list[index]);
-                                },
-                              ),
-                            ]))
-                        : Center(child: CircularProgressIndicator());
-                  }));
+                            ),
+                          ),
+                          Flexible(
+                            flex: 3,
+                            child: RichText(
+                              overflow: TextOverflow.ellipsis,
+                              strutStyle: StrutStyle(fontSize: 16.0),
+                              text: TextSpan(
+                                  style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                  text: key.toString()),
+                            ),
+                          ),
+
+                          Flexible(
+                            flex: 2,
+                            child:SizedBox(child: route
+                                ? RaisedButton.icon(
+                              icon: Icon(Icons.play_arrow),
+                              color: Color.fromARGB(
+                                  255, 200 + index * 30, 50, 155),
+                              label: Text(' '),
+                              onPressed: () {
+                                this.setState(() {
+                                  route = !route;
+                                }
+                                );
+                                getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
+                                _moveCameraToSelf();
+                              },
+                            ) : Center(
+                                child: RaisedButton.icon(
+                                  icon: Icon(Icons.cancel),
+                                  color: Color.fromARGB(
+                                      255, 200 + index * 30, 50, 155),
+                                  label: Text(' '),
+                                  onPressed: () {
+                                    // getSomePoints(LatLng(allOutdoorGym[index].geo.latitude, allOutdoorGym[index].geo.longitude));
+                                    setState(() {
+                                      route = !route;
+                                    });
+                                  },
+                                )),
+
+
+                            ),
+
+                          )]
+                    )
+                );
+
+              })
+          ) : Center(child: CircularProgressIndicator()
+          );
+
+
         });
   }
 
-  Future<double> calculateDistance(int i) async {
-    double distance = await Geolocator().distanceBetween(_userPos.latitude,
-        _userPos.longitude, _list[i].geo.latitude, _list[i].geo.longitude);
-    return distance;
+  Future<SplayTreeMap> _getSortedListOnDistance() async{
+    SplayTreeMap st = new SplayTreeMap<int, OutdoorGym>();
+    for(int i = 0; i< allOutdoorGym.length; i++){
+      st[await _calculateDistance(i)] = allOutdoorGym[i];
+    }
+    return st;
+  }
+
+  Future<int> _calculateDistance(int i) async {
+    double distance = await Geolocator().distanceBetween(
+        currentLocation.latitude,
+        currentLocation.longitude,
+        allOutdoorGym[i].geo.latitude,
+        allOutdoorGym[i].geo.longitude);
+    return distance.round();
   }
 
   Future<void> _goToGym(OutdoorGym gym) async {
@@ -278,14 +308,10 @@ class ClosestedPlaceContainer extends StatelessWidget {
         bearing: 0,
         target: LatLng(gym.geo.latitude, gym.geo.longitude),
         tilt: 0,
-        zoom: 10)));
+        zoom: 16)));
   }
-}
-//////////////////////////////////Menu item////////////////////////////////////////////
-class NavDrawer extends StatelessWidget {
-  bool _loggedin = false;
-  @override
-  Widget build(BuildContext context) {
+
+  Widget _navDrawer() {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -316,7 +342,7 @@ class NavDrawer extends StatelessWidget {
             title: Text('About us'),
             onTap: () => {},
           ),
-          _loggedin
+          _loggedIn
               ? ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
@@ -327,10 +353,8 @@ class NavDrawer extends StatelessWidget {
                 leading: Icon(Icons.exit_to_app),
                 title: Text('Login'),
                 onTap: () => [
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => LoginPage()))
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()))
                 ],
               ))
         ],
