@@ -35,7 +35,7 @@ class MapSampleState extends State< MapSample> {
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
   bool _loggedIn = false;
-  bool _cancelButton = false;
+  bool _cancelButton = true;
   GoogleMapPolyline _googleMapPolyline =
   new GoogleMapPolyline(apiKey: (apiKey));
   List<LatLng> routeCoords;
@@ -113,9 +113,9 @@ class MapSampleState extends State< MapSample> {
                 alignment: Alignment.bottomLeft,
                 child: _cancelButton ? ClipOval(
                   child: Material(
-                    color: Colors.blue, // button color
+                    color: Colors.red, // button color
                     child: InkWell(
-                      splashColor: Colors.red, // inkwell color
+                      splashColor: Colors.white, // inkwell color
                       child: SizedBox(width: 56, height: 56, child: Icon(Icons.cancel)),
                       onTap: () {
                         setState(() {
@@ -263,38 +263,22 @@ class MapSampleState extends State< MapSample> {
 
                           Flexible(
                             flex: 2,
-                            child:SizedBox(child: route
-                                ? RaisedButton.icon(
+                            child:SizedBox(child:RaisedButton.icon(
                               icon: Icon(Icons.play_arrow),
                               color: Color.fromARGB(
                                   255, 200 + index * 30, 50, 155),
                               label: Text(' '),
                               onPressed: () {
                                 setState(() {
-                                  route = !route;
+                                  _cancelButton = true;
                                 }
                                 );
-                                getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
+                                //getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
                                 _moveCameraToSelf();
                               },
-                            ) : Center(
-                                child: RaisedButton.icon(
-                                  icon: Icon(Icons.cancel),
-                                  color: Color.fromARGB(
-                                      255, 200 + index * 30, 50, 155),
-                                  label: Text(' '),
-                                  onPressed: () {
-                                    // getSomePoints(LatLng(allOutdoorGym[index].geo.latitude, allOutdoorGym[index].geo.longitude));
-                                    setState(() {
-                                      route = !route;
-                                    });
-                                  },
-                                )),
-
-
-                            ),
-
-                          )]
+                            )),
+                          ),
+                        ]
                     )
                 );
 
