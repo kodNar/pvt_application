@@ -1,0 +1,143 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutterapp/pages/Login.dart';
+
+class WorkoutPortal extends StatefulWidget {
+  @override
+  _WorkoutPortalState createState() => _WorkoutPortalState();
+}
+
+class _WorkoutPortalState extends State<WorkoutPortal> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Color.fromARGB(255, 132, 50, 155),
+        appBar: AppBar(
+          title: Container(
+            padding: EdgeInsets.only(right: 50),
+            child: Center(
+              child: Text(
+                'Workouts',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                ),
+              ),
+            ),
+          ),
+          leading: Icon(
+            Icons.home,
+            color: Colors.black,
+            size: 40,
+            semanticLabel: 'Home button',
+          ),
+        ),
+        body: Center(
+          
+          child: Container(
+            padding: EdgeInsets.all(40),
+            child: Column(
+                
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                },
+                child: Container(
+                  width: 350,
+                  height: 135,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 2,
+                    ),
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF0D47A1),
+                        Color(0xFF1976D2),
+                        Color(0xFF42A5F5),
+                      ],
+                    ),
+                  ),
+                  child: Text('+ Log new workout',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                      )),
+                ),
+              ),
+              SizedBox(height: 30),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: 350,
+                  height: 135,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    gradient: LinearGradient(
+                      begin: Alignment.center,
+                      colors: <Color>[
+                        Color(0xFFF57C00),
+                        Color(0xFFFF9800),
+                        Color(0xFFFFA726),
+                      ],
+                    ),
+                  ),
+                  child: Text('+ Existing workouts',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                      )),
+                ),
+              ),
+                  SizedBox(height: 30),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                },
+                child: Container(
+                  width: 350,
+                  height: 135,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF388E3C),
+                        Color(0xFF4CAF50),
+                        Color(0xFF81C784),
+                      ],
+                    ),
+                  ),
+                  child: Text('Recent workouts',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                      )),
+                ),
+              ),
+            ]),
+          ),
+        ));
+  }
+}
