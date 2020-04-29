@@ -35,7 +35,7 @@ class MapSampleState extends State< MapSample> {
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
   bool _loggedIn = false;
-
+  bool _cancelButton = false;
   GoogleMapPolyline _googleMapPolyline =
   new GoogleMapPolyline(apiKey: (apiKey));
   List<LatLng> routeCoords;
@@ -111,7 +111,7 @@ class MapSampleState extends State< MapSample> {
             ),
             Container(
                 alignment: Alignment.bottomLeft,
-                child: ClipOval(
+                child: _cancelButton ? ClipOval(
                   child: Material(
                     color: Colors.blue, // button color
                     child: InkWell(
@@ -120,11 +120,12 @@ class MapSampleState extends State< MapSample> {
                       onTap: () {
                         setState(() {
                           polyline.clear();
+                          _cancelButton = false;
                         });
                       },
                     ),
                   ),
-                )
+                ):Center()
             ),
           ])
               : Center(
@@ -220,7 +221,6 @@ class MapSampleState extends State< MapSample> {
     return FutureBuilder<SplayTreeMap>(
         future:_getSortedListOnDistance(),
         builder: (context, snapshot) {
-          int lenght = 30;
           return snapshot.hasData
               ? Container(child:ListView.builder(
               itemCount: snapshot.data.length,
