@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 
 ///Allt på denna sida är för närvarande placeholders, allt kommer fortsätta vara placeholders tills hämtning av all data i konstruktorn lösts
+///Krav i databasdokumenten för att implementationen skall fungera enligt förväntan är samtliga fält i konstruktorn.
 class AboutGymsPage extends StatelessWidget{
   String _name;
   String _adress;
@@ -18,9 +19,9 @@ class AboutGymsPage extends StatelessWidget{
     this._eqMaterial = eqMaterial;
     this._groundMaterial = groundMaterial;
     if(lights) {
-      this._lights = 'yes';
+      this._lights = 'Yes';
     } else if(!lights) {
-      this._lights = 'no';
+      this._lights = 'No';
     }
   }
   @override
