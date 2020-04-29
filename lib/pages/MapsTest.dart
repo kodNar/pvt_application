@@ -94,9 +94,7 @@ class MapSampleState extends State< MapSample> {
             Container(
               alignment: Alignment.bottomCenter,
               child: RaisedButton.icon(
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutPortal()));
-                },
+                onPressed: null,
                 icon: Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.white,
@@ -111,6 +109,23 @@ class MapSampleState extends State< MapSample> {
                 ),
               ),
             ),
+            Container(
+                alignment: Alignment.bottomLeft,
+                child: ClipOval(
+                  child: Material(
+                    color: Colors.blue, // button color
+                    child: InkWell(
+                      splashColor: Colors.red, // inkwell color
+                      child: SizedBox(width: 56, height: 56, child: Icon(Icons.cancel)),
+                      onTap: () {
+                        setState(() {
+                          polyline.clear();
+                        });
+                      },
+                    ),
+                  ),
+                )
+            ),
           ])
               : Center(
             child: Text('Loading...'),
@@ -120,7 +135,10 @@ class MapSampleState extends State< MapSample> {
             width: double.infinity,
             height: (MediaQuery.of(context).size.height / 7) * 2,
             child: listView2()),
-      ]),
+      ]
+
+      ),
+
     );
   }
 
@@ -176,6 +194,7 @@ class MapSampleState extends State< MapSample> {
   }
 
   getSomePoints(var goal) async {
+    polyline.clear();
     List<LatLng> points = await _googleMapPolyline.getCoordinatesWithLocation(
         origin: LatLng(currentLocation.latitude, currentLocation.longitude),
         destination: LatLng(goal.latitude, goal.longitude),
@@ -223,7 +242,6 @@ class MapSampleState extends State< MapSample> {
                                 _goToGym(value);
                               },
                               child:RichText(
-
                                 overflow: TextOverflow.ellipsis,
                                 strutStyle: StrutStyle(fontSize: 16.0),
                                 text: TextSpan(
@@ -252,7 +270,7 @@ class MapSampleState extends State< MapSample> {
                                   255, 200 + index * 30, 50, 155),
                               label: Text(' '),
                               onPressed: () {
-                                this.setState(() {
+                                setState(() {
                                   route = !route;
                                 }
                                 );
@@ -288,80 +306,80 @@ class MapSampleState extends State< MapSample> {
         });
   }
 
- Future<SplayTreeMap> _getSortedListOnDistance() async{
-  SplayTreeMap st = new SplayTreeMap<int, OutdoorGym>();
-  for(int i = 0; i< allOutdoorGym.length; i++){
-    st[await _calculateDistance(i)] = allOutdoorGym[i];
+  Future<SplayTreeMap> _getSortedListOnDistance() async{
+    SplayTreeMap st = new SplayTreeMap<int, OutdoorGym>();
+    for(int i = 0; i< allOutdoorGym.length; i++){
+      st[await _calculateDistance(i)] = allOutdoorGym[i];
+    }
+    return st;
   }
-  return st;
-}
 
-Future<int> _calculateDistance(int i) async {
-  double distance = await Geolocator().distanceBetween(
-      currentLocation.latitude,
-      currentLocation.longitude,
-      allOutdoorGym[i].geo.latitude,
-      allOutdoorGym[i].geo.longitude);
-  return distance.round();
-}
+  Future<int> _calculateDistance(int i) async {
+    double distance = await Geolocator().distanceBetween(
+        currentLocation.latitude,
+        currentLocation.longitude,
+        allOutdoorGym[i].geo.latitude,
+        allOutdoorGym[i].geo.longitude);
+    return distance.round();
+  }
 
-Future<void> _goToGym(OutdoorGym gym) async {
-  final GoogleMapController controller = await _controller.future;
-  controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-      bearing: 0,
-      target: LatLng(gym.geo.latitude, gym.geo.longitude),
-      tilt: 0,
-      zoom: 16)));
-}
+  Future<void> _goToGym(OutdoorGym gym) async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        bearing: 0,
+        target: LatLng(gym.geo.latitude, gym.geo.longitude),
+        tilt: 0,
+        zoom: 16)));
+  }
 
-Widget _navDrawer() {
-  return Drawer(
-    child: ListView(
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        DrawerHeader(
-          child: Text(
-            '',
-            style: TextStyle(color: Colors.white, fontSize: 25),
+  Widget _navDrawer() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Text(
+              '',
+              style: TextStyle(color: Colors.white, fontSize: 25),
+            ),
+            decoration: BoxDecoration(
+                color: Colors.purple,
+                image: DecorationImage(
+                    image: AssetImage(
+                        'assets/images/Stockholm_endast_logga_vit.png'))),
           ),
-          decoration: BoxDecoration(
-              color: Colors.purple,
-              image: DecorationImage(
-                  image: AssetImage(
-                      'assets/images/Stockholm_endast_logga_vit.png'))),
-        ),
-        ListTile(
-          leading: Icon(Icons.verified_user),
-          title: Text('Profile'),
-          onTap: () => {},
-        ),
-        ListTile(
-          leading: Icon(Icons.settings),
-          title: Text('Settings'),
-          onTap: () => {},
-        ),
-        ListTile(
-          leading: Icon(Icons.border_color),
-          title: Text('About us'),
-          onTap: () => {},
-        ),
-        _loggedIn
-            ? ListTile(
-          leading: Icon(Icons.exit_to_app),
-          title: Text('Logout'),
-          onTap: () => {},
-        )
-            : Center(
-            child: ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text('Login'),
-              onTap: () => [
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginPage()))
-              ],
-            ))
-      ],
-    ),
-  );
-}
+          ListTile(
+            leading: Icon(Icons.verified_user),
+            title: Text('Profile'),
+            onTap: () => {},
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+            onTap: () => {},
+          ),
+          ListTile(
+            leading: Icon(Icons.border_color),
+            title: Text('About us'),
+            onTap: () => {},
+          ),
+          _loggedIn
+              ? ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+            onTap: () => {},
+          )
+              : Center(
+              child: ListTile(
+                leading: Icon(Icons.exit_to_app),
+                title: Text('Login'),
+                onTap: () => [
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()))
+                ],
+              ))
+        ],
+      ),
+    );
+  }
 }

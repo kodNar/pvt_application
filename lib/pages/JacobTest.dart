@@ -108,7 +108,24 @@ class MapSampleState extends State<MapSampleJacobo> {
                       ),
                     ),
                   ),
-                ])
+          Container(
+            alignment: Alignment.bottomLeft,
+            child: ClipOval(
+              child: Material(
+                color: Colors.blue, // button color
+                child: InkWell(
+                  splashColor: Colors.red, // inkwell color
+                  child: SizedBox(width: 56, height: 56, child: Icon(Icons.cancel)),
+                  onTap: () {
+                    setState(() {
+                      polyline.clear();
+                    });
+                  },
+                ),
+              ),
+            )
+          ),
+          ])
               : Center(
                   child: Text('Loading...'),
                 ),
@@ -117,7 +134,10 @@ class MapSampleState extends State<MapSampleJacobo> {
             width: double.infinity,
             height: (MediaQuery.of(context).size.height / 7) * 2,
             child: listView2()),
-      ]),
+      ]
+
+      ),
+
     );
   }
 
@@ -173,6 +193,7 @@ class MapSampleState extends State<MapSampleJacobo> {
   }
 
   getSomePoints(var goal) async {
+    polyline.clear();
     List<LatLng> points = await _googleMapPolyline.getCoordinatesWithLocation(
         origin: LatLng(currentLocation.latitude, currentLocation.longitude),
         destination: LatLng(goal.latitude, goal.longitude),
@@ -248,7 +269,7 @@ class MapSampleState extends State<MapSampleJacobo> {
                                   255, 200 + index * 30, 50, 155),
                               label: Text(' '),
                               onPressed: () {
-                                this.setState(() {
+                                setState(() {
                                   route = !route;
                                 }
                                 );
