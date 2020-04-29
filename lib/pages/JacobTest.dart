@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:collection';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
@@ -11,6 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'Login.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -115,7 +116,7 @@ class MapSampleState extends State<MapSampleJacobo> {
         Container(
             width: double.infinity,
             height: (MediaQuery.of(context).size.height / 7) * 2,
-            child: listView()),
+            child: listView2()),
       ]),
     );
   }
@@ -127,27 +128,25 @@ class MapSampleState extends State<MapSampleJacobo> {
       setState(() {
         //currentLocation = currloc;
         currentLocation = LatLng(59.3274, 18.055);
-
         mapToggle = true;
       });
     });
+    populateOutdoorGymList();
 
-    _createMarkersFromString();
   }
 
-///////////////////////create  and load markers//////////////////////////////////
-  _createMarkersFromString() async {
-    ////test////
-
-    //////////////////////////////test////////////////////////////////////////
-    String file = await loadAsset();
-    List<String> list = file.split("\n");
-    list.forEach((e) {
-      if (e != '') {
-        List<String> temp = e.split(',');
-        //allOutdoorGym.add(new OutdoorGym(temp[0], temp[1], temp[2], context));
+  /// Loads the outdoorgyms from the database and populates the outdoor gym list.
+  populateOutdoorGymList() async {
+    QuerySnapshot outdoorGymCollection = await Firestore.instance.collection("OutdoorGyms").getDocuments();
+    for (var doc in outdoorGymCollection.documents) {
+      String name = doc.data['Name'];
+      GeoPoint geoPoint = doc.data['GeoPoint'];
+      try {
+        allOutdoorGym.add(new OutdoorGym(name, geoPoint, context));
+      }catch(e){
+        print ("Error creating gym");
       }
-    });
+    }
     _addGymsToMarkers();
   }
 
@@ -160,32 +159,8 @@ class MapSampleState extends State<MapSampleJacobo> {
     });
   }
 
-/*
-  Future<List<String>> _searchNearby() async {
-    var dio = Dio();
-    var url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$nycLat,$nycLng&radius=10000&keyword=utegym&key=$apiKey';
-    var response = await dio.get(url, data: null);
-    List data1 = response.data['results'];
-    data1.forEach((f) =>
-        allOutdoorGym.add(new OutdoorGym (
-            f["name"].toString(),
-            f["geometry"]["location"]["lat"].toString(),
-            f["geometry"]["location"]["lng"].toString(),
-            context
-        )
-        )
-    );
-    return null;
-  }
- */
-
   Future<String> loadAsset() async {
     return await rootBundle.loadString('assets/files/OutdoorGyms.txt');
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    return controller;
   }
 
   Future<void> _moveCameraToSelf() async {
@@ -194,7 +169,7 @@ class MapSampleState extends State<MapSampleJacobo> {
         bearing: 0,
         target: LatLng(currentLocation.latitude, currentLocation.longitude),
         tilt: 0,
-        zoom: 10)));
+        zoom: 15)));
   }
 
   getSomePoints(var goal) async {
@@ -218,83 +193,113 @@ class MapSampleState extends State<MapSampleJacobo> {
       ));
     });
   }
-
-  Widget listView() {
+  Widget listView2() {
     bool route = true;
-    return ListView.builder(
-        itemCount: allOutdoorGym.length,
-        itemBuilder: (context, index) {
-          return FutureBuilder<double>(
-              future: _calculateDistance(index),
-              builder: (context, snapshot) {
-                return snapshot.hasData
-                    ? Container(
-                        color: Color.fromARGB(255, 132 + index * 30, 50, 155),
-                        height: 50,
-                        padding: EdgeInsets.all(10),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              InkWell(
-                                onTap: () {
-                                  _goToGym(allOutdoorGym[index]);
-                                },
-                                child: Text(
-                                  allOutdoorGym[index].name +
-                                      " Distance: " +
-                                      snapshot.data.toString() +
-                                      "m",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
+    return FutureBuilder<SplayTreeMap>(
+        future:_getSortedListOnDistance(),
+        builder: (context, snapshot) {
+          int lenght = 30;
+          return snapshot.hasData
+           ? Container(child:ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                int key = snapshot.data.keys.elementAt(index);
+                OutdoorGym value = snapshot.data.values.elementAt(index);
+               return Container(
+                    color: Color.fromARGB(255, 132 + index * 30, 50, 155),
+                    height: 50,
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Flexible(
+                            fit: FlexFit.tight,
+                            flex: 5,
+                            child:InkWell(
+                              onTap: () {
+                                _goToGym(value);
+                              },
+                              child:RichText(
+
+                                overflow: TextOverflow.ellipsis,
+                                strutStyle: StrutStyle(fontSize: 16.0),
+                                text: TextSpan(
+                                    style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                    text: value.name),
                                 ),
                               ),
-                              InkWell(
-                                  child: route
-                                      ? RaisedButton.icon(
-                                          icon: Icon(Icons.play_arrow),
-                                          color: Color.fromARGB(
-                                              255, 200 + index * 30, 50, 155),
-                                          label: Text(' '),
-                                          onPressed: () {
-                                            setState(() {
-                                              print("walla");
-                                              route = !route;
-                                            }
-                                            );
-                                            // getSomePoints( LatLng(allOutdoorGym[index].geo.latitude,allOutdoorGym[index].geo.longitude));
-                                          },
-                                        ) : Center(
-                                          child: RaisedButton.icon(
-                                          icon: Icon(Icons.cancel),
-                                          color: Color.fromARGB(255, 200 + index * 30, 50, 155),
-                                          label: Text(' '),
-                                          onPressed: () {
-                                           // getSomePoints(LatLng(allOutdoorGym[index].geo.latitude, allOutdoorGym[index].geo.longitude));
-                                            setState(() {
-                                              route =!route;
-                                            });
-
-                                          },
-                                        )),
-
-
                               ),
+                          Flexible(
+                            flex: 3,
+                            child: RichText(
+                            overflow: TextOverflow.ellipsis,
+                            strutStyle: StrutStyle(fontSize: 16.0),
+                            text: TextSpan(
+                                style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                text: key.toString()),
+                          ),
+                          ),
 
-                            ]))
-                    : Center(child: CircularProgressIndicator());
-              });
+                          Flexible(
+                            flex: 2,
+                            child:SizedBox(child: route
+                                ? RaisedButton.icon(
+                              icon: Icon(Icons.play_arrow),
+                              color: Color.fromARGB(
+                                  255, 200 + index * 30, 50, 155),
+                              label: Text(' '),
+                              onPressed: () {
+                                this.setState(() {
+                                  route = !route;
+                                }
+                                );
+                                getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
+                                _moveCameraToSelf();
+                              },
+                            ) : Center(
+                                child: RaisedButton.icon(
+                                  icon: Icon(Icons.cancel),
+                                  color: Color.fromARGB(
+                                      255, 200 + index * 30, 50, 155),
+                                  label: Text(' '),
+                                  onPressed: () {
+                                    // getSomePoints(LatLng(allOutdoorGym[index].geo.latitude, allOutdoorGym[index].geo.longitude));
+                                    setState(() {
+                                      route = !route;
+                                    });
+                                  },
+                                )),
+
+
+                            ),
+
+                          )]
+                          )
+               );
+
+              })
+          ) : Center(child: CircularProgressIndicator()
+          );
+
+
         });
   }
-  Future<double> _calculateDistance(int i) async {
+
+  Future<SplayTreeMap> _getSortedListOnDistance() async{
+    SplayTreeMap st = new SplayTreeMap<int, OutdoorGym>();
+    for(int i = 0; i< allOutdoorGym.length; i++){
+      st[await _calculateDistance(i)] = allOutdoorGym[i];
+    }
+    return st;
+  }
+
+  Future<int> _calculateDistance(int i) async {
     double distance = await Geolocator().distanceBetween(
         currentLocation.latitude,
         currentLocation.longitude,
         allOutdoorGym[i].geo.latitude,
         allOutdoorGym[i].geo.longitude);
-    return distance;
+    return distance.round();
   }
 
   Future<void> _goToGym(OutdoorGym gym) async {
@@ -303,9 +308,9 @@ class MapSampleState extends State<MapSampleJacobo> {
         bearing: 0,
         target: LatLng(gym.geo.latitude, gym.geo.longitude),
         tilt: 0,
-        zoom: 10)));
+        zoom: 16)));
   }
-  /////////////////////////////////////////
+
   Widget _navDrawer() {
     return Drawer(
       child: ListView(
@@ -356,6 +361,4 @@ class MapSampleState extends State<MapSampleJacobo> {
       ),
     );
   }
-////////////////////////////////////////////////////////=
-
 }

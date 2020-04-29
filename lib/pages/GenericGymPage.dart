@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/pages/AboutGymsPage.dart';
 
 class GenericGymPage extends StatelessWidget {
   String _name;
@@ -18,7 +19,7 @@ class GenericGymPage extends StatelessWidget {
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: Text(_name),
-          actions: <Widget>[]),
+          ),
       body: Builder(builder: (context) {
         return Stack(children: [
           Container(
@@ -115,7 +116,10 @@ class GenericGymPage extends StatelessWidget {
                             shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(30.0),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              /*Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => AboutGymsPage()));*/
+                            },
                             color: Color.fromARGB(255, 132, 50, 155),
                             child: Align(
                               alignment: Alignment.centerLeft,
