@@ -62,7 +62,7 @@ class MapSampleState extends State<MapSampleJacobo> {
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
     );
     return new Scaffold(
-      drawer: navDrawer(),
+      drawer: _navDrawer(),
       appBar: appBar,
       body: Column(children: <Widget>[
         Container(
@@ -225,7 +225,7 @@ class MapSampleState extends State<MapSampleJacobo> {
         itemCount: allOutdoorGym.length,
         itemBuilder: (context, index) {
           return FutureBuilder<double>(
-              future: calculateDistance(index),
+              future: _calculateDistance(index),
               builder: (context, snapshot) {
                 return snapshot.hasData
                     ? Container(
@@ -288,7 +288,7 @@ class MapSampleState extends State<MapSampleJacobo> {
               });
         });
   }
-  Future<double> calculateDistance(int i) async {
+  Future<double> _calculateDistance(int i) async {
     double distance = await Geolocator().distanceBetween(
         currentLocation.latitude,
         currentLocation.longitude,
@@ -306,7 +306,7 @@ class MapSampleState extends State<MapSampleJacobo> {
         zoom: 10)));
   }
   /////////////////////////////////////////
-  Widget navDrawer() {
+  Widget _navDrawer() {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
