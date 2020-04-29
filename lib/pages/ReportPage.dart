@@ -29,17 +29,7 @@ class ReportPage extends StatelessWidget {
       ),
     );
   }
-  /*Future<void> email() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    print(user.email);
-    final Email email = Email(
-      body: "There's an issue",
-      subject: "Faulty equipment",
-      recipients: ['simon.schoolsoft@gmail.com'],
-      isHTML: false,
-    );
-    await FlutterEmailSender.send(email);
-  }*/
+
 
 
   main() async {
