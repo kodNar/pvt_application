@@ -11,6 +11,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'Login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutterapp/pages/WorkoutPortal.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -88,7 +89,9 @@ class MapSampleState extends State<MapSample> {
             Container(
               alignment: Alignment.bottomCenter,
               child: RaisedButton.icon(
-                onPressed: null,
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutPortal()));
+                  },
                 icon: Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.white,
@@ -139,7 +142,6 @@ class MapSampleState extends State<MapSample> {
       allOutdoorGym.add(new OutdoorGym(name, geoPoint, context));
     }
     _addGymsToMarkers();
-
   }
 
 ///////////////////////create  and load markers//////////////////////////////////
@@ -204,13 +206,13 @@ class MapSampleState extends State<MapSample> {
         tilt: 0,
         zoom: 10)));
   }
+
   getSomePoints() async{
     routeCoords = await _googleMapPolyline.getCoordinatesWithLocation(
         origin: LatLng(currentLocation.latitude, currentLocation.longitude),
         destination: LatLng(40, -10),
         mode: RouteMode.walking);
   }
-
 }
 
 class ClosestedPlaceContainer extends StatelessWidget {
