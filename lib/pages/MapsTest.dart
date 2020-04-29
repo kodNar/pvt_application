@@ -110,6 +110,7 @@ class MapSampleState extends State< MapSample> {
               ),
             ),
             Container(
+              padding: EdgeInsets.all(10),
                 alignment: Alignment.bottomLeft,
                 child: _cancelButton ? ClipOval(
                   child: Material(

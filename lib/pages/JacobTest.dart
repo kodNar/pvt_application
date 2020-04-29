@@ -110,6 +110,7 @@ class MapSampleState extends State<MapSampleJacobo> {
             ),
             Container(
                 alignment: Alignment.bottomLeft,
+                padding: EdgeInsets.all(10),
                 child: _cancelButton ? ClipOval(
                   child: Material(
                     color: Colors.red, // button color
