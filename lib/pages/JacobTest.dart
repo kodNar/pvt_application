@@ -220,7 +220,6 @@ class MapSampleState extends State<MapSampleJacobo> {
                                 _goToGym(value);
                               },
                               child:RichText(
-
                                 overflow: TextOverflow.ellipsis,
                                 strutStyle: StrutStyle(fontSize: 16.0),
                                 text: TextSpan(
@@ -236,7 +235,7 @@ class MapSampleState extends State<MapSampleJacobo> {
                             strutStyle: StrutStyle(fontSize: 16.0),
                             text: TextSpan(
                                 style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-                                text: key.toString()),
+                                text: key.toString() + "m"),
                           ),
                           ),
 
