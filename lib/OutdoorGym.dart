@@ -10,7 +10,7 @@ Firestore _firestore = Firestore.instance;
 
 class OutdoorGym{
   String _name;
-  GeoFirePoint _geo;
+  GeoPoint _geo;
 
   //later be equipmmnt insted of string
   List<String> equipments= [];
@@ -18,7 +18,7 @@ class OutdoorGym{
 
   //home/office/unknown
 
-  OutdoorGym(String name,GeoFirePoint geo,context){
+  OutdoorGym(String name,GeoPoint geo,context){
     this._name= name;
     this._geo = geo;
 
@@ -39,7 +39,7 @@ class OutdoorGym{
 
   Marker get marker => _marker;
   String get name => _name;
-  GeoFirePoint get geo => _geo;
+  GeoPoint get geo => _geo;
   @override
   String toString() {
     return 'OutdoorGym{_name: $_name, _geo: $_geo}';

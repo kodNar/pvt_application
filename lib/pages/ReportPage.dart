@@ -63,10 +63,6 @@ class ReportPage extends StatelessWidget {
         print('Problem: ${p.code}: ${p.msg}');
       }
     }
-
-
-
   }
 
 }
-
