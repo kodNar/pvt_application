@@ -18,17 +18,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Google Maps Demo',
-      home: MapSampleJacobo(),
+      home:  MapSample(),
     );
   }
 }
 
-class MapSampleJacobo extends StatefulWidget {
+class MapSample extends StatefulWidget {
   @override
-  State<MapSampleJacobo> createState() => MapSampleState();
+ State <MapSample> createState() => MapSampleState();
 }
 
-class MapSampleState extends State<MapSampleJacobo> {
+class MapSampleState extends State< MapSample> {
   List<Marker> allMarkers = [];
   List<OutdoorGym> allOutdoorGym = [];
   static const nycLat = 59.328560;
