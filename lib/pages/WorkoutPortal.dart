@@ -39,11 +39,9 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
           ),
         ),
         body: Center(
-          
           child: Container(
             padding: EdgeInsets.all(40),
             child: Column(
-                
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
               InkWell(
