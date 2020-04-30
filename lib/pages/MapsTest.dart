@@ -162,6 +162,7 @@ class MapSampleState extends State< MapSample> {
     for (var doc in outdoorGymCollection.documents) {
       String name = doc.data['Name'];
       GeoPoint geoPoint = doc.data['GeoPoint'];
+
       try {
         allOutdoorGym.add(new OutdoorGym(name, geoPoint, context));
       }catch(e){

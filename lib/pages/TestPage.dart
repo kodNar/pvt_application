@@ -3,6 +3,7 @@ import 'package:flutterapp/EquipmentSelection.dart';
 import 'package:flutterapp/services/DatabaseTestPage.dart';
 
 import 'JacobTest.dart';
+import 'package:flutterapp/pages/AboutGymsPage.dart';
 
 class TestPage extends StatefulWidget {
   @override
@@ -60,7 +61,7 @@ class _TestPageState extends State<TestPage> {
               padding: EdgeInsets.all(20),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => DatabaseTestPage() )); /** Sätt din testsida här! **/
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AboutGymsPage('Akalla gårds utegym', 'Akalla gårds utegym','Akalla', 'Trä', 'Grus', true) )); /** Sätt din testsida här! **/
                 },
                 child: Text(
                   'Simons testknapp',
