@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/EquipmentSelection.dart';
 import 'package:flutterapp/pages/AboutGymsPage.dart';
 
 class GenericGymPage extends StatelessWidget {
@@ -47,7 +48,9 @@ class GenericGymPage extends StatelessWidget {
                             shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(30.0),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => EquipmentSelection(_name, _equipment)));
+                            },
                             color: Color.fromARGB(255, 132, 50, 155),
                             child: Align(
                                 alignment: Alignment.centerLeft,
