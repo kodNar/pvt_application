@@ -35,6 +35,7 @@ class MapSampleState extends State< MapSample> {
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
   bool _loggedIn = false;
+  bool _cancelButton = false;
 
   GoogleMapPolyline _googleMapPolyline =
   new GoogleMapPolyline(apiKey: (apiKey));
@@ -45,17 +46,6 @@ class MapSampleState extends State< MapSample> {
   bool mapToggle = false;
   var currentLocation;
   Completer<GoogleMapController> _controller = Completer();
-
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(nycLat, nycLng),
-    zoom: 14.4746,
-  );
-
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(59.328560, 18.065836),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
 
   @override
   Widget build(BuildContext context) {
@@ -111,20 +101,22 @@ class MapSampleState extends State< MapSample> {
             ),
             Container(
                 alignment: Alignment.bottomLeft,
-                child: ClipOval(
+                padding: EdgeInsets.all(10),
+                child: _cancelButton ? ClipOval(
                   child: Material(
-                    color: Colors.blue, // button color
+                    color: Colors.red, // button color
                     child: InkWell(
-                      splashColor: Colors.red, // inkwell color
+                      splashColor: Colors.white, // inkwell color
                       child: SizedBox(width: 56, height: 56, child: Icon(Icons.cancel)),
                       onTap: () {
                         setState(() {
                           polyline.clear();
+                          _cancelButton = !_cancelButton;
                         });
                       },
                     ),
                   ),
-                )
+                ):Center()
             ),
           ])
               : Center(
@@ -147,8 +139,8 @@ class MapSampleState extends State< MapSample> {
     super.initState();
     Geolocator().getCurrentPosition().then((currloc) {
       setState(() {
-        //currentLocation = currloc;
-        currentLocation = LatLng(59.3274, 18.055);
+        currentLocation = currloc;
+       // currentLocation = LatLng(59.3274, 18.055);
         mapToggle = true;
       });
     });
@@ -186,6 +178,7 @@ class MapSampleState extends State< MapSample> {
   }
 
   Future<void> _moveCameraToSelf() async {
+    currentLocation = await Geolocator().getCurrentPosition();
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         bearing: 0,
@@ -196,6 +189,7 @@ class MapSampleState extends State< MapSample> {
 
   getSomePoints(var goal) async {
     polyline.clear();
+    currentLocation  = await Geolocator().getCurrentPosition();
     List<LatLng> points = await _googleMapPolyline.getCoordinatesWithLocation(
         origin: LatLng(currentLocation.latitude, currentLocation.longitude),
         destination: LatLng(goal.latitude, goal.longitude),
@@ -216,12 +210,13 @@ class MapSampleState extends State< MapSample> {
       ));
     });
   }
+
+
   Widget listView2() {
     bool route = true;
     return FutureBuilder<SplayTreeMap>(
         future:_getSortedListOnDistance(),
         builder: (context, snapshot) {
-          int lenght = 30;
           return snapshot.hasData
               ? Container(child:ListView.builder(
               itemCount: snapshot.data.length,
@@ -263,7 +258,7 @@ class MapSampleState extends State< MapSample> {
                           ),
 
                           Flexible(
-                            flex: 2,
+                            flex: 5,
                             child:SizedBox(child:RaisedButton.icon(
                               icon: Icon(Icons.play_arrow,
                               ),
@@ -273,16 +268,14 @@ class MapSampleState extends State< MapSample> {
                               onPressed: () {
                                 setState(() {
                                   route = !route;
+                                  _cancelButton = true;
                                 }
                                 );
-                                getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
+                                // getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
                                 _goToGym(value);
                               },
                             )
-
-
                             ),
-
                           )]
                     )
                 );
@@ -293,6 +286,8 @@ class MapSampleState extends State< MapSample> {
 
 
         });
+
+
   }
 
   Future<SplayTreeMap> _getSortedListOnDistance() async{
@@ -320,7 +315,6 @@ class MapSampleState extends State< MapSample> {
         tilt: 0,
         zoom: 16)));
   }
-
   Widget _navDrawer() {
     return Drawer(
       child: ListView(

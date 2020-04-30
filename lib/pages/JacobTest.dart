@@ -36,6 +36,7 @@ class MapSampleState extends State<MapSampleJacobo> {
   static const nycLng = 18.065836;
   bool _loggedIn = false;
   bool _cancelButton = false;
+
   GoogleMapPolyline _googleMapPolyline =
   new GoogleMapPolyline(apiKey: (apiKey));
   List<LatLng> routeCoords;
@@ -45,17 +46,6 @@ class MapSampleState extends State<MapSampleJacobo> {
   bool mapToggle = false;
   var currentLocation;
   Completer<GoogleMapController> _controller = Completer();
-
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(nycLat, nycLng),
-    zoom: 14.4746,
-  );
-
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(59.328560, 18.065836),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +111,7 @@ class MapSampleState extends State<MapSampleJacobo> {
                       onTap: () {
                         setState(() {
                           polyline.clear();
-                          _cancelButton = false;
+                          _cancelButton = !_cancelButton;
                         });
                       },
                     ),
@@ -149,8 +139,8 @@ class MapSampleState extends State<MapSampleJacobo> {
     super.initState();
     Geolocator().getCurrentPosition().then((currloc) {
       setState(() {
-        //currentLocation = currloc;
-        currentLocation = LatLng(59.3274, 18.055);
+        currentLocation = currloc;
+        // currentLocation = LatLng(59.3274, 18.055);
         mapToggle = true;
       });
     });
@@ -164,6 +154,7 @@ class MapSampleState extends State<MapSampleJacobo> {
     for (var doc in outdoorGymCollection.documents) {
       String name = doc.data['Name'];
       GeoPoint geoPoint = doc.data['GeoPoint'];
+
       try {
         allOutdoorGym.add(new OutdoorGym(name, geoPoint, context));
       }catch(e){
@@ -187,6 +178,7 @@ class MapSampleState extends State<MapSampleJacobo> {
   }
 
   Future<void> _moveCameraToSelf() async {
+    currentLocation = await Geolocator().getCurrentPosition();
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         bearing: 0,
@@ -197,6 +189,7 @@ class MapSampleState extends State<MapSampleJacobo> {
 
   getSomePoints(var goal) async {
     polyline.clear();
+    currentLocation  = await Geolocator().getCurrentPosition();
     List<LatLng> points = await _googleMapPolyline.getCoordinatesWithLocation(
         origin: LatLng(currentLocation.latitude, currentLocation.longitude),
         destination: LatLng(goal.latitude, goal.longitude),
@@ -217,6 +210,8 @@ class MapSampleState extends State<MapSampleJacobo> {
       ));
     });
   }
+
+
   Widget listView2() {
     bool route = true;
     return FutureBuilder<SplayTreeMap>(
@@ -263,23 +258,25 @@ class MapSampleState extends State<MapSampleJacobo> {
                           ),
 
                           Flexible(
-                            flex: 2,
+                            flex: 5,
                             child:SizedBox(child:RaisedButton.icon(
-                              icon: Icon(Icons.play_arrow),
+                              icon: Icon(Icons.play_arrow,
+                              ),
                               color: Color.fromARGB(
                                   255, 200 + index * 30, 50, 155),
-                              label: Text(' '),
+                              label: Text('Show route'),
                               onPressed: () {
                                 setState(() {
+                                  route = !route;
                                   _cancelButton = true;
                                 }
                                 );
-                                //getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
+                                 //getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
                                 _goToGym(value);
                               },
-                            )),
+                            )
                             ),
-                          ]
+                          )]
                     )
                 );
 
@@ -289,6 +286,8 @@ class MapSampleState extends State<MapSampleJacobo> {
 
 
         });
+
+
   }
 
   Future<SplayTreeMap> _getSortedListOnDistance() async{
@@ -316,7 +315,6 @@ class MapSampleState extends State<MapSampleJacobo> {
         tilt: 0,
         zoom: 16)));
   }
-
   Widget _navDrawer() {
     return Drawer(
       child: ListView(
@@ -360,7 +358,7 @@ class MapSampleState extends State<MapSampleJacobo> {
                 title: Text('Login'),
                 onTap: () => [
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomePage()))
+                      MaterialPageRoute(builder: (context) => LoginPage()))
                 ],
               ))
         ],
