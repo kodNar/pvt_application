@@ -13,6 +13,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'Login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'HomePage.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -35,7 +36,7 @@ class MapSampleState extends State< MapSample> {
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
   bool _loggedIn = false;
-
+  bool _cancelButton = true;
   GoogleMapPolyline _googleMapPolyline =
   new GoogleMapPolyline(apiKey: (apiKey));
   List<LatLng> routeCoords;
@@ -94,9 +95,7 @@ class MapSampleState extends State< MapSample> {
             Container(
               alignment: Alignment.bottomCenter,
               child: RaisedButton.icon(
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutPortal()));
-                },
+                onPressed: null,
                 icon: Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.white,
@@ -111,6 +110,25 @@ class MapSampleState extends State< MapSample> {
                 ),
               ),
             ),
+            Container(
+              padding: EdgeInsets.all(10),
+                alignment: Alignment.bottomLeft,
+                child: _cancelButton ? ClipOval(
+                  child: Material(
+                    color: Colors.red, // button color
+                    child: InkWell(
+                      splashColor: Colors.white, // inkwell color
+                      child: SizedBox(width: 56, height: 56, child: Icon(Icons.cancel)),
+                      onTap: () {
+                        setState(() {
+                          polyline.clear();
+                          _cancelButton = false;
+                        });
+                      },
+                    ),
+                  ),
+                ):Center()
+            ),
           ])
               : Center(
             child: Text('Loading...'),
@@ -120,7 +138,10 @@ class MapSampleState extends State< MapSample> {
             width: double.infinity,
             height: (MediaQuery.of(context).size.height / 7) * 2,
             child: listView2()),
-      ]),
+      ]
+
+      ),
+
     );
   }
 
@@ -176,6 +197,7 @@ class MapSampleState extends State< MapSample> {
   }
 
   getSomePoints(var goal) async {
+    polyline.clear();
     List<LatLng> points = await _googleMapPolyline.getCoordinatesWithLocation(
         origin: LatLng(currentLocation.latitude, currentLocation.longitude),
         destination: LatLng(goal.latitude, goal.longitude),
@@ -201,7 +223,6 @@ class MapSampleState extends State< MapSample> {
     return FutureBuilder<SplayTreeMap>(
         future:_getSortedListOnDistance(),
         builder: (context, snapshot) {
-          int lenght = 30;
           return snapshot.hasData
               ? Container(child:ListView.builder(
               itemCount: snapshot.data.length,
@@ -223,7 +244,6 @@ class MapSampleState extends State< MapSample> {
                                 _goToGym(value);
                               },
                               child:RichText(
-
                                 overflow: TextOverflow.ellipsis,
                                 strutStyle: StrutStyle(fontSize: 16.0),
                                 text: TextSpan(
@@ -239,44 +259,28 @@ class MapSampleState extends State< MapSample> {
                               strutStyle: StrutStyle(fontSize: 16.0),
                               text: TextSpan(
                                   style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-                                  text: key.toString()),
+                                  text: key.toString() + "m"),
                             ),
                           ),
 
                           Flexible(
                             flex: 2,
-                            child:SizedBox(child: route
-                                ? RaisedButton.icon(
+                            child:SizedBox(child:RaisedButton.icon(
                               icon: Icon(Icons.play_arrow),
                               color: Color.fromARGB(
                                   255, 200 + index * 30, 50, 155),
                               label: Text(' '),
                               onPressed: () {
-                                this.setState(() {
-                                  route = !route;
+                                setState(() {
+                                  _cancelButton = true;
                                 }
                                 );
-                                getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
+                                //getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
                                 _moveCameraToSelf();
                               },
-                            ) : Center(
-                                child: RaisedButton.icon(
-                                  icon: Icon(Icons.cancel),
-                                  color: Color.fromARGB(
-                                      255, 200 + index * 30, 50, 155),
-                                  label: Text(' '),
-                                  onPressed: () {
-                                    // getSomePoints(LatLng(allOutdoorGym[index].geo.latitude, allOutdoorGym[index].geo.longitude));
-                                    setState(() {
-                                      route = !route;
-                                    });
-                                  },
-                                )),
-
-
-                            ),
-
-                          )]
+                            )),
+                          ),
+                        ]
                     )
                 );
 
@@ -349,7 +353,10 @@ class MapSampleState extends State< MapSample> {
               ? ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
-            onTap: () => {},
+            onTap: () => [
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => HomePage()))
+            ],
           )
               : Center(
               child: ListTile(
@@ -357,7 +364,7 @@ class MapSampleState extends State< MapSample> {
                 title: Text('Login'),
                 onTap: () => [
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()))
+                      MaterialPageRoute(builder: (context) => HomePage()))
                 ],
               ))
         ],
