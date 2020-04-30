@@ -390,7 +390,6 @@ class _HomePageState extends State<HomePage> {
         String uid = result.user.uid;
         //hej
 
-
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => MapSample()));
       } catch (e) {
