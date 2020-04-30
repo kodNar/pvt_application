@@ -34,9 +34,9 @@ class MapSampleState extends State<MapSampleJacobo> {
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
   bool _loggedIn = false;
-
+  bool _cancelButton = true;
   GoogleMapPolyline _googleMapPolyline =
-      new GoogleMapPolyline(apiKey: (apiKey));
+  new GoogleMapPolyline(apiKey: (apiKey));
   List<LatLng> routeCoords;
   final Set<Polyline> polyline = {};
 
@@ -73,62 +73,64 @@ class MapSampleState extends State<MapSampleJacobo> {
               MediaQuery.of(context).padding.top,
           child: mapToggle
               ? Stack(children: <Widget>[
-                  GoogleMap(
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: true,
-                    mapType: MapType.normal,
-                    //     initialCameraPosition: _kGooglePlex,
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(
-                          currentLocation.latitude, currentLocation.longitude),
-                      zoom: 14.4746,
-                    ),
+            GoogleMap(
+              myLocationEnabled: true,
+              myLocationButtonEnabled: true,
+              mapType: MapType.normal,
+              //     initialCameraPosition: _kGooglePlex,
+              initialCameraPosition: CameraPosition(
+                target: LatLng(
+                    currentLocation.latitude, currentLocation.longitude),
+                zoom: 14.4746,
+              ),
 
-                    polylines: polyline,
-                    markers: Set.from(allMarkers),
-                    onMapCreated: (GoogleMapController controller) {
-                      _controller.complete(controller);
-                    },
+              polylines: polyline,
+              markers: Set.from(allMarkers),
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: RaisedButton.icon(
+                onPressed: null,
+                icon: Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                ),
+                label: Text(
+                  'Start',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    child: RaisedButton.icon(
-                      onPressed: null,
-                      icon: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                      label: Text(
-                        'Start',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-          Container(
-            alignment: Alignment.bottomLeft,
-            child: ClipOval(
-              child: Material(
-                color: Colors.blue, // button color
-                child: InkWell(
-                  splashColor: Colors.red, // inkwell color
-                  child: SizedBox(width: 56, height: 56, child: Icon(Icons.cancel)),
-                  onTap: () {
-                    setState(() {
-                      polyline.clear();
-                    });
-                  },
                 ),
               ),
-            )
-          ),
+            ),
+            Container(
+                alignment: Alignment.bottomLeft,
+                padding: EdgeInsets.all(10),
+                child: _cancelButton ? ClipOval(
+                  child: Material(
+                    color: Colors.red, // button color
+                    child: InkWell(
+                      splashColor: Colors.white, // inkwell color
+                      child: SizedBox(width: 56, height: 56, child: Icon(Icons.cancel)),
+                      onTap: () {
+                        setState(() {
+                          polyline.clear();
+                          _cancelButton = false;
+                        });
+                      },
+                    ),
+                  ),
+                ):Center()
+            ),
           ])
               : Center(
-                  child: Text('Loading...'),
-                ),
+            child: Text('Loading...'),
+          ),
         ),
         Container(
             width: double.infinity,
@@ -219,14 +221,13 @@ class MapSampleState extends State<MapSampleJacobo> {
     return FutureBuilder<SplayTreeMap>(
         future:_getSortedListOnDistance(),
         builder: (context, snapshot) {
-          int lenght = 30;
           return snapshot.hasData
-           ? Container(child:ListView.builder(
+              ? Container(child:ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
                 int key = snapshot.data.keys.elementAt(index);
                 OutdoorGym value = snapshot.data.values.elementAt(index);
-               return Container(
+                return Container(
                     color: Color.fromARGB(255, 132 + index * 30, 50, 155),
                     height: 50,
                     padding: EdgeInsets.all(10),
@@ -246,56 +247,40 @@ class MapSampleState extends State<MapSampleJacobo> {
                                 text: TextSpan(
                                     style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
                                     text: value.name),
-                                ),
                               ),
-                              ),
+                            ),
+                          ),
                           Flexible(
                             flex: 3,
                             child: RichText(
-                            overflow: TextOverflow.ellipsis,
-                            strutStyle: StrutStyle(fontSize: 16.0),
-                            text: TextSpan(
-                                style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-                                text: key.toString() + "m"),
-                          ),
+                              overflow: TextOverflow.ellipsis,
+                              strutStyle: StrutStyle(fontSize: 16.0),
+                              text: TextSpan(
+                                  style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                  text: key.toString() + "m"),
+                            ),
                           ),
 
                           Flexible(
                             flex: 2,
-                            child:SizedBox(child: route
-                                ? RaisedButton.icon(
+                            child:SizedBox(child:RaisedButton.icon(
                               icon: Icon(Icons.play_arrow),
                               color: Color.fromARGB(
                                   255, 200 + index * 30, 50, 155),
                               label: Text(' '),
                               onPressed: () {
                                 setState(() {
-                                  route = !route;
+                                  _cancelButton = true;
                                 }
                                 );
-                                getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
+                                //getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
                                 _moveCameraToSelf();
                               },
-                            ) : Center(
-                                child: RaisedButton.icon(
-                                  icon: Icon(Icons.cancel),
-                                  color: Color.fromARGB(
-                                      255, 200 + index * 30, 50, 155),
-                                  label: Text(' '),
-                                  onPressed: () {
-                                    // getSomePoints(LatLng(allOutdoorGym[index].geo.latitude, allOutdoorGym[index].geo.longitude));
-                                    setState(() {
-                                      route = !route;
-                                    });
-                                  },
-                                )),
-
-
+                            )),
                             ),
-
-                          )]
-                          )
-               );
+                          ]
+                    )
+                );
 
               })
           ) : Center(child: CircularProgressIndicator()
@@ -364,19 +349,19 @@ class MapSampleState extends State<MapSampleJacobo> {
           ),
           _loggedIn
               ? ListTile(
-                  leading: Icon(Icons.exit_to_app),
-                  title: Text('Logout'),
-                  onTap: () => {},
-                )
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+            onTap: () => {},
+          )
               : Center(
-                  child: ListTile(
-                  leading: Icon(Icons.exit_to_app),
-                  title: Text('Login'),
-                  onTap: () => [
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()))
-                  ],
-                ))
+              child: ListTile(
+                leading: Icon(Icons.exit_to_app),
+                title: Text('Login'),
+                onTap: () => [
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()))
+                ],
+              ))
         ],
       ),
     );
