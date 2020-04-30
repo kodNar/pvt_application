@@ -388,6 +388,7 @@ class _HomePageState extends State<HomePage> {
       try {
         AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
         String uid = result.user.uid;
+        //hej
 
 
         Navigator.push(
