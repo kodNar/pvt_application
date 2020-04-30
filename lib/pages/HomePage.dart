@@ -386,7 +386,10 @@ class _HomePageState extends State<HomePage> {
       //Checks so that the inputs are correct
       formState.save(); //ser till att vi kan hämta variablerna.
       try {
-        AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password); //Confirming the e-mail and password towards the firebase database
+        AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
+        String uid = result.user.uid;
+
+
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => MapSample()));
       } catch (e) {

@@ -263,12 +263,12 @@ class MapSampleState extends State< MapSample> {
 
                           Flexible(
                             flex: 2,
-                            child:SizedBox(child: route
-                                ? RaisedButton.icon(
-                              icon: Icon(Icons.play_arrow),
+                            child:SizedBox(child: route ? RaisedButton.icon(
+                              icon: Icon(Icons.play_arrow,
+                              ),
                               color: Color.fromARGB(
                                   255, 200 + index * 30, 50, 155),
-                              label: Text(' '),
+                              label: Text('Show route'),
                               onPressed: () {
                                 setState(() {
                                   route = !route;
