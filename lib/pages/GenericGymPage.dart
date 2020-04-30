@@ -8,7 +8,6 @@ class GenericGymPage extends StatelessWidget {
   GenericGymPage(String name, List<String> equipment) {
     this._name = name;
     this._equipment = equipment;
-
   }
 
   Widget build(BuildContext context) {
@@ -68,7 +67,8 @@ class GenericGymPage extends StatelessWidget {
                                               color: Colors.white,
                                               fontSize: 20.0,
                                               fontWeight: FontWeight.bold),
-                                        ))
+
+                                       ))
                                   ],
                                 ))),
                       ),

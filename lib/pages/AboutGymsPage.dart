@@ -33,12 +33,20 @@ class AboutGymsPage extends StatelessWidget{
         title: Text(_name),
       ),
       body: Column(
+
         children: <Widget>[
-          Text('About', style: TextStyle(
+          Container(
+            padding: EdgeInsets.only(top: 20),
+            alignment: Alignment.center,
+          child: Text('About', style: TextStyle(
             color: Colors.white,
+            fontSize: 45
+          ),
           ),
           ),
           Container(
+            padding: EdgeInsets.only(left: 10),
+            alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(top: 20),
             child: Text(
               'Quick facts:', style: TextStyle(
@@ -46,32 +54,53 @@ class AboutGymsPage extends StatelessWidget{
             ),
             ),
           ),
-          Text(
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(left: 25, top: 5),
+            child: Text(
             'Adress: ' + _adress, style: TextStyle(
             color: Colors.white,
           ),
           ),
-          Text(
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(left: 25, top: 5),
+          child: Text(
             'Lights: ' + _lights, style: TextStyle(
             color: Colors.white,
           ),
           ),
-          Text(
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(left: 25, top: 5),
+          child: Text(
             'Equipment material: ' + _eqMaterial, style: TextStyle(
             color: Colors.white,
           ),
           ),
-          Text(
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(left: 25, top: 5),
+          child: Text(
             'Ground material: ' + _groundMaterial, style: TextStyle(
             color: Colors.white,
           ),
           ),
-          Text(
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(left: 25, top: 5),
+          child: Text(
             'Location: ' + _location, style: TextStyle(
             color: Colors.white,
           ),
           ),
+          ),
           Container(
+            padding: EdgeInsets.only(top: 40),
             child: RaisedButton(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -79,7 +108,7 @@ class AboutGymsPage extends StatelessWidget{
               onPressed: () {},
               child: Text(
                 'Busy hours', style: TextStyle(
-                color: Colors.white,
+
               )
               ),
             ),
@@ -88,5 +117,4 @@ class AboutGymsPage extends StatelessWidget{
       ),
     );
   }
-
 }

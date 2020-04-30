@@ -162,6 +162,7 @@ class MapSampleState extends State< MapSample> {
     for (var doc in outdoorGymCollection.documents) {
       String name = doc.data['Name'];
       GeoPoint geoPoint = doc.data['GeoPoint'];
+
       try {
         allOutdoorGym.add(new OutdoorGym(name, geoPoint, context));
       }catch(e){
@@ -263,7 +264,7 @@ class MapSampleState extends State< MapSample> {
 
                           Flexible(
                             flex: 2,
-                            child:SizedBox(child: route ? RaisedButton.icon(
+                            child:SizedBox(child:RaisedButton.icon(
                               icon: Icon(Icons.play_arrow,
                               ),
                               color: Color.fromARGB(
@@ -275,21 +276,9 @@ class MapSampleState extends State< MapSample> {
                                 }
                                 );
                                 getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
-                                _moveCameraToSelf();
+                                _goToGym(value);
                               },
-                            ) : Center(
-                                child: RaisedButton.icon(
-                                  icon: Icon(Icons.cancel),
-                                  color: Color.fromARGB(
-                                      255, 200 + index * 30, 50, 155),
-                                  label: Text(' '),
-                                  onPressed: () {
-                                    // getSomePoints(LatLng(allOutdoorGym[index].geo.latitude, allOutdoorGym[index].geo.longitude));
-                                    setState(() {
-                                      route = !route;
-                                    });
-                                  },
-                                )),
+                            )
 
 
                             ),

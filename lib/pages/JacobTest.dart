@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'package:flutterapp/pages/HomePage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
@@ -34,7 +35,7 @@ class MapSampleState extends State<MapSampleJacobo> {
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
   bool _loggedIn = false;
-  bool _cancelButton = true;
+  bool _cancelButton = false;
   GoogleMapPolyline _googleMapPolyline =
   new GoogleMapPolyline(apiKey: (apiKey));
   List<LatLng> routeCoords;
@@ -274,7 +275,7 @@ class MapSampleState extends State<MapSampleJacobo> {
                                 }
                                 );
                                 //getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
-                                _moveCameraToSelf();
+                                _goToGym(value);
                               },
                             )),
                             ),
@@ -359,7 +360,7 @@ class MapSampleState extends State<MapSampleJacobo> {
                 title: Text('Login'),
                 onTap: () => [
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()))
+                      MaterialPageRoute(builder: (context) => HomePage()))
                 ],
               ))
         ],
