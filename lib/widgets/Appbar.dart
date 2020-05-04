@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
+import 'package:flutterapp/pages/WorkoutPortal.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Color backgroundColor = Colors.red;
-  final Text title;
-  final AppBar appBar;
-  final List<Widget> widgets;
+  final String title;
 
-  /// you can add more fields that meet your needs
-
-  const BaseAppBar({Key key, this.title, this.appBar, this.widgets})
+  const BaseAppBar({Key key, this.title})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return  AppBar(
+      backgroundColor:  Color.fromARGB(255, 132, 50, 155),
       title: Container(
-        padding: EdgeInsets.only(right: 50),
         child: Center(
           child: Text(
-            'Workouts',
+            title,
             style: TextStyle(
               color: Colors.white,
               fontSize: 30,
@@ -28,19 +24,32 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       leading: InkWell(
-        onTap: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MapSample()));
+        onTap: () {
+          Navigator.pop(context,
+              MaterialPageRoute(builder: (context) => WorkoutPortal()));
         },
         child: Icon(
-          Icons.home,
-          color: Colors.black,
+          Icons.arrow_back_ios,
+          color: Colors.white,
           size: 40,
-          semanticLabel: 'Home button',
+          semanticLabel: 'Back',
         ),
       ),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.home,
+            size: 40,
+            color: Colors.white,
+          ),
+          tooltip: 'Go to homepage',
+          onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MapSample()));
+          },
+        ),
+      ],
     );
   }
-
   @override
-  Size get preferredSize => new Size.fromHeight(appBar.preferredSize.height);
+  Size get preferredSize => new Size.fromHeight(59);
 }
