@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/pages/ExerciseOrEquipment.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
+import 'package:flutterapp/widgets/Appbar.dart';
 
 import 'MapsTest.dart';
 
@@ -12,44 +14,8 @@ class _WorkoutLogState extends State<WorkoutLog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Container(
-          child: Center(
-            child: Text(
-              'Workout log',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 30,
-              ),
-            ),
-          ),
-        ),
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context,
-                MaterialPageRoute(builder: (context) => WorkoutPortal()));
-          },
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-            size: 40,
-            semanticLabel: 'Back',
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.home,
-              size: 40,
-              color: Colors.black,
-            ),
-            tooltip: 'Go to homepage',
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MapSample()));
-            },
-          ),
-        ],
+      appBar: BaseAppBar(
+        title: "Workout Log",
       ),
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
       body: Form(
@@ -63,7 +29,10 @@ class _WorkoutLogState extends State<WorkoutLog> {
         backgroundColor: Color(0xFF42A5F5),
         icon: const Icon(Icons.add),
         label: const Text('Add exercise/equipment'),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ExcerciseOrEquipment()));
+
+        },
       ),
       floatingActionButtonLocation:
       FloatingActionButtonLocation.centerDocked,
