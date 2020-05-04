@@ -21,13 +21,13 @@ class DatabaseService {
       Firestore.instance.collection('OutdoorGyms');
 
   Future updateUserData(String userID, String email, String nickName) async {
+    CollectionReference workoutCollection = userCollection.document(uid).collection('workoutCollection');
     return await userCollection.document(uid).setData({
       'userID': userID,
       'email': email,
       'nickName': nickName,
     });
   }
-
 
   Future<String> getNickname() async {
     var nickname =
