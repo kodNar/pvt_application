@@ -13,8 +13,6 @@ class DatabaseTestPage extends StatefulWidget {
 }
 
 class _DatabaseTestPageState extends State<DatabaseTestPage> {
-  FirebaseUser user;
-
   @override
   Widget build(BuildContext context) {
     /*Typ of data we get back a snapshot of the...*/
@@ -50,18 +48,34 @@ class _DatabaseTestPageState extends State<DatabaseTestPage> {
                   onPressed: printNickname,
                 ),
               ),
+              Container(
+                width: 200,
+                height: 200,
+                color: Colors.red,
+                child: FlatButton(
+                  onPressed: updateNickname,
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
   }
+
   /// Printar ut en användares nickname. Await var tydligen jävligt viktig annars
   /// blev det kaos
 
+  updateNickname() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    DatabaseService(uid: user.uid)
+        .updateUserData(user.uid, user.email, 'Batman');
+  }
+
   printNickname() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-     String nickname = await DatabaseService(uid: user.uid).getNickname();
+    String nickname = await DatabaseService(uid: user.uid).getNickname();
     print(nickname);
+    print(user.uid);
   }
 }
