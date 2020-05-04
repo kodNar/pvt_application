@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/Login.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
+import 'package:flutterapp/widgets/Appbar.dart';
 
 class WorkoutPortal extends StatefulWidget {
   @override
@@ -13,31 +14,7 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 132, 50, 155),
-        appBar: AppBar(
-          title: Container(
-            padding: EdgeInsets.only(right: 50),
-            child: Center(
-              child: Text(
-                'Workouts',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                ),
-              ),
-            ),
-          ),
-          leading: InkWell(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => MapSample()));
-            },
-            child: Icon(
-              Icons.home,
-              color: Colors.black,
-              size: 40,
-              semanticLabel: 'Home button',
-            ),
-          ),
-        ),
+        appBar: BaseAppBar(),
         body: Center(
           child: Container(
             padding: EdgeInsets.all(40),
