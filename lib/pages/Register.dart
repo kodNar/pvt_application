@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/WorkoutSession.dart';
 import 'package:flutterapp/pages/Login.dart';
 import 'package:flutterapp/services/Database.dart';
 
@@ -191,7 +193,6 @@ class _RegisterState extends State<Register>{
       try{
         AuthResult result = await FirebaseAuth.instance.createUserWithEmailAndPassword(password: _password, email: _email);
         FirebaseUser user = result.user;
-        //creating a new document in the user collection for the new user.
         await DatabaseService(uid: user.uid).updateUserData(user.uid, _email, 'nickName');
         user.sendEmailVerification();
         Navigator.of(context).pop();

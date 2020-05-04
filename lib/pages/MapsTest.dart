@@ -212,8 +212,6 @@ class MapSampleState extends State< MapSample> {
       ));
     });
   }
-
-
   Widget listView2() {
     bool route = true;
     return FutureBuilder<SplayTreeMap>(
@@ -258,6 +256,7 @@ class MapSampleState extends State< MapSample> {
                                   text: key.toString() + "m"),
                             ),
                           ),
+
 
                           Flexible(
                             flex: 5,
