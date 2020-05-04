@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/Login.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
+import 'package:flutterapp/pages/WorkoutLog.dart';
 
 class WorkoutPortal extends StatefulWidget {
   @override
@@ -27,8 +28,9 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
             ),
           ),
           leading: InkWell(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => MapSample()));
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MapSample()));
             },
             child: Icon(
               Icons.home,
@@ -41,13 +43,11 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
         body: Center(
           child: Container(
             padding: EdgeInsets.all(40),
-            child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
+            child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
               InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
+                      MaterialPageRoute(builder: (context) => WorkoutLog()));
                 },
                 child: Container(
                   width: 350,
@@ -79,7 +79,7 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
               InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
+                      MaterialPageRoute(builder: (context) => WorkoutLog()));
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -108,7 +108,7 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
                       )),
                 ),
               ),
-                  SizedBox(height: 30),
+              SizedBox(height: 30),
               InkWell(
                 onTap: () {
                   Navigator.push(context,

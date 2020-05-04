@@ -84,7 +84,9 @@ class MapSampleState extends State< MapSample> {
             Container(
               alignment: Alignment.bottomCenter,
               child: RaisedButton.icon(
-                onPressed: null,
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutPortal()));
+                },
                 icon: Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.white,
