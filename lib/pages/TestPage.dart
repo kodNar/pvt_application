@@ -5,6 +5,9 @@ import 'package:flutterapp/services/DatabaseTestPage.dart';
 import 'JacobTest.dart';
 import 'package:flutterapp/pages/AboutGymsPage.dart';
 
+import 'JacobTest.dart';
+import 'JacobTest.dart';
+import 'JacobTest.dart';
 import 'MapsTest.dart';
 
 class TestPage extends StatefulWidget {
@@ -93,11 +96,10 @@ class _TestPageState extends State<TestPage> {
               ),
             ),
             Container(
-
               padding: EdgeInsets.fromLTRB(0,10,0,10),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MapSample() )); /** Sätt din testsida här! **/
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => testis() )); /** Sätt din testsida här! **/
                 },
                 child: Text(
                   'Jacobs testknapp',
