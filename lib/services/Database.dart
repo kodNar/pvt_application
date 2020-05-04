@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 
 import 'package:flutterapp/models/user.dart';
@@ -26,6 +27,7 @@ class DatabaseService {
       'nickName': nickName,
     });
   }
+
 
   Future<String> getNickname() async {
     var nickname =

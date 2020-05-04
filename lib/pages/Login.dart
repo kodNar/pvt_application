@@ -129,7 +129,6 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => ResetPassword())); /*ResetPassword()*/
                   },
-
                   // ignore: unnecessary_statements
                   child: Text(
                     'Forgot password?',
