@@ -55,26 +55,41 @@ class _WorkoutLogState extends State<WorkoutLog> {
       body: Form(
         child: Column(
           children: <Widget>[
-
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: FlatButton(
-                color: Colors.blue,
-                textColor: Colors.white,
-                disabledColor: Colors.grey,
-                disabledTextColor: Colors.black,
-                padding: EdgeInsets.all(8.0),
-                splashColor: Colors.blueAccent,
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        elevation: 4.0,
+        backgroundColor: Color(0xFF42A5F5),
+        icon: const Icon(Icons.add),
+        label: const Text('Add exercise/equipment'),
+        onPressed: () {},
+      ),
+      floatingActionButtonLocation:
+      FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+                icon: Icon(Icons.delete),
+                color: Colors.red,
+                iconSize: 40,
                 onPressed: () {},
-                child: Text(
-                  "Flat Button",
-                  style: TextStyle(fontSize: 20.0),
-                ),
               ),
+
+              IconButton(
+                icon: Icon(Icons.save),
+                color: Colors.green,
+                iconSize: 40,
+                onPressed: () {},
             ),
           ],
         ),
       ),
+
     );
   }
 }
