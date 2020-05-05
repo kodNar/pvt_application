@@ -51,7 +51,7 @@ class MapSampleState extends State< MapSample> {
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
-      title: Text("Stockholms outdoor gyms"),
+      title: Text("Stockholm outdoor gyms"),
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
     );
     return new Scaffold(
@@ -83,8 +83,10 @@ class MapSampleState extends State< MapSample> {
               },
             ),
             Container(
+
               alignment: Alignment.bottomCenter,
               child: RaisedButton.icon(
+                color: Color.fromARGB(255, 132, 50, 155),
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutPortal()));
                 },
@@ -93,7 +95,7 @@ class MapSampleState extends State< MapSample> {
                   color: Colors.white,
                 ),
                 label: Text(
-                  'Start',
+                  'Start workout',
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -372,7 +374,7 @@ class MapSampleState extends State< MapSample> {
               : Center(
               child: ListTile(
                 leading: Icon(Icons.exit_to_app),
-                title: Text('Login'),
+                title: Text('Logout'),
                 onTap: () => [
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginPage()))

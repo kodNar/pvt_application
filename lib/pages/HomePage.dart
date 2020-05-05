@@ -60,12 +60,12 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text("AppName",
+            Text("Stockholm outdoor gyms",
                 style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Stockholm',
                     fontStyle: FontStyle.italic,
-                    fontSize: 45)),
+                    fontSize: 35)),
             Container(
               margin: EdgeInsets.all(5.0),
               height: 120,
@@ -282,6 +282,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             */
+            /*
             Container(
               child: GestureDetector(
                 onTap: () {
@@ -298,7 +299,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-
+             */
           ],
         ),
       ),
