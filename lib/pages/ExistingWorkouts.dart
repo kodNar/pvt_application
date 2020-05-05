@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/WorkoutSession.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
-
 class ExistingWorkouts extends StatefulWidget {
   @override
   _ExistingState createState() => _ExistingState();
@@ -63,6 +64,7 @@ class _ExistingState extends State<ExistingWorkouts> {
   }
 
   Future<List<WorkoutSession>> _getSessions() async {
-    return null;
-  }
-}
+
+      }
+    }
+

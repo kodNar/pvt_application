@@ -297,6 +297,7 @@ class MapSampleState extends State< MapSample> {
 
 
   }
+
   checkIfSignedIn() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     setState(() {
