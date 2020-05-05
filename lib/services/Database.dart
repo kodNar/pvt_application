@@ -36,7 +36,10 @@ class DatabaseService {
   
   Future<String> getWorkouts() async {
     QuerySnapshot collectionReference = await Firestore.instance.collection('users').document(uid).collection("workoutCollection").getDocuments();
-    print(collectionReference);
+   for(var doc in collectionReference.documents){
+     print(doc.data);
+
+   }
   }
 
   Future<String> getNickname() async {
