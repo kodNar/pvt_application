@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
@@ -147,22 +148,31 @@ class MapSampleState extends State< MapSample> {
       });
     });
     populateOutdoorGymList();
-
+    someMethod();
   }
 
   /// Loads the outdoorgyms from the database and populates the outdoor gym list.
   populateOutdoorGymList() async {
+    List <String> equp;
     QuerySnapshot outdoorGymCollection = await Firestore.instance.collection("OutdoorGyms").getDocuments();
+
     for (var doc in outdoorGymCollection.documents) {
+      try {
       String name = doc.data['Name'];
       GeoPoint geoPoint = doc.data['GeoPoint'];
+      if(doc.data['Equipment'].toString() != null) {
+        equp.add(doc.data['Equipment'].toString());
+      }
 
-      try {
+
         allOutdoorGym.add(new OutdoorGym(name, geoPoint, context));
+
       }catch(e){
         print ("Error creating gym");
       }
     }
+    equp.forEach((e)=>
+        print(e +" dqwdqwdqwdqwd"));
     _addGymsToMarkers();
   }
 
@@ -290,6 +300,12 @@ class MapSampleState extends State< MapSample> {
 
 
   }
+
+  someMethod() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    print(user.uid);
+  }
+
 
   Future<SplayTreeMap> _getSortedListOnDistance() async{
     SplayTreeMap st = new SplayTreeMap<int, OutdoorGym>();
