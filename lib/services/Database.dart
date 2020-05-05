@@ -26,7 +26,6 @@ class DatabaseService {
       'kuken': 'snälla fungera'
 
     });
-
     return await userCollection.document(uid).setData({
       'userID': userID,
       'email': email,
@@ -34,7 +33,11 @@ class DatabaseService {
 
     });
   }
-
+  
+  Future<String> getWorkouts() async {
+    QuerySnapshot collectionReference = await Firestore.instance.collection('users').document(uid).collection("workoutCollection").getDocuments();
+    print(collectionReference);
+  }
 
   Future<String> getNickname() async {
     var nickname =

@@ -68,8 +68,8 @@ class _HomePageState extends State<HomePage> {
                     fontSize: 35)),
             Container(
               margin: EdgeInsets.all(5.0),
-              height: 150,
-              width: 150,
+              height: 125,
+              width: 125,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/applogga_vit_liten.png'),
@@ -282,7 +282,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             */
-            /*
+
             Container(
               child: GestureDetector(
                 onTap: () {
@@ -299,7 +299,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-             */
           ],
         ),
       ),

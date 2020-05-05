@@ -56,6 +56,18 @@ class _DatabaseTestPageState extends State<DatabaseTestPage> {
                   onPressed: updateNickname,
                 ),
               ),
+
+              Container(
+                width: 200,
+                height: 200,
+                color: Colors.purple,
+                child: FlatButton(
+                  onPressed: () async{
+                    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+                    DatabaseService(uid: user.uid).getWorkouts();
+                  },
+                ),
+              ),
             ],
           ),
         ),
