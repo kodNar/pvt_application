@@ -68,8 +68,8 @@ class _HomePageState extends State<HomePage> {
                     fontSize: 35)),
             Container(
               margin: EdgeInsets.all(5.0),
-              height: 120,
-              width: 120,
+              height: 150,
+              width: 150,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/applogga_vit_liten.png'),
