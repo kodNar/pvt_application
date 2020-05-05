@@ -380,7 +380,7 @@ class MapSampleState extends State< MapSample> {
               : Center(
               child: ListTile(
                 leading: Icon(Icons.exit_to_app),
-                title: Text('Logout'),
+                title: Text('Login'),
                 onTap: () => [
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => HomePage()))
