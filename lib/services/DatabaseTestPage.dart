@@ -41,31 +41,44 @@ class _DatabaseTestPageState extends State<DatabaseTestPage> {
                 ),
               ),
               Container(
-                width: 200,
-                height: 200,
+                width: 100,
+                height: 100,
                 color: Colors.green,
                 child: FlatButton(
+                  child: null,
                   onPressed: printNickname,
                 ),
               ),
               Container(
-                width: 200,
-                height: 200,
+                width: 100,
+                height: 100,
                 color: Colors.red,
                 child: FlatButton(
+                  child: null,
                   onPressed: updateNickname,
                 ),
               ),
 
               Container(
-                width: 200,
-                height: 200,
+                width: 100,
+                height: 100,
                 color: Colors.purple,
                 child: FlatButton(
                   onPressed: () async{
                     FirebaseUser user = await FirebaseAuth.instance.currentUser();
                     DatabaseService(uid: user.uid).getWorkouts();
-                  },
+                  }, child: null,
+                ),
+              ),
+              Container(
+                width: 100,
+                height: 100,
+                color: Colors.orange,
+                child: FlatButton(
+                  onPressed: () async{
+                    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+                    DatabaseService(uid: user.uid).addWorkout('batman');
+                  },child: null,
                 ),
               ),
             ],
