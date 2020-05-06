@@ -29,13 +29,18 @@ class _ExistingState extends State<ExistingWorkouts> {
                               child: ListView.builder(
                                   itemCount: snapshot.data.length,
                                   itemBuilder: (context, index) {
-                                    return RaisedButton(
-                                        color: Color.fromARGB(
-                                            255, 200+ index * 30, 50, 155),
+                                    return Container(
+                                      alignment: Alignment.center,
+                                        height: 80,
                                         padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                                          color: Color.fromARGB(
+                                              255, 200+ index * 30, 50, 155),
+                                        ),
                                         child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.center,
                                             children: <Widget>[
                                               Container(child: InkWell(
                                                 splashColor: Colors.blue,
@@ -46,10 +51,10 @@ class _ExistingState extends State<ExistingWorkouts> {
                                                   overflow:
                                                   TextOverflow.ellipsis,
                                                   strutStyle: StrutStyle(
-                                                      fontSize: 10.0),
+                                                      fontSize: 30.0),
                                                   text: TextSpan(
                                                       style: TextStyle(
-                                                          fontSize: 26,
+                                                          fontSize: 30,
                                                           color: Colors.white,
                                                           fontWeight:
                                                           FontWeight
