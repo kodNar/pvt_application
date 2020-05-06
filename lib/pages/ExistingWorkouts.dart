@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/WorkoutSession.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
+import 'package:flutterapp/services/Database.dart';
 class ExistingWorkouts extends StatefulWidget {
   @override
   _ExistingState createState() => _ExistingState();
@@ -20,7 +21,7 @@ class _ExistingState extends State<ExistingWorkouts> {
         body: Center(
             child: Container(
                 padding: EdgeInsets.all(40),
-                child: FutureBuilder<List<WorkoutSession>>(
+                child: FutureBuilder<List<String>>(
                     future: _getSessions(),
                     builder: (context, snapshot) {
                       return snapshot.hasData
@@ -53,7 +54,7 @@ class _ExistingState extends State<ExistingWorkouts> {
                                                             fontWeight:
                                                                 FontWeight
                                                                     .bold),
-                                                        text: 'value.name'),
+                                                        text: snapshot.data[index]),
                                                   ),
                                                 ),
                                               ),
@@ -63,8 +64,14 @@ class _ExistingState extends State<ExistingWorkouts> {
                     }))));
   }
 
-  Future<List<WorkoutSession>> _getSessions() async {
-
-      }
+  Future<List<String>> _getSessions() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+      List<String> workouts =await DatabaseService(uid: user.uid).getWorkouts();
+      print(workouts.length);
+      workouts.forEach((e)=>
+          print(e+"fewewfewfwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
+      );
+      return workouts;
+  }
     }
 

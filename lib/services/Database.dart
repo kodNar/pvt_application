@@ -34,12 +34,13 @@ class DatabaseService {
     });
   }
   
-  Future<String> getWorkouts() async {
+  Future<List<String>> getWorkouts() async {
+    List<String> workouts = [];
     QuerySnapshot collectionReference = await Firestore.instance.collection('users').document(uid).collection("workoutCollection").getDocuments();
    for(var doc in collectionReference.documents){
-     print(doc.data);
-
+     workouts.add(doc.data['Name']);
    }
+   return workouts;
   }
 
   Future<String> getNickname() async {
