@@ -4,7 +4,7 @@ Stockholm Outdoor Gym application
 
 ## Getting Started
 
-2020/04 - 2020/06
+2020-03-23 to 2020-06-07
 
 PVT course DSV
 
