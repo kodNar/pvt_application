@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/WorkoutSession.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 import 'package:flutterapp/services/Database.dart';
+
 class ExistingWorkouts extends StatefulWidget {
   @override
   _ExistingState createState() => _ExistingState();
@@ -12,65 +13,120 @@ class ExistingWorkouts extends StatefulWidget {
 
 class _ExistingState extends State<ExistingWorkouts> {
   @override
+  List<bool> _isSelected = [false, true];
+
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 132, 50, 155),
         appBar: BaseAppBar(
-          title: "Existing Workouts",
+          title: "Discover Workouts",
         ),
-        body: Center(
-            child: Container(
-                padding: EdgeInsets.all(40),
-                child: FutureBuilder<List<WorkoutSession>>(
-                    future: _getSessions(),
-                    builder: (context, snapshot) {
-                      return snapshot.hasData
-                          ? Container(
-                              child: ListView.builder(
-                                  itemCount: snapshot.data.length,
-                                  itemBuilder: (context, index) {
-                                    return Container(
-                                      alignment: Alignment.center,
-                                        height: 80,
-                                        padding: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                                          color: Color.fromARGB(
-                                              255, 200+ index * 30, 50, 155),
-                                        ),
-                                        child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Container(child: InkWell(
-                                                splashColor: Colors.blue,
-                                                highlightColor: Colors.purpleAccent,
-                                                onTap: () {
-                                                },
-                                                child: RichText(
-                                                  overflow:
-                                                  TextOverflow.ellipsis,
-                                                  strutStyle: StrutStyle(
-                                                      fontSize: 30.0),
-                                                  text: TextSpan(
-                                                      style: TextStyle(
-                                                          fontSize: 30,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                          FontWeight
-                                                              .bold),
-                                                      text: snapshot.data[index].name
-                                                  ),
-                                                ),
-                                              ),)
-                                            ]));
-                                  }))
-                          : Center();
-                    }))));
+        body: Column(
+          children: <Widget>[
+            Container(child: _topImage()),
+            Container(child: _toggleSearch()),
+            Container(
+                // add search field
+                ),
+            Container(child: _listView()),
+          ],
+        ));
   }
+
+  Widget _topImage() {
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      width: 175,
+      height: 75,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 132, 50, 155),
+        image: DecorationImage(
+          image: AssetImage('assets/images/Stockholm_endast_logga_vit.png'),
+        ),
+      ),
+    );
+  }
+
+  Widget _toggleSearch() {
+    return ToggleButtons(
+      fillColor: Colors.pink,
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width / 2 - 2,
+          child: Text(
+            "Most Recent",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 15,
+            ),
+          ),
+          alignment: Alignment.center,
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width / 2 - 1,
+          child: Text(
+            "Highest Voted",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 15,
+            ),
+          ),
+          alignment: Alignment.center,
+        ),
+      ],
+      isSelected: _isSelected,
+      onPressed: (int index) {
+        setState(() {
+          if (!_isSelected[index]) {
+            _isSelected[index] = !_isSelected[index];
+            if (index == 0) {
+              _isSelected[1] = false;
+            } else {
+              _isSelected[0] = false;
+            }
+          }
+        });
+      },
+    );
+  }
+
+  Widget _listView() {
+    return FutureBuilder<List<WorkoutSession>>(
+        future: _getSessions(),
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? Container(
+                  child: Expanded(
+                      child: ListView.builder(
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                                height: 50,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(5),
+                                color: Color.fromARGB(
+                                    255, 200 + index * 30, 50, 155),
+                                child: InkWell(
+                                    onTap: () {
+                                      // länka till Session
+                                    },
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Container(
+                                            child: Text("walla"),
+                                          ),
+                                        ])));
+                          })))
+              : Center();
+        });
+  }
+
   Future<List<WorkoutSession>> _getSessions() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-      List<WorkoutSession> workouts = await DatabaseService(uid: user.uid).getWorkouts();
-      return workouts;
+    List<WorkoutSession> workouts =
+        await DatabaseService(uid: user.uid).getWorkouts();
+    return workouts;
   }
 }
