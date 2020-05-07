@@ -47,8 +47,7 @@ class DatabaseService {
     List<WorkoutSession> workouts = [];
     QuerySnapshot collectionReference = await Firestore.instance.collection('users').document(uid).collection("workoutCollection").getDocuments();
    for(var doc in collectionReference.documents){
-     print(doc.data['Date']);
-     WorkoutSession w = WorkoutSession(doc.data['Name'],null,null,null);
+     WorkoutSession w = WorkoutSession(doc.data['Name'],null,null,(doc.data['Date'] as Timestamp).toDate());
      workouts.add(w);
    }
    return workouts;
