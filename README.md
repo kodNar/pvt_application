@@ -1,4 +1,4 @@
-# flutterapp
+# Stockholm Outdoor Gym
 
 Stockholm Outdoor Gym application
 
