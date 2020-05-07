@@ -21,7 +21,7 @@ class _ExistingState extends State<ExistingWorkouts> {
         body: Center(
             child: Container(
                 padding: EdgeInsets.all(40),
-                child: FutureBuilder<List<String>>(
+                child: FutureBuilder<List<WorkoutSession>>(
                     future: _getSessions(),
                     builder: (context, snapshot) {
                       return snapshot.hasData
@@ -59,7 +59,7 @@ class _ExistingState extends State<ExistingWorkouts> {
                                                           fontWeight:
                                                           FontWeight
                                                               .bold),
-                                                      text: snapshot.data[index]
+                                                      text: snapshot.data[index].name
                                                   ),
                                                 ),
                                               ),)
@@ -68,11 +68,9 @@ class _ExistingState extends State<ExistingWorkouts> {
                           : Center();
                     }))));
   }
-
-  Future<List<String>> _getSessions() async {
+  Future<List<WorkoutSession>> _getSessions() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-      List<String> workouts =await DatabaseService(uid: user.uid).getWorkouts();
+      List<WorkoutSession> workouts = await DatabaseService(uid: user.uid).getWorkouts();
       return workouts;
   }
-    }
-
+}
