@@ -10,10 +10,22 @@ class WorkoutGymList extends StatefulWidget {
 
 class _WorkoutGymListState extends State<WorkoutGymList> {
   List<OutdoorGym> allOutdoorGym = MapSampleState.allOutdoorGym;
+  List<String> allGymNames = List<String>();
+  List<String> queriedGymNames = List<String>();
+  TextEditingController editingController = TextEditingController(); //For search
+@override
+void initState() {
+  for(OutdoorGym gym in allOutdoorGym){
+    queriedGymNames.add(gym.name);
+    allGymNames.add(gym.name);
+  }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    printList();
+
     return Scaffold(
       backgroundColor: Color(0xFF84329b),
       appBar: BaseAppBar(
@@ -24,29 +36,40 @@ class _WorkoutGymListState extends State<WorkoutGymList> {
           Container(
             padding: EdgeInsets.all(15),
             child: TextField(
+              onChanged: (value){
+                searchFilter(value);
+              },
+              controller: editingController,
               style: TextStyle(
                 color: Colors.white,
               ),
               decoration: InputDecoration(
-
-                  labelText: "Search",
-                  labelStyle: TextStyle(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: 1.5,
+                  ),
+                    borderRadius: BorderRadius.all(Radius.circular(25.0,)
+                    ),
+                ),
+                  hintText: "Search",
+                  hintStyle: TextStyle(
                     color: Colors.white,
                   ),
-                  hintText: "Search",
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: Icon(Icons.search,
+                    color: Colors.black,
+                  ),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(25.0)))),
             ),
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: allOutdoorGym.length,
+              shrinkWrap: true,
+              itemCount: queriedGymNames.length,
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
                     onTap: () {},
-                    title: Text(allOutdoorGym[index].name),
+                    title: Text('${queriedGymNames[index]}'),
                   ),
                 );
               },
@@ -57,10 +80,27 @@ class _WorkoutGymListState extends State<WorkoutGymList> {
     );
   }
 
-  void printList() {
-    print(allOutdoorGym.length);
-    for (OutdoorGym gym in allOutdoorGym) {
-      print(gym);
+  void searchFilter(String query) {
+    List<String> tempSearchList = List<String>();
+    tempSearchList.addAll(allGymNames);
+    print('Tempsearch list: $tempSearchList'.length);
+    if(query.isNotEmpty) {
+      List<String> tempListData = List<String>();
+      tempSearchList.forEach((item) {
+        if(item.contains(query)) {
+          tempListData.add(item);
+        }
+      });
+      setState(() {
+        queriedGymNames.clear();
+        queriedGymNames.addAll(tempListData);
+      });
+      return;
+    } else {
+      setState(() {
+        queriedGymNames.clear();
+        queriedGymNames.addAll(tempSearchList);
+      });
     }
   }
 }
