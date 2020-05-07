@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/EquipmentSelection.dart';
 import 'package:flutterapp/pages/AboutGymsPage.dart';
 
 class GenericGymPage extends StatelessWidget {
   String _name;
-  List<String> _equipment = [];
+  List<Equipment> _equipment = [];
 
-  GenericGymPage(String name, List<String> equipment) {
+  GenericGymPage(String name, List<Equipment> equipment) {
     this._name = name;
     this._equipment = equipment;
   }

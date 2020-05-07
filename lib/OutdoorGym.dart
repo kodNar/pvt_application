@@ -4,6 +4,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'Equipment.dart';
+
 // Init firestore and geoFlutterFire
 Geoflutterfire geo = Geoflutterfire();
 Firestore _firestore = Firestore.instance;
@@ -13,21 +15,22 @@ class OutdoorGym{
   GeoPoint _geo;
 
   //later be equipmmnt insted of string
-  List<String> equipments= [];
+  List<Equipment> _equipment= [];
   Marker _marker;
 
   //home/office/unknown
 
-  OutdoorGym(String name,GeoPoint geo,context){
+  OutdoorGym(String name, List<Equipment> equipment, GeoPoint geo,context){
     this._name= name;
     this._geo = geo;
+    this._equipment = equipment;
 
     this._marker = new Marker(
         markerId: MarkerId (name),
         position: LatLng (this._geo.latitude,this._geo.longitude),
         onTap:(){
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => GenericGymPage(_name, equipments)));
+              MaterialPageRoute(builder: (context) => GenericGymPage(_name, _equipment)));
         },
         draggable: false
 
