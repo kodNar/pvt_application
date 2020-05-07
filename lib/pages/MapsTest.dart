@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
 class MapSample extends StatefulWidget {
   @override
 
- State <MapSample> createState() => MapSampleState();
+  State <MapSample> createState() => MapSampleState();
 }
 
 class MapSampleState extends State< MapSample> {
@@ -149,7 +149,7 @@ class MapSampleState extends State< MapSample> {
     Geolocator().getCurrentPosition().then((currloc) {
       setState(() {
         currentLocation = currloc;
-       // currentLocation = LatLng(59.3274, 18.055);
+        // currentLocation = LatLng(59.3274, 18.055);
         mapToggle = true;
       });
     });
