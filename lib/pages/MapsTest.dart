@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutterapp/models/user.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:geoflutterfire/geoflutterfire.dart';
+import 'HomePage.dart';
 import 'Login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -26,15 +29,16 @@ class MyApp extends StatelessWidget {
 
 class MapSample extends StatefulWidget {
   @override
+
  State <MapSample> createState() => MapSampleState();
 }
 
 class MapSampleState extends State< MapSample> {
   List<Marker> allMarkers = [];
-  List<OutdoorGym> allOutdoorGym = [];
+  static List<OutdoorGym> allOutdoorGym = [];
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
-  bool _loggedIn = false;
+  bool _loggedIn =false;
   bool _cancelButton = false;
 
   GoogleMapPolyline _googleMapPolyline =
@@ -50,7 +54,7 @@ class MapSampleState extends State< MapSample> {
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
-      title: Text("Stockholms outdoor gyms"),
+      title: Text("Stockholm outdoor gyms"),
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
     );
     return new Scaffold(
@@ -82,8 +86,10 @@ class MapSampleState extends State< MapSample> {
               },
             ),
             Container(
+
               alignment: Alignment.bottomCenter,
               child: RaisedButton.icon(
+                color: Color.fromARGB(255, 132, 50, 155),
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutPortal()));
                 },
@@ -92,7 +98,7 @@ class MapSampleState extends State< MapSample> {
                   color: Colors.white,
                 ),
                 label: Text(
-                  'Start',
+                  'Start workout',
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -147,7 +153,6 @@ class MapSampleState extends State< MapSample> {
       });
     });
     populateOutdoorGymList();
-
   }
 
   /// Loads the outdoorgyms from the database and populates the outdoor gym list.
@@ -163,6 +168,7 @@ class MapSampleState extends State< MapSample> {
         print ("Error creating gym");
       }
     }
+    checkIfSignedIn();
     _addGymsToMarkers();
   }
 
@@ -212,8 +218,6 @@ class MapSampleState extends State< MapSample> {
       ));
     });
   }
-
-
   Widget listView2() {
     bool route = true;
     return FutureBuilder<SplayTreeMap>(
@@ -259,6 +263,7 @@ class MapSampleState extends State< MapSample> {
                             ),
                           ),
 
+
                           Flexible(
                             flex: 5,
                             child:SizedBox(child:RaisedButton.icon(
@@ -291,6 +296,19 @@ class MapSampleState extends State< MapSample> {
 
 
   }
+
+  checkIfSignedIn() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    setState(() {
+      if(user != null){
+        _loggedIn = true;
+      }else{
+        _loggedIn = false;
+      }
+    });
+
+  }
+
 
   Future<SplayTreeMap> _getSortedListOnDistance() async{
     SplayTreeMap st = new SplayTreeMap<int, OutdoorGym>();
@@ -352,16 +370,26 @@ class MapSampleState extends State< MapSample> {
               ? ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
-            onTap: () => {},
+            onTap: ()  {
+              setState(() {
+                FirebaseAuth.instance.signOut();
+                _loggedIn = false;
+              });
+            },
           )
               : Center(
               child: ListTile(
                 leading: Icon(Icons.exit_to_app),
                 title: Text('Login'),
-                onTap: () => [
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()))
-                ],
+                onTap: () {
+                  if (_loggedIn) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MapSample()));
+                  } else {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomePage()));
+                  }
+                },
               ))
         ],
       ),

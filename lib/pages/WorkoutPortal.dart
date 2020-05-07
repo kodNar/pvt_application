@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/pages/ExistingWorkouts.dart';
 import 'package:flutterapp/pages/Login.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
+import 'package:flutterapp/pages/RecentWorkout.dart';
 import 'package:flutterapp/pages/WorkoutLog.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 class WorkoutPortal extends StatefulWidget {
@@ -79,7 +81,7 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
               InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => WorkoutLog()));
+                      MaterialPageRoute(builder: (context) => ExistingWorkouts()));
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -112,7 +114,7 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
               InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
+                      MaterialPageRoute(builder: (context) => RecentWorkouts()));
                 },
                 child: Container(
                   width: 350,

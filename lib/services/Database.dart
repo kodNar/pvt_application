@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterapp/OutdoorGym.dart';
+import 'package:flutterapp/WorkoutSession.dart';
 
 import 'package:flutterapp/models/user.dart';
 
@@ -21,13 +22,36 @@ class DatabaseService {
       Firestore.instance.collection('OutdoorGyms');
 
   Future updateUserData(String userID, String email, String nickName) async {
+    userCollection.document(uid).collection('workoutCollection').document(uid).setData({
+      'Name': 'Test',
+      'kuken': 'snälla fungera'
+
+    });
     return await userCollection.document(uid).setData({
       'userID': userID,
       'email': email,
       'nickName': nickName,
+
     });
   }
 
+  Future addWorkout(String name) async{
+    userCollection.document(uid).collection('workoutCollection').document().setData({
+      'Name': name ?? '',
+    });
+  }
+
+
+
+  Future<List<WorkoutSession>> getWorkouts() async {
+    List<WorkoutSession> workouts = [];
+    QuerySnapshot collectionReference = await Firestore.instance.collection('users').document(uid).collection("workoutCollection").getDocuments();
+   for(var doc in collectionReference.documents){
+     WorkoutSession w = WorkoutSession(doc.data['Name'],null,null,(doc.data['Date'] as Timestamp).toDate());
+     workouts.add(w);
+   }
+   return workouts;
+  }
 
   Future<String> getNickname() async {
     var nickname =
