@@ -20,7 +20,7 @@ class _TestPageState extends State<TestPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 132, 50, 155),
+      backgroundColor: Color(0xFF84329b),
       body: Container(
         padding: EdgeInsets.only(top: 50),
         width: size.width,
