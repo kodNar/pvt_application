@@ -13,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:geoflutterfire/geoflutterfire.dart';
+import '../Equipment.dart';
 import 'HomePage.dart';
 import 'Login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -157,18 +158,33 @@ class MapSampleState extends State< MapSample> {
 
   /// Loads the outdoorgyms from the database and populates the outdoor gym list.
   populateOutdoorGymList() async {
-    QuerySnapshot outdoorGymCollection = await Firestore.instance.collection("OutdoorGyms").getDocuments();
+    QuerySnapshot outdoorGymCollection =
+    await Firestore.instance.collection("OutdoorGyms").getDocuments();
     for (var doc in outdoorGymCollection.documents) {
       String name = doc.data['Name'];
       GeoPoint geoPoint = doc.data['GeoPoint'];
+      List<Equipment> equipmentList = [];
+
+      if (doc.data['Equipment'] != null) {
+        List<Object> objectList = doc.data['Equipment'];
+        for (Object object in objectList) {
+          String name = object.toString();
+          equipmentList.add(new Equipment(name));
+        }
+      } else {
+        equipmentList.add(new Equipment("Equipment 1"));
+        equipmentList.add(new Equipment("Equipment 2"));
+        equipmentList.add(new Equipment("Equipment 3"));
+        equipmentList.add(new Equipment("Equipment 4"));
+      }
 
       try {
-        allOutdoorGym.add(new OutdoorGym(name, geoPoint, context));
-      }catch(e){
-        print ("Error creating gym");
+        allOutdoorGym.add(new OutdoorGym(name, equipmentList, geoPoint, context));
+      } catch (e) {
+        print("Error creating gym");
       }
     }
-    checkIfSignedIn();
+    //checkIfSignedIn();
     _addGymsToMarkers();
   }
 

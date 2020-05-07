@@ -1,77 +1,71 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutterapp/Equipment.dart';
 
-class EquipmentSelection {
-  //TODO Ta bort entries, för att sedan hämta en samling equipment, colorCodes behövs ej
+class EquipmentSelection extends StatelessWidget {
+  String _name;
+  List<Equipment> _equipment = [];
 
-/*
-Skapar en ListView.builder, en oändligt stor lista som läser in och skapar knappar
-utifrån en intagen lista.
- */
-}
+  EquipmentSelection(String name, List<Equipment> equipment) {
+    this._name = name;
+    this._equipment = equipment;
+  }
 
-class MyTestPage extends StatefulWidget {
-  MyTestPage({Key key, this.title}) : super(key: key);
+  /*
+  TODO måste hämta equipment när man väl valt gymmet, för att sedan hämta alla övningar som finns på respektive equipment
+   */
 
-  final String title;
-
-  @override
-  _MyTestPageState createState() => _MyTestPageState();
-}
-
-
-class _MyTestPageState extends State<MyTestPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      backgroundColor: Color.fromARGB(255, 132, 50, 155),
       appBar: new AppBar(
-        title: new Text("just work"),
+        title: Text(_name),
       ),
-      body: ListPage(),
-    );
-  }
-}
-
-class ListPage extends StatefulWidget {
-  @override
-  _ListPageState createState() => _ListPageState();
-}
-
-class _ListPageState extends State<ListPage> {
-  Future getGyms() async {
-    var firestore = Firestore.instance;
-
-    QuerySnapshot qn = await firestore.collection("OutdoorGyms").getDocuments();
-
-    return qn.documents;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: FutureBuilder(
-          future: getGyms(),
-          builder: (_, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: Text("Loading... "),
-              );
-            } else {
-              return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (_, index) {
-                    return ListTile(
-                      title: Text(snapshot.data[index].data["Name"]),
-                    );
-                  });
-            }
+      body: ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: _equipment.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              padding: EdgeInsets.all(8),
+              color: Colors.transparent,
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              child: RaisedButton(
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(30.0),
+                    side: BorderSide(color: Colors.black),
+                  ),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(_equipment[index].getName())));
+                  },
+                  color: Color.fromARGB(255, 132, 50, 155),
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                                padding: EdgeInsets.only(),
+                                child: new Text(_equipment[index].getName(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold)))
+                          ]))),
+            );
           }),
     );
   }
 }
-
 class DetailPage extends StatefulWidget {
+
+  String post;
+
+  DetailPage (String post) {
+    this.post = post;
+  }
   @override
   _DetailPageState createState() => _DetailPageState();
 }
@@ -79,6 +73,20 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.post),
+      ),
+      body: Container(
+        child: Card(
+          child: ListTile(
+            title: Text("Övning"),
+            subtitle: Text("Beskrivning???"),
+          ),
+        ),
+      ),
+    );
   }
 }
+
+
