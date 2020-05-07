@@ -35,7 +35,7 @@ class MapSample extends StatefulWidget {
 
 class MapSampleState extends State< MapSample> {
   List<Marker> allMarkers = [];
-  List<OutdoorGym> allOutdoorGym = [];
+  static List<OutdoorGym> allOutdoorGym = [];
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
   bool _loggedIn =false;
@@ -161,7 +161,6 @@ class MapSampleState extends State< MapSample> {
     for (var doc in outdoorGymCollection.documents) {
       String name = doc.data['Name'];
       GeoPoint geoPoint = doc.data['GeoPoint'];
-
 
       try {
         allOutdoorGym.add(new OutdoorGym(name, geoPoint, context));
