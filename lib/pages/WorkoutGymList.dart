@@ -69,7 +69,7 @@ void initState() {
                 return Card(
                   child: ListTile(
                     onTap: () {
-                      Navigator.pop(context, Text('${queriedGymNames[index]}'));
+                      Navigator.pop(context, (queriedGymNames[index]));
                       },
                     title: Text('${queriedGymNames[index]}'),
                   ),

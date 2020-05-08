@@ -13,6 +13,7 @@ class WorkoutLog extends StatefulWidget {
 
 class _WorkoutLogState extends State<WorkoutLog> {
   bool gymChosen = false;
+  String gymName = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,9 +69,34 @@ class _WorkoutLogState extends State<WorkoutLog> {
     );
   }
 
+  void _navigateAndDisplaySelection(BuildContext context) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => WorkoutGymList()),
+    );
+
+    // After the Selection Screen returns a result, hide any previous snackbars
+    // and show the new result.
+    Scaffold.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text("$result")));
+  }
+
   Widget gymReturn(){
     if(gymChosen){
-      return Text('testar');
+      return Container(
+        padding: EdgeInsets.all(20),
+        child: Text('At the gym: $gymName',
+          style: TextStyle(
+            fontSize: 17,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+
+          ),
+        ),
+      );
     }else{
       return  Container(
         padding: EdgeInsets.all(20),
@@ -85,7 +111,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
             ),
             color: Colors.transparent,
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutGymList()));
+              _pushContext(context);
             },
             child: Text(
               'Choose gym',
@@ -97,7 +123,15 @@ class _WorkoutLogState extends State<WorkoutLog> {
           ),
         ),
       );
-    }
 
+    }
+  }
+  _pushContext(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => WorkoutGymList()),
+    );
+    gymChosen = true;
+    gymName = result;
   }
 }
