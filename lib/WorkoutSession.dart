@@ -7,6 +7,7 @@ class WorkoutSession{
   User _user;
   OutdoorGym _location;
   DateTime _dateTime;
+  int _likes = 0;
 
   List <Exercise> _exercises;
 
@@ -17,6 +18,13 @@ class WorkoutSession{
     _dateTime = dateTime;
 
   }
+  void addLike(){
+    _likes += 1;
+  }
+  void removeLike(){
+    _likes -= 1;
+  }
+  int get likes => _likes;
 
   String get name => _name;
 
