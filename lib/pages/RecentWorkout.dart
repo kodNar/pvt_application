@@ -29,29 +29,32 @@ class _RecentState extends State<RecentWorkouts> {
                     builder: (context, snapshot) {
                       return snapshot.hasData
                           ? Container(
-                              child: ListView.builder(
-                                  itemCount: snapshot.data.length,
-                                  itemBuilder: (context, index) {
+                          child: ListView.builder(
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, index) {
 
-                                    return Container(
-                                        alignment: Alignment.center,
-                                        height: 80,
-                                        padding: EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(50)),
-                                          color: Color.fromARGB(
-                                              255, 200 + index * 30, 50, 155),
-                                        ),
-                                        child: InkWell(
-                                            child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: <Widget>[
+                                return Container(
+                                    alignment: Alignment.center,
+                                    height: 80,
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(50)),
+                                      color: Color.fromARGB(
+                                          255, 200 + index * 30, 50, 155),
+                                    ),
+                                    child: InkWell(
+                                        onTap: (){
+                                          // länka till övning
+                                        },
+                                        child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            children: <Widget>[
                                               Container(
                                                 child: RichText(
                                                   overflow:
-                                                      TextOverflow.ellipsis,
+                                                  TextOverflow.ellipsis,
                                                   strutStyle: StrutStyle(
                                                       fontSize: 22.0),
                                                   text: TextSpan(
@@ -59,15 +62,15 @@ class _RecentState extends State<RecentWorkouts> {
                                                           fontSize: 23,
                                                           color: Colors.white,
                                                           fontWeight:
-                                                              FontWeight.bold),
+                                                          FontWeight.bold),
                                                       text: snapshot
                                                           .data[index].name),
                                                 ),
                                               ),
                                               Container(child: Text("Time: " +snapshot.data[index].getDateTime().toString().substring(0,16))),
-                                            Container(child:Text("Location: " ))
-                                                ])));
-                                  }))
+                                              Container(child:Text("Location: " ))
+                                            ])));
+                              }))
                           : Center();
                     }))));
   }

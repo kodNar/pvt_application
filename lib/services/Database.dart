@@ -21,6 +21,7 @@ class DatabaseService {
   final CollectionReference outdoorGymsCollection =
       Firestore.instance.collection('OutdoorGyms');
 
+
   Future updateUserData(String userID, String email, String nickName) async {
     userCollection.document(uid).collection('workoutCollection').document(uid).setData({
       'Name': 'Test',
@@ -35,7 +36,7 @@ class DatabaseService {
     });
   }
 
-  Future addWorkout(String name) async{
+  Future addWorkout(name) async{
     userCollection.document(uid).collection('workoutCollection').document().setData({
       'Name': name ?? '',
     });
@@ -64,6 +65,7 @@ class DatabaseService {
   Stream<QuerySnapshot> get OutdoorGyms {
     return outdoorGymsCollection.snapshots();
   }
+
 
   // Returning an iterable with as many documents as the collection has.
   List<User> _userListFromSnapshot(QuerySnapshot snapshot) {

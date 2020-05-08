@@ -4,27 +4,35 @@ import 'package:flutterapp/Exercise.dart';
 
 class WorkoutSession{
   String _name;
-  User _user;
-  OutdoorGym _location;
+  String _user;
+  String _location;
   DateTime _dateTime;
+  int _likes = 0;
 
   List <Exercise> _exercises;
 
-  WorkoutSession(String name,User user, OutdoorGym location,DateTime dateTime){
+  WorkoutSession(String name,String user, String location,DateTime dateTime){
     _user = user;
     _location = location;
     _name = name;
     _dateTime = dateTime;
 
   }
+  void addLike(){
+    _likes += 1;
+  }
+  void removeLike(){
+    _likes -= 1;
+  }
+  int get likes => _likes;
 
   String get name => _name;
 
-  User getUser(){
+  String getUser(){
     return _user;
   }
 
-  OutdoorGym getGym(){
+  String getGym(){
     return _location;
   }
 

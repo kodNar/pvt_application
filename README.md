@@ -1,16 +1,14 @@
-# flutterapp
+# Stockholm Outdoor Gym
 
-A new Flutter application.
+Stockholm Outdoor Gym application
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+2020-03-23 to 2020-06-07
 
-A few resources to get you started if this is your first Flutter project:
+PVT course DSV
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+An application that will display where Stockholms citys outdoor gyms are located. What equipment is available at each of the gyms.
+Route to the the gyms, Logging of your workout also sharing your workout.
+Finding new workouts from other people. Instructions on how to operate the different equipment available at each gym.
+Simulated data over busy hours.
