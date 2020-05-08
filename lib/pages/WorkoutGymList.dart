@@ -68,7 +68,9 @@ void initState() {
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pop(context, Text('${queriedGymNames[index]}'));
+                      },
                     title: Text('${queriedGymNames[index]}'),
                   ),
                 );
@@ -81,6 +83,7 @@ void initState() {
   }
 
   void searchFilter(String query) {
+
     List<String> tempSearchList = List<String>();
     tempSearchList.addAll(allGymNames);
     print('Tempsearch list: $tempSearchList'.length);
