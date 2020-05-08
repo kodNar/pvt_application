@@ -32,7 +32,6 @@ class _ExistingState extends State<ExistingWorkouts> {
           ],
         ));
   }
-
   Widget _topImage() {
     return Container(
       margin: EdgeInsets.only(top: 10),
@@ -115,8 +114,13 @@ class _ExistingState extends State<ExistingWorkouts> {
                                             MainAxisAlignment.center,
                                         children: <Widget>[
                                           Container(
-                                            child: Text("walla"),
+                                            child: Text(snapshot.data[index].name),
                                           ),
+                                          Container(child: Text(" Location: ")),
+
+                                          Container(child: Text("Likes " + snapshot.data[index].likes.toString()),)
+
+
                                         ])));
                           })))
               : Center();
@@ -124,9 +128,17 @@ class _ExistingState extends State<ExistingWorkouts> {
   }
 
   Future<List<WorkoutSession>> _getSessions() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    List<WorkoutSession> workouts =
-        await DatabaseService(uid: user.uid).getWorkouts();
-    return workouts;
+    List <WorkoutSession> list = [];
+    QuerySnapshot workoutsCollection =
+    await Firestore.instance.collection("Workouts").getDocuments();
+    for (var doc in workoutsCollection.documents) {
+      String name = doc.data['Name'];
+      int likes = doc.data['Likes'];
+      String location = doc.data['Location'];
+      String user =doc.data['User'];
+      DateTime date = (doc.data['Published']as Timestamp).toDate();
+      list.add(WorkoutSession(name,user,location,date));
+    }
+    return list;
   }
 }

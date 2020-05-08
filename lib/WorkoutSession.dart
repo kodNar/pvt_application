@@ -4,14 +4,14 @@ import 'package:flutterapp/Exercise.dart';
 
 class WorkoutSession{
   String _name;
-  User _user;
-  OutdoorGym _location;
+  String _user;
+  String _location;
   DateTime _dateTime;
   int _likes = 0;
 
   List <Exercise> _exercises;
 
-  WorkoutSession(String name,User user, OutdoorGym location,DateTime dateTime){
+  WorkoutSession(String name,String user, String location,DateTime dateTime){
     _user = user;
     _location = location;
     _name = name;
@@ -28,11 +28,11 @@ class WorkoutSession{
 
   String get name => _name;
 
-  User getUser(){
+  String getUser(){
     return _user;
   }
 
-  OutdoorGym getGym(){
+  String getGym(){
     return _location;
   }
 
