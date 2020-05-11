@@ -1,3 +1,4 @@
+import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/User.dart';
 import 'package:flutterapp/Exercise.dart';
@@ -8,6 +9,7 @@ class WorkoutSession{
   String _location;
   DateTime _dateTime;
   int _likes = 0;
+  List <Equipment> _equipment =[];
 
   List <Exercise> _exercises;
 
@@ -20,6 +22,9 @@ class WorkoutSession{
   }
   void addLike(){
     _likes += 1;
+  }
+  void addEquipment(Equipment e){
+    _equipment.add(e);
   }
   void removeLike(){
     _likes -= 1;
