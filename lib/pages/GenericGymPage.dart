@@ -1,16 +1,33 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/EquipmentSelection.dart';
+import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/pages/AboutGymsPage.dart';
 
-class GenericGymPage extends StatelessWidget {
-  String _name;
-  List<Equipment> _equipment = [];
+class GenericGymPage extends StatefulWidget {
+  OutdoorGym outdoorGym;
+  List<String> _equipmentRef = [];
 
-  GenericGymPage(String name, List<Equipment> equipment) {
-    this._name = name;
-    this._equipment = equipment;
+  GenericGymPage(OutdoorGym outdoorGym,List <String> eq) {
+    this.outdoorGym = outdoorGym;
+    this._equipmentRef = eq;
   }
+  @override
+  State <GenericGymPage> createState() => GenericState(outdoorGym,_equipmentRef);
+  }
+
+  class GenericState extends State< GenericGymPage> {
+    String _name;
+    List<String> _equipmentRef = [];
+    List<Equipment> _equipment = [];
+    OutdoorGym _outdoorGym;
+
+    GenericState(OutdoorGym outdoorGym,List <String> eq) {
+      this._name = outdoorGym.name;
+      this._equipmentRef = eq;
+      this._outdoorGym = outdoorGym;
+    }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,5 +186,13 @@ class GenericGymPage extends StatelessWidget {
         ]);
       }),
     );
+  }
+    _populateEquipment() async{
+     _equipment.addAll(await _outdoorGym.getEquipmentFromDB());
+    }
+  @override
+  void initState() {
+    super.initState();
+    _populateEquipment();
   }
 }

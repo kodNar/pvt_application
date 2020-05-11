@@ -163,23 +163,12 @@ class MapSampleState extends State< MapSample> {
     for (var doc in outdoorGymCollection.documents) {
       String name = doc.data['Name'];
       GeoPoint geoPoint = doc.data['GeoPoint'];
-      List<Equipment> equipmentList = [];
-
+      List<String>  equipmentListRef = [];
       if (doc.data['Equipment'] != null) {
-        List<Object> objectList = doc.data['Equipment'];
-        for (Object object in objectList) {
-          String name = object.toString();
-          equipmentList.add(new Equipment(name));
+        equipmentListRef.addAll(_getReferenceToEquipment(doc));
         }
-      } else {
-        equipmentList.add(new Equipment("Equipment 1"));
-        equipmentList.add(new Equipment("Equipment 2"));
-        equipmentList.add(new Equipment("Equipment 3"));
-        equipmentList.add(new Equipment("Equipment 4"));
-      }
-
       try {
-        allOutdoorGym.add(new OutdoorGym(name, equipmentList, geoPoint, context));
+        allOutdoorGym.add(new OutdoorGym(name, equipmentListRef, geoPoint, context));
       } catch (e) {
         print("Error creating gym");
       }
@@ -187,6 +176,21 @@ class MapSampleState extends State< MapSample> {
     //checkIfSignedIn();
     _addGymsToMarkers();
   }
+
+  List<String>_getReferenceToEquipment(var doc){
+    List <String> output = [];
+    try {
+      List <Object> objectList = doc.data['Equipment'];
+      objectList.forEach((e) =>
+        output.add(e.toString())
+      );
+    }catch(e){
+      print("Error creating Equipment Reference");
+      return output;
+    }
+    return output;
+  }
+
 
   _addGymsToMarkers() {
     for (int i = 0; i < allOutdoorGym.length; i++) {
