@@ -154,6 +154,7 @@ class MapSampleState extends State< MapSample> {
       });
     });
     populateOutdoorGymList();
+   // checkIfSignedIn();
   }
 
   /// Loads the outdoorgyms from the database and populates the outdoor gym list.
@@ -173,7 +174,6 @@ class MapSampleState extends State< MapSample> {
         print("Error creating gym");
       }
     }
-    //checkIfSignedIn();
     _addGymsToMarkers();
   }
 

@@ -42,7 +42,7 @@ class OutdoorGym{
    List<Equipment> equipmentList =[];
     for(var ref in _equipmentRef){
       var temp = (await Firestore.instance.collection('Equipment').document(ref).get());
-      Equipment equipment = Equipment(temp.data["Name"].toString());
+      Equipment equipment = Equipment(temp.documentID.toString());
       equipmentList.add(equipment);
     }
     return equipmentList;
@@ -55,5 +55,4 @@ class OutdoorGym{
   String toString() {
     return 'OutdoorGym{_name: $_name, _geo: $_geo}';
   }
-
 }
