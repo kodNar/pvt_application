@@ -38,8 +38,6 @@ class OutdoorGym{
 
   }
 
-
-
   Marker get marker => _marker;
   String get name => _name;
   GeoPoint get geo => _geo;

@@ -67,7 +67,12 @@ void initState() {
                 return Card(
                   child: ListTile(
                     onTap: () {
-                      Navigator.pop(context, (queriedGymNames[index]));
+                      for(OutdoorGym outdoorGym in allOutdoorGym){
+                        if(outdoorGym.name == (queriedGymNames[index])){
+                          Navigator.pop(context, (outdoorGym));
+                        }
+                      }
+                      //Navigator.pop(context, (queriedGymNames[index]));
                       },
                     title: Text('${queriedGymNames[index]}'),
                   ),
@@ -79,7 +84,6 @@ void initState() {
       ),
     );
   }
-
   void searchFilter(String query) {
     List<String> tempSearchList = List<String>();
     tempSearchList.addAll(allGymNames);

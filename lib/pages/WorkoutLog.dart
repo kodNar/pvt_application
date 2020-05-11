@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/pages/ExerciseOrEquipment.dart';
 import 'package:flutterapp/pages/WorkoutGymList.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
@@ -13,7 +14,7 @@ class WorkoutLog extends StatefulWidget {
 
 class _WorkoutLogState extends State<WorkoutLog> {
   bool gymChosen = false;
-  String gymName = '';
+  OutdoorGym outdoorGym;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +74,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
     if(gymChosen){
       return Container(
         padding: EdgeInsets.all(20),
-        child: Text('At the gym: $gymName',
+        child: Text('At the gym: ${outdoorGym.name}',
           style: TextStyle(
             fontSize: 17,
             color: Colors.white,
@@ -108,15 +109,11 @@ class _WorkoutLogState extends State<WorkoutLog> {
           ),
         ),
       );
-
     }
   }
   _pushContext(BuildContext context) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => WorkoutGymList()),
-    );
+    final OutdoorGym result = await Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutGymList()));
     gymChosen = true;
-    gymName = result;
+    outdoorGym = result;
   }
 }
