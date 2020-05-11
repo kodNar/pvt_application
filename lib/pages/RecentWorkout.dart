@@ -87,6 +87,5 @@ class _RecentState extends State<RecentWorkouts> {
     return -b.getDateTime().compareTo(a.getDateTime());
   });
     return old;
-  }
-
+   }
 }

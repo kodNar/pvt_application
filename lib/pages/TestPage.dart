@@ -10,6 +10,7 @@ import 'JacobTest.dart';
 import 'JacobTest.dart';
 import 'JacobTest.dart';
 import 'MapsTest.dart';
+import 'package:flutterapp/pages/ReportPage.dart';
 
 class TestPage extends StatefulWidget {
   @override
@@ -84,7 +85,7 @@ class _TestPageState extends State<TestPage> {
               padding: EdgeInsets.all(20),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => DatabaseTestPage() )); /** Sätt din testsida här! **/
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ReportPage() )); /** Sätt din testsida här! **/
                 },
                 child: Text(
                   'Claes testknapp',

@@ -21,8 +21,8 @@ class Exercise{
   }
 
   void setSets(int sets){
-    _sets = sets;
+_sets = sets;
 
-  }
+}
 
 }

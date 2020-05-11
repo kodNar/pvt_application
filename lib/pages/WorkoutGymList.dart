@@ -19,13 +19,11 @@ void initState() {
     queriedGymNames.add(gym.name);
     allGymNames.add(gym.name);
   }
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Color(0xFF84329b),
       appBar: BaseAppBar(
@@ -83,7 +81,6 @@ void initState() {
   }
 
   void searchFilter(String query) {
-
     List<String> tempSearchList = List<String>();
     tempSearchList.addAll(allGymNames);
     print('Tempsearch list: $tempSearchList'.length);

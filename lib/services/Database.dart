@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/WorkoutSession.dart';
 
@@ -43,13 +44,16 @@ class DatabaseService {
   }
 
 
-
   Future<List<WorkoutSession>> getWorkouts() async {
     List<WorkoutSession> workouts = [];
     QuerySnapshot collectionReference = await Firestore.instance.collection('users').document(uid).collection("workoutCollection").getDocuments();
+    print(CollectionReference);
    for(var doc in collectionReference.documents){
      WorkoutSession w = WorkoutSession(doc.data['Name'],null,null,(doc.data['Date'] as Timestamp).toDate());
+     print(doc.data.toString());
      workouts.add(w);
+      var equipment = await Firestore.instance.collection('Equipment').document(doc.data['Reference']).get();
+      w.addEquipment(equipment.data['Test']);
    }
    return workouts;
   }
