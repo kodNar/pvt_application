@@ -19,7 +19,7 @@ import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 
 
-
+String picPath = 'assets/images/bok.png';
 class ReportPage extends StatelessWidget {
   final List<OutdoorGym> allOutdoorGym = MapSampleState.allOutdoorGym;
   List<DropdownMenuItem<OutdoorGym>> dropDownMenuItems;
@@ -79,11 +79,15 @@ class ReportPage extends StatelessWidget {
                   children: <Widget>[
                     RaisedButton(
                       onPressed: (){
-                        main2();
+                        main2(context);
+
                       },
                     ),
                     Container(
-
+                      //sök här
+                      width: 150,
+                      height: 150,
+                      child: Image.file(File(picPath)),
                     )
                   ],
                 )
@@ -201,7 +205,41 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 }
 
 
-Future<void> main2() async {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Future<void> main2(context) async {
   // Ensure that plugin services are initialized so that `availableCameras()`
   // can be called before `runApp()`
   WidgetsFlutterBinding.ensureInitialized();
@@ -212,7 +250,7 @@ Future<void> main2() async {
   // Get a specific camera from the list of available cameras.
   final firstCamera = cameras.first;
 
-  runApp(
+  /*runApp(
     MaterialApp(
       theme: ThemeData.dark(),
       home: TakePictureScreen(
@@ -220,13 +258,15 @@ Future<void> main2() async {
         camera: firstCamera,
       ),
     ),
-  );
+  );*/
+
+  Navigator.push(context, MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera) )); /// Sätt din testsida här! ///
+  //TakePictureScreen(camera: firstCamera);
 }
 
 // A screen that allows users to take a picture using a given camera.
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
-
   const TakePictureScreen({
     Key key,
     @required this.camera,
@@ -250,6 +290,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       widget.camera,
       // Define the resolution to use.
       ResolutionPreset.medium,
+      enableAudio: false,
     );
 
     // Next, initialize the controller. This returns a Future.
@@ -303,14 +344,19 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
             // Attempt to take a picture and log where it's been saved.
             await _controller.takePicture(path);
+            picPath = path;
+            print(picPath.toString());
+
 
             // If the picture was taken, display it on a new screen.
-            Navigator.push(
+            /*Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => DisplayPictureScreen(imagePath: path),
               ),
-            );
+            );*/
+            Navigator.pop(context);
+
           } catch (e) {
             // If an error occurs, log the error to the console.
             print(e);
@@ -333,7 +379,32 @@ class DisplayPictureScreen extends StatelessWidget {
       appBar: AppBar(title: Text('Display the Picture')),
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
+      body: Column(
+        children: <Widget>[
+          Container(
+            child: Image.file(File(imagePath)),
+          ),
+          Container(
+            child: ButtonTheme(
+              child: RaisedButton(
+                onPressed:() {
+                  Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ReportPage()));
+                  },
+                child: Text(
+                  "Approve picture",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+
+            ),
+          )
+        ],
+
+      ),
+
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/pages/EquipmentSelection.dart';
+import 'package:flutterapp/EquipmentSelection.dart';
+import 'package:flutterapp/pages/FAQ.dart';
 import 'package:flutterapp/pages/JohanTest.dart';
 import 'package:flutterapp/services/DatabaseTestPage.dart';
 
@@ -117,7 +118,7 @@ class _TestPageState extends State<TestPage> {
               padding: EdgeInsets.all(20),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => JohanTest()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => FAQ()));
                 },
                 child: Text(
                   'Johan testknapp',
