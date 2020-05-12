@@ -19,7 +19,7 @@ import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 
 
-String picPath;
+String picPath = 'assets/images/bok.png';
 class ReportPage extends StatelessWidget {
   final List<OutdoorGym> allOutdoorGym = MapSampleState.allOutdoorGym;
   List<DropdownMenuItem<OutdoorGym>> dropDownMenuItems;
@@ -85,6 +85,9 @@ class ReportPage extends StatelessWidget {
                     ),
                     Container(
                       //sök här
+                      width: 150,
+                      height: 150,
+                      child: Image.file(File(picPath)),
                     )
                   ],
                 )
@@ -342,15 +345,17 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             // Attempt to take a picture and log where it's been saved.
             await _controller.takePicture(path);
             picPath = path;
+            print(picPath.toString());
 
 
             // If the picture was taken, display it on a new screen.
-            Navigator.push(
+            /*Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => DisplayPictureScreen(imagePath: path),
               ),
-            );
+            );*/
+            Navigator.pop(context);
 
           } catch (e) {
             // If an error occurs, log the error to the console.
