@@ -64,25 +64,54 @@ class ReportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
-      appBar: AppBar(title: const Text('Report Page'),
-
+      appBar: AppBar(title: const Text('Report / Contact'),
+          actions: <Widget>[
+          // action button
+          IconButton(
+          icon: Icon(Icons.home),
+      onPressed: () {
+            picPath = 'assets/images/bok.png';
+        Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) => MapSample()
+        ));
+      },
+    ),
+    ]
 
       ),
       body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
+              color: Colors.white,
+                width: 300,
 
+                child: MyStatefulWidget(),
             ),
             Container(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    RaisedButton(
-                      onPressed: (){
-                        main2(context);
+                   ButtonTheme(
+                     shape: RoundedRectangleBorder(
+                       borderRadius: BorderRadius.all(Radius.circular(10)),
+                     ),
+                     buttonColor: Colors.orange,
+                     child: RaisedButton(
+                       child: Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                         children: <Widget>[
+                           Text('Take a Picture'),
+                           Icon(Icons.camera_alt),
+                         ],
+                       ),
+                       onPressed: (){
+                         main2(context);
 
-                      },
-                    ),
+                       },
+                     ),
+                   ),
+
                     Container(
                       //sök här
                       width: 150,
@@ -103,6 +132,8 @@ class ReportPage extends StatelessWidget {
             Container(
 
               child: TextField(
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
@@ -180,13 +211,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     return DropdownButton<String>(
       value: dropdownValue,
 
-      icon: Icon(Icons.arrow_downward),
+      icon: Icon(Icons.arrow_drop_down),
+
+      iconEnabledColor: Colors.black,
       iconSize: 24,
       elevation: 16,
-      style: TextStyle(color: Colors.deepPurple),
+      style: TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+        ),
+
       underline: Container(
         height: 2,
-        color: Colors.deepPurpleAccent,
+        color: Colors.white,
       ),
       onChanged: (String newValue) {
         setState(() {
@@ -197,7 +234,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
-          child: Text(value),
+          child: Text(value, style: TextStyle(
+            color: Colors.black
+            ),
+          ),
         );
       }).toList(),
     );
@@ -345,6 +385,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             // Attempt to take a picture and log where it's been saved.
             await _controller.takePicture(path);
             picPath = path;
+
             print(picPath.toString());
 
 
@@ -355,7 +396,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                 builder: (context) => DisplayPictureScreen(imagePath: path),
               ),
             );*/
-            Navigator.pop(context);
+            Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context) => ReportPage()
+            )
+            );
 
           } catch (e) {
             // If an error occurs, log the error to the console.
