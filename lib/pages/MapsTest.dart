@@ -358,6 +358,7 @@ class MapSampleState extends State< MapSample> {
   Widget _navDrawer() {
     return Drawer(
       child: ListView(
+
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
