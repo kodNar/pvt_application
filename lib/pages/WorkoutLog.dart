@@ -98,7 +98,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
             ),
             color: Colors.transparent,
             onPressed: () {
-              _pushContext(context);
+              _pushContextChooseGym(context);
             },
             child: Text(
               'Choose gym',
@@ -112,9 +112,16 @@ class _WorkoutLogState extends State<WorkoutLog> {
       );
     }
   }
-  _pushContext(BuildContext context) async {
+  _pushContextChooseGym(BuildContext context) async {
     final OutdoorGym result = await Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutGymList()));
     gymChosen = true;
     outdoorGym = result;
   }
+
+  _pushContextChooseEquipment(BuildContext context) async {
+    final OutdoorGym result = await Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutGymList()));
+    gymChosen = true;
+    outdoorGym = result;
+  }
+
 }
