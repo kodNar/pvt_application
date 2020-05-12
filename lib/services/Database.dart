@@ -47,7 +47,6 @@ class DatabaseService {
   Future<List<WorkoutSession>> getWorkouts() async {
     List<WorkoutSession> workouts = [];
     QuerySnapshot collectionReference = await Firestore.instance.collection('users').document(uid).collection("workoutCollection").getDocuments();
-    print(CollectionReference);
    for(var doc in collectionReference.documents){
      WorkoutSession w = WorkoutSession(doc.data['Name'],null,null,(doc.data['Date'] as Timestamp).toDate());
      print(doc.data.toString());

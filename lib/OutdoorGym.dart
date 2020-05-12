@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/pages/GenericGymPage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
@@ -25,7 +26,7 @@ class OutdoorGym{
     this._geo = geo;
     this._equipmentRef = equipment;
 
-    this._marker = new Marker(
+    this._marker = Marker(
         markerId: MarkerId (name),
         position: LatLng (this._geo.latitude,this._geo.longitude),
         onTap:(){
@@ -40,9 +41,17 @@ class OutdoorGym{
   }
   Future <List<Equipment>> getEquipmentFromDB() async {
    List<Equipment> equipmentList =[];
+
     for(var ref in _equipmentRef){
+      List<Exercise> exercises =[];
       var temp = (await Firestore.instance.collection('Equipment').document(ref).get());
-      Equipment equipment = Equipment(temp.documentID.toString());
+      var exerTemp = await Firestore.instance.collection('Equipment').document(ref).collection("Exercises").getDocuments();
+      for(var doc in exerTemp.documents) {
+      Exercise e = Exercise(doc.data['Name'],doc.data['Desc']);
+      if(e != null) {
+        exercises.add(e);
+      }}
+      Equipment equipment = Equipment(temp.documentID.toString(),exercises);
       equipmentList.add(equipment);
     }
     return equipmentList;
