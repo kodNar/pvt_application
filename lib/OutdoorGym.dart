@@ -15,30 +15,38 @@ class OutdoorGym{
   GeoPoint _geo;
 
   //later be equipmmnt insted of string
-  List<Equipment> _equipment= [];
+  List<String> _equipmentRef= [];
   Marker _marker;
 
   //home/office/unknown
 
-  OutdoorGym(String name, List<Equipment> equipment, GeoPoint geo,context){
+  OutdoorGym(String name, List<String> equipment, GeoPoint geo,context){
     this._name= name;
     this._geo = geo;
-    this._equipment = equipment;
+    this._equipmentRef = equipment;
 
     this._marker = new Marker(
         markerId: MarkerId (name),
         position: LatLng (this._geo.latitude,this._geo.longitude),
         onTap:(){
+
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => GenericGymPage(_name, _equipment)));
+              MaterialPageRoute(builder: (context) => GenericGymPage(this, _equipmentRef)));
         },
         draggable: false
 
     );
 
   }
-
-
+  Future <List<Equipment>> getEquipmentFromDB() async {
+   List<Equipment> equipmentList =[];
+    for(var ref in _equipmentRef){
+      var temp = (await Firestore.instance.collection('Equipment').document(ref).get());
+      Equipment equipment = Equipment(temp.documentID.toString());
+      equipmentList.add(equipment);
+    }
+    return equipmentList;
+  }
 
   Marker get marker => _marker;
   String get name => _name;
@@ -47,5 +55,4 @@ class OutdoorGym{
   String toString() {
     return 'OutdoorGym{_name: $_name, _geo: $_geo}';
   }
-
 }

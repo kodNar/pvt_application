@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/EquipmentSelection.dart';
+import 'package:flutterapp/pages/JohanTest.dart';
 import 'package:flutterapp/services/DatabaseTestPage.dart';
 
 import 'JacobTest.dart';
@@ -104,6 +105,22 @@ class _TestPageState extends State<TestPage> {
                 },
                 child: Text(
                   'Jacobs testknapp',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(20),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => JohanTest()));
+                },
+                child: Text(
+                  'Johan testknapp',
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
