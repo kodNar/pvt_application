@@ -20,7 +20,13 @@ import 'package:path_provider/path_provider.dart';
 
 
 String picPath = 'assets/images/bok.png';
-class ReportPage extends StatelessWidget {
+
+class ReportPage extends StatefulWidget{
+  @override
+  _ReportPageState createState() => _ReportPageState();
+}
+
+class _ReportPageState extends State <ReportPage>  {
   final List<OutdoorGym> allOutdoorGym = MapSampleState.allOutdoorGym;
   List<DropdownMenuItem<OutdoorGym>> dropDownMenuItems;
   OutdoorGym selectedGym;
@@ -31,10 +37,10 @@ class ReportPage extends StatelessWidget {
 //  bool mounted = false;
   var ImagePath;
 
+  @override
+  void initState(){
 
-
-
-
+  }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -113,11 +119,13 @@ class ReportPage extends StatelessWidget {
                    ),
 
                     Container(
+
                       //sök här
-                      width: 150,
-                      height: 150,
+                      width: 200,
+                      height: 200,
                       child: Image.file(File(picPath)),
-                    )
+
+                    ),
                   ],
                 )
 
@@ -244,40 +252,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//////////////////////////////////// CAMERA ////////////////////////////////////
 
 Future<void> main2(context) async {
   // Ensure that plugin services are initialized so that `availableCameras()`
@@ -289,16 +264,6 @@ Future<void> main2(context) async {
 
   // Get a specific camera from the list of available cameras.
   final firstCamera = cameras.first;
-
-  /*runApp(
-    MaterialApp(
-      theme: ThemeData.dark(),
-      home: TakePictureScreen(
-        // Pass the appropriate camera to the TakePictureScreen widget.
-        camera: firstCamera,
-      ),
-    ),
-  );*/
 
   Navigator.push(context, MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera) )); /// Sätt din testsida här! ///
   //TakePictureScreen(camera: firstCamera);
@@ -410,54 +375,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     );
   }
 }
-
-// A widget that displays the picture taken by the user.
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-
-  const DisplayPictureScreen({Key key, this.imagePath}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Column(
-        children: <Widget>[
-          Container(
-            child: Image.file(File(imagePath)),
-          ),
-          Container(
-            child: ButtonTheme(
-              child: RaisedButton(
-                onPressed:() {
-                  Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ReportPage()));
-                  },
-                child: Text(
-                  "Approve picture",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-
-            ),
-          )
-        ],
-
-      ),
-
-    );
-  }
-}
-
-
-
-
-
-
 
 main() async {
   String userName = 'apikey';
