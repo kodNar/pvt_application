@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/EquipmentSelection.dart';
 import 'package:flutterapp/pages/FAQ.dart';
 import 'package:flutterapp/pages/JohanTest.dart';
 import 'package:flutterapp/services/DatabaseTestPage.dart';
