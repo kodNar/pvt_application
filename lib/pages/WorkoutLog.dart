@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
-import 'package:flutterapp/pages/ExerciseOrEquipment.dart';
+import 'package:flutterapp/pages/EquipmentOrExercise.dart';
+import 'package:flutterapp/pages/ExerciseOrEquipment[DEAD].dart';
 import 'package:flutterapp/pages/WorkoutGymList.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
@@ -38,7 +39,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
         icon: const Icon(Icons.add),
         label: const Text('Add exercise/equipment'),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ExcerciseOrEquipment()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => EquipmentOrExercise()));
 
         },
       ),
