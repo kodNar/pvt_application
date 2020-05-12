@@ -14,13 +14,22 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor:  Color.fromARGB(255, 132, 50, 155),
       title: Container(
         child: Center(
-          child: Text(
-            title,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 30,
+          child: FittedBox(fit:BoxFit.fitWidth,
+            child: Text(
+              title,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 30,
+              )
             ),
-          ),
+          )
+//          child: Text(
+//            title,
+//            style: TextStyle(
+//              color: Colors.white,
+//              fontSize: 30,
+//            ),
+//          ),
         ),
       ),
       leading: InkWell(
