@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/OutdoorGym.dart';
+import 'package:flutterapp/widgets/Appbar.dart';
 
 class EquipmentOrExercise extends StatefulWidget {
   @override
@@ -6,23 +8,28 @@ class EquipmentOrExercise extends StatefulWidget {
 }
 
 class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
+  String title = 'Equipment';
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 0: List of equipment',
-      style: optionStyle,
+
     ),
     Text(
       'Index 1: List of exercises',
-      style: optionStyle,
     ),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      if(_selectedIndex != 0){
+        title = 'Exercises';
+      }else{
+        title = 'Equipment';
+      }
     });
   }
 
@@ -30,6 +37,9 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: BaseAppBar(
+        title: '$title',
+      ),
       backgroundColor: Color(0xFF84329b),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
