@@ -28,7 +28,6 @@ class _WorkoutLogState extends State<WorkoutLog> {
           child: Column(
             children: <Widget>[
               gymReturn(),
-
             ],
           ),
         ),
@@ -39,7 +38,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
         icon: const Icon(Icons.add),
         label: const Text('Add exercise/equipment'),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => EquipmentOrExercise()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => EquipmentOrExercise(outdoorGym)));
 
         },
       ),

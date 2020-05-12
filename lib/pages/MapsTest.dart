@@ -282,8 +282,6 @@ class MapSampleState extends State< MapSample> {
                                   text: key.toString() + "m"),
                             ),
                           ),
-
-
                           Flexible(
                             flex: 5,
                             child:SizedBox(child:RaisedButton.icon(

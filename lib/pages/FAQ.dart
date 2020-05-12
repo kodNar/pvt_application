@@ -43,6 +43,16 @@ class FAQ extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         //crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
+          ExpansionTile(
+            title: Text('Why are some gyms made from wood and some from steel?',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            children: <Widget>[
+              Text('Test'),
+
+          /*
           Container(
             padding: EdgeInsets.all(20.0),
             //color: Colors.cyan,
@@ -173,8 +183,13 @@ class FAQ extends StatelessWidget {
               ],
             ),
           ),
+
+           */
         ],
       ),
+      ],
+    ),
+
       bottomNavigationBar: BottomAppBar(
         color: Color.fromARGB(255, 132, 50, 155),
         child: Container(

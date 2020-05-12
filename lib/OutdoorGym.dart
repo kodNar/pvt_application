@@ -34,9 +34,7 @@ class OutdoorGym{
               MaterialPageRoute(builder: (context) => GenericGymPage(this, _equipmentRef)));
         },
         draggable: false
-
     );
-
   }
   Future <List<Equipment>> getEquipmentFromDB() async {
    List<Equipment> equipmentList =[];

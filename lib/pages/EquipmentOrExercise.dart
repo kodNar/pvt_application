@@ -1,22 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 
 class EquipmentOrExercise extends StatefulWidget {
+  final OutdoorGym outdoorGym;
+
+  EquipmentOrExercise(this.outdoorGym);
+
   @override
-  _EquipmentOrExerciseState createState() => _EquipmentOrExerciseState();
+  _EquipmentOrExerciseState createState() =>
+      _EquipmentOrExerciseState(outdoorGym);
 }
 
 class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
+  OutdoorGym outdoorGym;
+  List<Equipment> equipmentList = [];
   String title = 'Equipment';
   int _selectedIndex = 0;
 
+  _EquipmentOrExerciseState(OutdoorGym outdoorGym) {
+    this.outdoorGym = outdoorGym;
+  }
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: List of equipment',
+  @override
+  void initState() {
+    super.initState();
+  }
 
-    ),
+  _populateEquipmentList() async {
+    equipmentList.clear();
+    equipmentList.addAll(await outdoorGym.getEquipmentFromDB());
+    for (Equipment equip in equipmentList) {
+      print(equip);
+    }
+    return equipmentList;
+  }
+
+  static List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 1: List of exercises',
     ),
@@ -25,14 +46,14 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      if(_selectedIndex != 0){
+      if (_selectedIndex != 0) {
         title = 'Exercises';
-      }else{
+      } else {
         title = 'Equipment';
+
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +63,11 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
       ),
       backgroundColor: Color(0xFF84329b),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: equipmentListview(),
+        //child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.category),
             title: Text('Equipment'),
@@ -58,59 +80,57 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
         currentIndex: _selectedIndex,
         selectedItemColor: Color(0xFF84329b),
         onTap: _onItemTapped,
-       /*
-        child: Container(
-          padding: EdgeInsets.all(18),
-          color: Colors.white,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Container(
-                width: 150,
-                height: 50,
-                child: RaisedButton.icon(
-                  color: Color(0xFF84329b),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => null));
-                  },
-                  icon: Icon(
-                    Icons.category,
-                    color: Color(0xFFfffad9),
-                  ),
-                  label: Text(
-                    'Equipment',
-                    style: TextStyle(
-                      color: Color(0xFFfffad9),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                width: 150,
-                height: 50,
-                child: RaisedButton.icon(
-                  color: Color(0xFF84329b),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => null));
-                  },
-                  icon: Icon(
-                    Icons.airline_seat_legroom_reduced,
-                    color: Color(0xFFfffad9),
-                  ),
-                  label: Text(
-                    'Exercises',
-                    style: TextStyle(
-                      color: Color(0xFFfffad9),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-        */
       ),
     );
+  }
+  Widget equipmentListview() {
+    print('test #1');
+    return FutureBuilder(
+        future: _populateEquipmentList(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: equipmentList.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: ListTile(
+                    onTap: () {
+                      null;
+                    },
+                    title: Text('${equipmentList[index].getName()}'),
+                  ),
+                );
+              },
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        });
+  }
+  Widget exerciseListview() {
+    print('test #1');
+    return FutureBuilder(
+        future: _populateEquipmentList(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: equipmentList.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: ListTile(
+                    onTap: () {
+                      null;
+                    },
+                    title: Text('${equipmentList[index].getName()}'),
+                  ),
+                );
+              },
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        });
   }
 }
