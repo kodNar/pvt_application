@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterapp/models/user.dart';
+import 'package:flutterapp/pages/AboutUs.dart';
+import 'package:flutterapp/pages/FAQ.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
@@ -383,7 +385,16 @@ class MapSampleState extends State< MapSample> {
           ListTile(
             leading: Icon(Icons.border_color),
             title: Text('About us'),
-            onTap: () => {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AboutUs()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.question_answer),
+            title: Text('FAQ'),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => FAQ()));
+            },
           ),
           _loggedIn
               ? ListTile(
