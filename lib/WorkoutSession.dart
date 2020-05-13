@@ -24,6 +24,9 @@ class WorkoutSession{
   void addLike(){
     _likes += 1;
   }
+  void setLikes(int likes){
+    _likes = likes;
+  }
   void addEquipment(Equipment e){
     _equipment.add(e);
   }

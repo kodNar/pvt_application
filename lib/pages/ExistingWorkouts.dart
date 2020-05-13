@@ -14,6 +14,7 @@ class ExistingWorkouts extends StatefulWidget {
 class _ExistingState extends State<ExistingWorkouts> {
   @override
   List<bool> _isSelected = [false, true];
+  List <WorkoutSession>  sessions= [];
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +52,7 @@ class _ExistingState extends State<ExistingWorkouts> {
       fillColor: Colors.pink,
       children: <Widget>[
         Container(
+
           width: MediaQuery.of(context).size.width / 2 - 2,
           child: Text(
             "Most Recent",
@@ -80,8 +82,10 @@ class _ExistingState extends State<ExistingWorkouts> {
             _isSelected[index] = !_isSelected[index];
             if (index == 0) {
               _isSelected[1] = false;
+              sortListRecent();
             } else {
               _isSelected[0] = false;
+              sortListVoted();
             }
           }
         });
@@ -90,14 +94,10 @@ class _ExistingState extends State<ExistingWorkouts> {
   }
 
   Widget _listView() {
-    return FutureBuilder<List<WorkoutSession>>(
-        future: _getSessions(),
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? Container(
+              return Container(
                   child: Expanded(
                       child: ListView.builder(
-                          itemCount: snapshot.data.length,
+                          itemCount: sessions.length,
                           itemBuilder: (context, index) {
                             return Container(
                                 height: 50,
@@ -114,31 +114,46 @@ class _ExistingState extends State<ExistingWorkouts> {
                                             MainAxisAlignment.center,
                                         children: <Widget>[
                                           Container(
-                                            child: Text(snapshot.data[index].name),
+                                            child: Text(sessions[index].name),
                                           ),
                                           Container(child: Text(" Location: ")),
-
-                                          Container(child: Text("Likes " + snapshot.data[index].likes.toString()),)
-
-
+                                          Container(child: Text("Likes " + sessions[index].likes.toString()),)
                                         ])));
-                          })))
-              : Center();
-        });
+                          })));
   }
 
-  Future<List<WorkoutSession>> _getSessions() async {
-    List <WorkoutSession> list = [];
+    _getSessions() async {
     QuerySnapshot workoutsCollection =
     await Firestore.instance.collection("Workouts").getDocuments();
     for (var doc in workoutsCollection.documents) {
       String name = doc.data['Name'];
-      int likes = doc.data['Likes'];
+      int likes = (doc.data['Likes']);
       String location = doc.data['Location'];
       String user =doc.data['User'];
       DateTime date = (doc.data['Published']as Timestamp).toDate();
-      list.add(WorkoutSession(name,user,location,date,null));
+      WorkoutSession w = WorkoutSession(name,user,location,date,null);
+      w.setLikes(likes);
+      sessions.add(w);
     }
-    return list;
+  }
+ sortListVoted(){
+    print("sort voted");
+   sessions.sort((a,b){
+     return b.likes.compareTo(a.likes);
+   });
+ }
+  sortListRecent(){
+    sessions.sort((a,b){
+      return b.getDateTime().compareTo(a.getDateTime());
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+      setState(() {
+        _getSessions();
+      });
+
+
   }
 }
