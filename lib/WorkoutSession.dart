@@ -10,14 +10,15 @@ class WorkoutSession{
   DateTime _dateTime;
   int _likes = 0;
   List <Equipment> _equipment =[];
-
+  OutdoorGym _outdoorGym;
   List <Exercise> _exercises;
 
-  WorkoutSession(String name,String user, String location,DateTime dateTime){
+  WorkoutSession(String name,String user, String location,DateTime dateTime, OutdoorGym outdoorGym){
     _user = user;
     _location = location;
     _name = name;
     _dateTime = dateTime;
+    _outdoorGym = outdoorGym;
 
   }
   void addLike(){

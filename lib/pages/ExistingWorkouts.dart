@@ -137,7 +137,7 @@ class _ExistingState extends State<ExistingWorkouts> {
       String location = doc.data['Location'];
       String user =doc.data['User'];
       DateTime date = (doc.data['Published']as Timestamp).toDate();
-      list.add(WorkoutSession(name,user,location,date));
+      list.add(WorkoutSession(name,user,location,date,null));
     }
     return list;
   }

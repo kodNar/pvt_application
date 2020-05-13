@@ -77,6 +77,7 @@ class _RecentState extends State<RecentWorkouts> {
 
   Future<List<WorkoutSession>> _getSessions() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
+
     List<WorkoutSession> workouts =
         await DatabaseService(uid: user.uid).getWorkouts();
     return workouts;
