@@ -24,19 +24,26 @@ import 'ReportPageEquipmentList.dart';
 
 
 String picPath = 'assets/images/bok.png';
+bool gymChosen = false;
+bool eqChosen = false;
+String description;
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+Equipment equipment;
+OutdoorGym outdoorGym;
 
 class ReportPage extends StatefulWidget{
   @override
   _ReportPageState createState() => _ReportPageState();
 }
 
+
+
 class _ReportPageState extends State <ReportPage>  {
   final List<OutdoorGym> allOutdoorGym = MapSampleState.allOutdoorGym;
   List<DropdownMenuItem<OutdoorGym>> dropDownMenuItems;
-  bool gymChosen = false;
-  bool eqChosen = false;
-  Equipment equipment;
-  OutdoorGym outdoorGym;
+
+
+
   CameraController _controller;
   Future<void> _initializeControllerFuture;
   bool isCameraReady = false;
@@ -93,6 +100,7 @@ class _ReportPageState extends State <ReportPage>  {
 
       ),
       body: Column(
+          key: _formKey,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
@@ -147,7 +155,8 @@ class _ReportPageState extends State <ReportPage>  {
             ),
             Container(
 
-              child: TextField(
+              child: TextFormField(
+
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 decoration: InputDecoration(
@@ -161,6 +170,7 @@ class _ReportPageState extends State <ReportPage>  {
                   ),
                   prefixIcon: Icon(Icons.description),
                   hintText: "Describe your issue",
+
                   filled: true,
                   fillColor: Colors.white,
                 ),
@@ -174,38 +184,50 @@ class _ReportPageState extends State <ReportPage>  {
 //                  return 'Please provide a short description';
 //                }
 //              },
-
+//                validator: (input) {
+//                  if (input.isEmpty) {
+//                    return 'Please provide a password';
+//                  }
+//                  if (input.length < 6) {
+//                    return 'Your password must be atleast 6 characters';
+//                  }
+//                },
+                onSaved: (input) => description = input,
               ),
             ),
-            Container(
+    /*Container(
 
-              child: Container(
-                alignment: Alignment.center,
-                width: 200,
-                height: 50,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  gradient: LinearGradient(
-                    begin: Alignment.center,
-                    colors: <Color>[
-                      Color(0xFFF57C00),
-                      Color(0xFFFF9800),
-                      Color(0xFFFFA726),
-                    ],
-                  ),
-                ),
-                child: Text('Send',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 30,
-                    )),
-              ),
-            )
+              child: */GestureDetector(
+//                onTap: main(),
+      child: Container(
+        alignment: Alignment.center,
+        width: 200,
+        height: 50,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.white,
+            width: 2,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          gradient: LinearGradient(
+            begin: Alignment.center,
+            colors: <Color>[
+              Color(0xFFF57C00),
+              Color(0xFFFF9800),
+              Color(0xFFFFA726),
+            ],
+          ),
+        ),
+        child: Text('Send',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 30,
+            )),
+      ),
+    )
+
+
           ]
       ),
     );
@@ -230,7 +252,7 @@ class _ReportPageState extends State <ReportPage>  {
             child: Text(
               outdoorGym.name,
               style: TextStyle(
-                fontSize: 25.0,
+                fontSize: 20.0,
                 color: Colors.white,
               ),
             ),
@@ -286,7 +308,7 @@ class _ReportPageState extends State <ReportPage>  {
             child: Text(
               equipment.getName(),
               style: TextStyle(
-                fontSize: 25.0,
+                fontSize: 20.0,
                 color: Colors.white,
               ),
             ),
@@ -464,25 +486,40 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   }
 }
 
+
+///////////////////////////////////EMAIL///////////////////////////////////////////
+
+
 main() async {
-  String userName = 'apikey';
-  String passWord = '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';
-  final smtpServer = SmtpServer('smtp.sendgrid.net', username: userName, password: passWord);
+//  final formState = _formKey.currentState;
+//  if (formState.validate()) {
+//    //Checks so that the inputs are correct
+//    formState.save(); //ser till att vi kan hämta variablerna.
+//  }
 
-  final message = Message()
-    ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
-    ..recipients.add('simon.schoolsoft@gmail.com')
-    ..subject = 'Test Dart Mailer library ${DateTime.now()}'
-    ..text = 'This is the plain text.\nThis is line 2 of the text part.';
+    gymChosen = false;
+    eqChosen = false;
+    String userName = 'apikey';
+    String passWord = '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';
+    final smtpServer = SmtpServer(
+        'smtp.sendgrid.net', username: userName, password: passWord);
+
+    final message = Message()
+      ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
+      ..recipients.add('simon.schoolsoft@gmail.com')
+      ..subject = 'Test Dart Mailer library ${DateTime.now()}'
+      ..text = 'haj';/*('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
+          equipment.getName() + '\n' + description)*/
+//      ..attachments = Image.file(File(picPath)) as List<Attachment>;
 
 
-  try {
-    final sendReport = await send(message, smtpServer);
-    print('Message sent: ' + sendReport.toString());
-  } on MailerException catch (e) {
-    print('Message not sent.');
-    for (var p in e.problems) {
-      print('Problem: ${p.code}: ${p.msg}');
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch (e) {
+      print('Message not sent.');
+      for (var p in e.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
     }
   }
-}

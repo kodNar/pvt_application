@@ -67,6 +67,21 @@ class _ReportPageEquipmentListState extends State<ReportPageEquipmentList> {
         child: equipmentListview(),
         //child: _widgetOptions.elementAt(_selectedIndex),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.category),
+            title: Text('Equipment'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.directions_run),
+            title: Text('Exercises'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Color(0xFF84329b),
+        onTap: _onItemTapped,
+      ),
     );
   }
   Widget equipmentListview() {
@@ -82,8 +97,7 @@ class _ReportPageEquipmentListState extends State<ReportPageEquipmentList> {
                 return Card(
                   child: ListTile(
                     onTap: () {
-                      for(Exercise exc in equipmentList[index].getExercises())
-                        print(exc.name);
+                    Navigator.pop(context, equipmentList[index]);
                     },
                     title: Text('${equipmentList[index].getName()}'),
                   ),
