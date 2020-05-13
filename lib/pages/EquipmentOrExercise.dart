@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
+import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 
@@ -96,7 +97,8 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
                 return Card(
                   child: ListTile(
                     onTap: () {
-                      null;
+                      for(Exercise exc in equipmentList[index].getExercises())
+                        print(exc.name);
                     },
                     title: Text('${equipmentList[index].getName()}'),
                   ),
@@ -121,7 +123,11 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
                 return Card(
                   child: ListTile(
                     onTap: () {
-                      null;
+                      print('hej');
+                      print(equipmentList[index]);
+                      print(equipmentList[index].getExercises().length);
+                     for(Exercise exc in equipmentList[index].getExercises())
+                      print(exc);
                     },
                     title: Text('${equipmentList[index].getName()}'),
                   ),

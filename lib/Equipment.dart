@@ -21,6 +21,10 @@ class Equipment{
 
   List<Exercise> get exercises => _exercises;
 
+  List getExercises(){
+   return _exercises;
+  }
+
   List getReports(){
     return _faultyReports;
   }
