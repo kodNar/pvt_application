@@ -12,6 +12,7 @@ import 'package:flutterapp/pages/AboutUs.dart';
 import 'package:camera/camera.dart';
 import 'dart:async';
 import 'dart:io';
+import 'package:flutterapp/pages/WorkoutGymList.dart';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,8 @@ class ReportPage extends StatefulWidget{
 class _ReportPageState extends State <ReportPage>  {
   final List<OutdoorGym> allOutdoorGym = MapSampleState.allOutdoorGym;
   List<DropdownMenuItem<OutdoorGym>> dropDownMenuItems;
-  OutdoorGym selectedGym;
+  bool gymChosen = false;
+  OutdoorGym outdoorGym;
   CameraController _controller;
   Future<void> _initializeControllerFuture;
   bool isCameraReady = false;
@@ -43,17 +45,17 @@ class _ReportPageState extends State <ReportPage>  {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  /*void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       _controller != null
           ? _initializeControllerFuture = _controller.initialize()
           : null; //on pause camera is disposed, so we need to call again "issue is only for android"
     }
-  }
+  }*/
 
 
 
-  List<DropdownMenuItem<OutdoorGym>> buildDropDownMenuItems(List gyms){
+  /*List<DropdownMenuItem<OutdoorGym>> buildDropDownMenuItems(List gyms){
     List<DropdownMenuItem<OutdoorGym>> items = List();
     for(OutdoorGym gym in allOutdoorGym){
       items.add(
@@ -64,7 +66,7 @@ class _ReportPageState extends State <ReportPage>  {
       );
     }
     return items;
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +94,7 @@ class _ReportPageState extends State <ReportPage>  {
               color: Colors.white,
                 width: 300,
 
-                child: MyStatefulWidget(),
+                child: gymReturn(),
             ),
             Container(
                 child: Row(
@@ -202,7 +204,54 @@ class _ReportPageState extends State <ReportPage>  {
       ),
     );
   }
-}
+  Widget gymReturn(){
+    if(gymChosen){
+      return Container(
+        padding: EdgeInsets.all(20),
+        child: Text('At the gym: ${outdoorGym.name}',
+          style: TextStyle(
+            fontSize: 17,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+
+          ),
+        ),
+      );
+    }else{
+      return  Container(
+        padding: EdgeInsets.all(20),
+        child: ButtonTheme(
+          minWidth: 250,
+          height: 48,
+          child: RaisedButton(
+            //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              side: BorderSide(color: Colors.white, width: 1.5),
+            ),
+            color: Colors.transparent,
+            onPressed: () {
+              _pushContextChooseGym(context);
+            },
+            child: Text(
+              'Choose gym',
+              style: TextStyle(
+                fontSize: 25.0,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
+  _pushContextChooseGym(BuildContext context) async {
+    final OutdoorGym result = await Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutGymList()));
+    gymChosen = true;
+    outdoorGym = result;
+  }
+  }
+
 
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);

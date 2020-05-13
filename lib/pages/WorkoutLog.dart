@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/pages/EquipmentOrExercise.dart';
-import 'package:flutterapp/pages/ExerciseOrEquipment[DEAD].dart';
+//import 'package:flutterapp/pages/ExerciseOrEquipment[DEAD].dart';
 import 'package:flutterapp/pages/WorkoutGymList.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
