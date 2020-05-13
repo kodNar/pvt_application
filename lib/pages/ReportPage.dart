@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/FaultyEquipmentReport.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutterapp/pages/EquipmentOrExercise.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
@@ -19,6 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 
+import 'ReportPageEquipmentList.dart';
+
 
 String picPath = 'assets/images/bok.png';
 
@@ -31,6 +34,8 @@ class _ReportPageState extends State <ReportPage>  {
   final List<OutdoorGym> allOutdoorGym = MapSampleState.allOutdoorGym;
   List<DropdownMenuItem<OutdoorGym>> dropDownMenuItems;
   bool gymChosen = false;
+  bool eqChosen = false;
+  Equipment equipment;
   OutdoorGym outdoorGym;
   CameraController _controller;
   Future<void> _initializeControllerFuture;
@@ -91,10 +96,11 @@ class _ReportPageState extends State <ReportPage>  {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              color: Colors.white,
-                width: 300,
 
                 child: gymReturn(),
+            ),
+            Container(
+              child: eqReturn(),
             ),
             Container(
                 child: Row(
@@ -208,12 +214,26 @@ class _ReportPageState extends State <ReportPage>  {
     if(gymChosen){
       return Container(
         padding: EdgeInsets.all(20),
-        child: Text('At the gym: ${outdoorGym.name}',
-          style: TextStyle(
-            fontSize: 17,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-
+        child: ButtonTheme(
+          minWidth: 250,
+          height: 48,
+          child: RaisedButton(
+            //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              side: BorderSide(color: Colors.white, width: 1.5),
+            ),
+            color: Colors.transparent,
+            onPressed: () {
+              _pushContextChooseGym(context);
+            },
+            child: Text(
+              outdoorGym.name,
+              style: TextStyle(
+                fontSize: 25.0,
+                color: Colors.white,
+              ),
+            ),
           ),
         ),
       );
@@ -245,61 +265,80 @@ class _ReportPageState extends State <ReportPage>  {
       );
     }
   }
+
+  Widget eqReturn(){
+    if(eqChosen){
+      return Container(
+        padding: EdgeInsets.all(20),
+        child: ButtonTheme(
+          minWidth: 250,
+          height: 48,
+          child: RaisedButton(
+            //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              side: BorderSide(color: Colors.white, width: 1.5),
+            ),
+            color: Colors.transparent,
+            onPressed: () {
+              _pushContextChooseGym(context);
+            },
+            child: Text(
+              equipment.getName(),
+              style: TextStyle(
+                fontSize: 25.0,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      );
+    }else{
+      return  Container(
+        padding: EdgeInsets.all(20),
+        child: ButtonTheme(
+          minWidth: 250,
+          height: 48,
+          child: RaisedButton(
+            //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              side: BorderSide(color: Colors.white, width: 1.5),
+            ),
+            color: Colors.transparent,
+            onPressed: () {
+              _pushContextChooseEq(context);
+            },
+            child: Text(
+              'Choose Equipment',
+              style: TextStyle(
+                fontSize: 25.0,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
   _pushContextChooseGym(BuildContext context) async {
     final OutdoorGym result = await Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutGymList()));
     gymChosen = true;
     outdoorGym = result;
   }
+
+  _pushContextChooseEq(BuildContext context) async {
+    final Equipment result = await Navigator.push(context, MaterialPageRoute(builder: (context) => ReportPageEquipmentList(outdoorGym)));
+    eqChosen = true;
+    equipment = result;
   }
 
 
-class MyStatefulWidget extends StatefulWidget {
-  MyStatefulWidget({Key key}) : super(key: key);
 
-  @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
-}
-
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  String dropdownValue = 'One';
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
-
-      icon: Icon(Icons.arrow_drop_down),
-
-      iconEnabledColor: Colors.black,
-      iconSize: 24,
-      elevation: 16,
-      style: TextStyle(
-          color: Colors.black,
-          fontSize: 18,
-        ),
-
-      underline: Container(
-        height: 2,
-        color: Colors.white,
-      ),
-      onChanged: (String newValue) {
-        setState(() {
-          dropdownValue = newValue;
-        });
-      },
-      items: <String>['One', 'Two', 'Free', 'Four']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value, style: TextStyle(
-            color: Colors.black
-            ),
-          ),
-        );
-      }).toList(),
-    );
   }
-}
+
+
 
 //////////////////////////////////// CAMERA ////////////////////////////////////
 
