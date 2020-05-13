@@ -21,7 +21,8 @@ class Equipment{
 
   List<Exercise> get exercises => _exercises;
 
-  List getExercises(){
+  //Behövs tydligen se "Equipment or exercise".
+  List<Exercise> getExercises(){
    return _exercises;
   }
 

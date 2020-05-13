@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/Equipment.dart';
+import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/pages/EquipmentOrExercise.dart';
-//import 'package:flutterapp/pages/ExerciseOrEquipment[DEAD].dart';
 import 'package:flutterapp/pages/WorkoutGymList.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
@@ -15,7 +16,11 @@ class WorkoutLog extends StatefulWidget {
 
 class _WorkoutLogState extends State<WorkoutLog> {
   bool gymChosen = false;
+  bool exerciseChosen = true;
+  List<Exercise> exerciseList = [];
+  Exercise exercise;
   OutdoorGym outdoorGym;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +33,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
           child: Column(
             children: <Widget>[
               gymReturn(),
+              workoutLog()
             ],
           ),
         ),
@@ -38,12 +44,10 @@ class _WorkoutLogState extends State<WorkoutLog> {
         icon: const Icon(Icons.add),
         label: const Text('Add exercise/equipment'),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => EquipmentOrExercise(outdoorGym)));
-
+          _pushContextChooseExercise(context);
         },
       ),
-      floatingActionButtonLocation:
-      FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
         child: Row(
@@ -51,40 +55,56 @@ class _WorkoutLogState extends State<WorkoutLog> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             IconButton(
-                icon: Icon(Icons.delete),
-                color: Colors.red,
-                iconSize: 40,
-                onPressed: () {},
-              ),
-
-              IconButton(
-                icon: Icon(Icons.save),
-                color: Colors.green,
-                iconSize: 40,
-                onPressed: () {},
+              icon: Icon(Icons.delete),
+              color: Colors.red,
+              iconSize: 40,
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Icon(Icons.save),
+              color: Colors.green,
+              iconSize: 40,
+              onPressed: () {},
             ),
           ],
         ),
       ),
-
     );
   }
 
-  Widget gymReturn(){
-    if(gymChosen){
+  Widget workoutLog() {
+    if (exerciseChosen) {
+      return ListView.builder(
+        shrinkWrap: true,
+        itemCount: exerciseList.length,
+        itemBuilder: (context, index){
+          return Card(
+            child: ListTile(
+            title: Text('${exerciseList[index].getName()}'),
+            ),
+          );
+        },
+      );
+    }else{
+      return Text('No exercise chosen');
+    }
+  }
+
+  Widget gymReturn() {
+    if (gymChosen) {
       return Container(
         padding: EdgeInsets.all(20),
-        child: Text('At the gym: ${outdoorGym.name}',
+        child: Text(
+          'At the gym: ${outdoorGym.name}',
           style: TextStyle(
             fontSize: 17,
             color: Colors.white,
             fontWeight: FontWeight.bold,
-
           ),
         ),
       );
-    }else{
-      return  Container(
+    } else {
+      return Container(
         padding: EdgeInsets.all(20),
         child: ButtonTheme(
           minWidth: 250,
@@ -111,16 +131,18 @@ class _WorkoutLogState extends State<WorkoutLog> {
       );
     }
   }
+
   _pushContextChooseGym(BuildContext context) async {
-    final OutdoorGym result = await Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutGymList()));
+    final OutdoorGym result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => WorkoutGymList()));
     gymChosen = true;
     outdoorGym = result;
   }
 
-  _pushContextChooseEquipment(BuildContext context) async {
-    final OutdoorGym result = await Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutGymList()));
-    gymChosen = true;
-    outdoorGym = result;
+  _pushContextChooseExercise(BuildContext context) async {
+    final Exercise result = await Navigator.push(context, MaterialPageRoute(builder: (context) => EquipmentOrExercise(outdoorGym)));
+    exerciseList.add(result);
+    exerciseChosen = true;
+    exercise = result;
   }
-
 }
