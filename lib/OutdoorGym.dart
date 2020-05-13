@@ -18,6 +18,7 @@ class OutdoorGym{
   //later be equipmmnt insted of string
   List<String> _equipmentRef= [];
   Marker _marker;
+  List <Equipment> _equipment=[];
 
   //home/office/unknown
 
@@ -38,8 +39,8 @@ class OutdoorGym{
     );
   }
   Future <List<Equipment>> getEquipmentFromDB() async {
-   List<Equipment> equipmentList =[];
-
+    if(_equipment.length == 0){
+      print("getting from db");
     for(var ref in _equipmentRef){
       List<Exercise> exercises =[];
       var temp = (await Firestore.instance.collection('Equipment').document(ref).get());
@@ -50,10 +51,11 @@ class OutdoorGym{
         exercises.add(e);
       }}
       Equipment equipment = Equipment(temp.documentID.toString(),exercises);
-      equipmentList.add(equipment);
+      _equipment.add(equipment);
     }
-    return equipmentList;
   }
+      return _equipment;
+    }
 
   Marker get marker => _marker;
   String get name => _name;
