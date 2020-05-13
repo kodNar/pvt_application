@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
+import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
 
@@ -26,8 +28,53 @@ void initState() {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF84329b),
-      appBar: BaseAppBar(
-        title: 'Choose gym',
+      appBar: AppBar(
+        backgroundColor:  Color.fromARGB(255, 132, 50, 155),
+        title: Container(
+          child: Center(
+              child: FittedBox(fit:BoxFit.fitWidth,
+                child: Text('Gym list',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                    )
+                ),
+              )
+//          child: Text(
+//            title,
+//            style: TextStyle(
+//              color: Colors.white,
+//              fontSize: 30,
+//            ),
+//          ),
+          ),
+        ),
+        leading: InkWell(
+          onTap: () {
+            GeoPoint geoPoint = new GeoPoint(37.422, 122.084);
+            OutdoorGym outdoorGym = new OutdoorGym('None', null, geoPoint, context);
+            Navigator.pop(context,(outdoorGym));
+          },
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+            size: 40,
+            semanticLabel: 'Back',
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.home,
+              size: 40,
+              color: Colors.white,
+            ),
+            tooltip: 'Go to homepage',
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MapSample()));
+            },
+          ),
+        ],
       ),
       body: Column(
         children: <Widget>[
