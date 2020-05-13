@@ -51,7 +51,6 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
         title = 'Exercises';
       } else {
         title = 'Equipment';
-
       }
     });
   }
@@ -84,6 +83,7 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
       ),
     );
   }
+
   Widget equipmentListview() {
     print('test #1');
     return FutureBuilder(
@@ -95,41 +95,34 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
               itemCount: equipmentList.length,
               itemBuilder: (context, index) {
                 return Card(
-                  child: ListTile(
-                    onTap: () {
-                      for(Exercise exc in equipmentList[index].getExercises())
-                        print(exc.name);
-                    },
+                  child: ExpansionTile(
                     title: Text('${equipmentList[index].getName()}'),
-                  ),
-                );
-              },
-            );
-          } else {
-            return CircularProgressIndicator();
-          }
-        });
-  }
-  Widget exerciseListview() {
-    print('test #1');
-    return FutureBuilder(
-        future: _populateEquipmentList(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              shrinkWrap: true,
-              itemCount: equipmentList.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    onTap: () {
-                      print('hej');
-                      print(equipmentList[index]);
-                      print(equipmentList[index].getExercises().length);
-                     for(Exercise exc in equipmentList[index].getExercises())
-                      print(exc);
-                    },
-                    title: Text('${equipmentList[index].getName()}'),
+                    children: <Widget>[
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: equipmentList[index].getExercises().length,
+                          itemBuilder: (context, index2) {
+                            return Card(
+                              child: ListTile(
+                                title: Text('${equipmentList[index].getExercises()[index2].getName()}'),
+                                onTap: () {
+                                Navigator.pop(context, (equipmentList[index].getExercises()[index2]));
+                                },
+                              ),
+                            );
+                          }
+
+                      ),
+                      /*
+                      ListTile(onTap: () {
+                        print(equipmentList[index]);
+                        print(equipmentList[index].getExercises().length);
+                        for (Exercise exc in equipmentList[index].getExercises()){
+                          print(exc);
+                        }
+                      }),
+                       */
+                    ],
                   ),
                 );
               },
@@ -140,3 +133,6 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
         });
   }
 }
+
+
+

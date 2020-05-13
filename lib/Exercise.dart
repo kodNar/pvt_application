@@ -21,4 +21,9 @@ class Exercise{
   set reps(int value) {
     _reps = value;
   }
+
+  String getName(){
+    return _name;
+  }
+
 }

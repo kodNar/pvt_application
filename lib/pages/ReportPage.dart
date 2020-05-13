@@ -211,7 +211,7 @@ class _ReportPageState extends State <ReportPage>  {
         child: Text('At the gym: ${outdoorGym.name}',
           style: TextStyle(
             fontSize: 17,
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.bold,
 
           ),
