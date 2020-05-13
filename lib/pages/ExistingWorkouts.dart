@@ -15,6 +15,7 @@ class _ExistingState extends State<ExistingWorkouts> {
   @override
   List<bool> _isSelected = [false, true];
   List <WorkoutSession>  sessions= [];
+  bool _loaded = false;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +30,7 @@ class _ExistingState extends State<ExistingWorkouts> {
             Container(
                 // add search field
                 ),
-            Container(child: _listView()),
+            _loaded? Container(child: _listView()) :Center()
           ],
         ));
   }
@@ -151,9 +152,8 @@ class _ExistingState extends State<ExistingWorkouts> {
   void initState() {
     super.initState();
       setState(() {
-        _getSessions();
+        _loaded = true;
       });
-
-
+    _getSessions();
   }
 }
