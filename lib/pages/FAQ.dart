@@ -59,7 +59,9 @@ class FAQ extends StatelessWidget {
           ),
           ExpansionTile(
             title: Text("Why are some gyms made from wood and some from steel?", style: TextStyle( color: Colors.white),),
-            backgroundColor: Colors.black,
+//            leading: ExpandIcon(
+//              color: Colors.black,
+//            ),
 
 
             children: <Widget>[
