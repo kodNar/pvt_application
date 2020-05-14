@@ -15,6 +15,7 @@ class _ExistingState extends State<ExistingWorkouts> {
   @override
   List<bool> _isSelected = [false, true];
   List <WorkoutSession>  sessions= [];
+  List <WorkoutSession> displayList=[];
   bool _loaded = false;
 
   Widget build(BuildContext context) {
@@ -28,8 +29,8 @@ class _ExistingState extends State<ExistingWorkouts> {
             Container(child: _topImage()),
             Container(child: _toggleSearch()),
             Container(
-                // add search field
-                ),
+              // add search field
+            ),
             _loaded? Container(child: _listView()) :Center()
           ],
         ));
@@ -98,7 +99,7 @@ class _ExistingState extends State<ExistingWorkouts> {
               return Container(
                   child: Expanded(
                       child: ListView.builder(
-                          itemCount: sessions.length,
+                          itemCount: displayList.length,
                           itemBuilder: (context, index) {
                             return Container(
                                 height: 50,
@@ -115,12 +116,21 @@ class _ExistingState extends State<ExistingWorkouts> {
                                             MainAxisAlignment.center,
                                         children: <Widget>[
                                           Container(
-                                            child: Text(sessions[index].name),
+                                            child: Text(displayList[index].name),
                                           ),
                                           Container(child: Text(" Location: ")),
-                                          Container(child: Text("Likes " + sessions[index].likes.toString()),)
+                                          Container(child: Text("Likes " + displayList[index].likes.toString()),)
                                         ])));
                           })));
+  }
+
+
+
+  _changeDisplayItems(){
+    //sök medtod session
+    setState(() {
+
+    });
   }
 
     _getSessions() async {
@@ -132,9 +142,10 @@ class _ExistingState extends State<ExistingWorkouts> {
       String location = doc.data['Location'];
       String user =doc.data['User'];
       DateTime date = (doc.data['Published']as Timestamp).toDate();
-      WorkoutSession w = WorkoutSession(name,user,location,date,null);
+      WorkoutSession w = WorkoutSession(name,user,location,date,null, null);
       w.setLikes(likes);
       sessions.add(w);
+      displayList = sessions;
     }
   }
  sortListVoted(){

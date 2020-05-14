@@ -13,7 +13,7 @@ class DatabaseService {
    */
 
   final String uid;
-
+  List <WorkoutSession> _worksession = [];
   DatabaseService({this.uid});
 
   //a reference to a collection in our firestore database.
@@ -22,6 +22,7 @@ class DatabaseService {
 
   final CollectionReference outdoorGymsCollection =
       Firestore.instance.collection('OutdoorGyms');
+
 
 
   Future updateUserData(String userID, String email, String nickName) async {
@@ -44,15 +45,7 @@ class DatabaseService {
     });
   }
 
-
-  Future<List<WorkoutSession>> getWorkouts() async {
-    List<WorkoutSession> workouts = [];
-    QuerySnapshot collectionReference = await Firestore.instance.collection('users').document(uid).collection("workoutCollection").getDocuments();
-   for(var doc in collectionReference.documents){
-     WorkoutSession w = WorkoutSession(doc.data['Name'],null,null,(doc.data['Date'] as Timestamp).toDate(),null);
-     workouts.add(w);
-
-     /////////////////////////////////////////////////////////////////
+  Future <List <String>> _referencesToUsersWorkoutsSessions(var doc)async{
       List <String> referenceList =[];
       if(doc.data['Reference']!= null) {
         List<Object> objectList = doc.data['Reference'];
@@ -61,10 +54,62 @@ class DatabaseService {
           referenceList.add(reference);
         }
       }
-    /////////////////////////////////////////////////////////////////////////
-   }
-   return workouts;
+      return referenceList;
   }
+
+  Future<Equipment> _getSessionEquipment(String ref) async {
+    List<Exercise> exercises = [];
+    Equipment equipment;
+    var temp = (await Firestore.instance.collection('Equipment')
+        .document(ref)
+        .get());
+    var exerTemp = await Firestore.instance.collection('Equipment').document(
+        ref).collection("Exercises").getDocuments();
+    for (var doc in exerTemp.documents) {
+      Exercise e = Exercise(doc.data['Name'], doc.data['Desc']);
+      if (e != null) {
+        exercises.add(e);
+      }
+    }
+    equipment = Equipment(temp.documentID.toString(), exercises);
+    return equipment;
+  }
+
+  Future<List<WorkoutSession>> getUserWorkoutSessions() async {
+    if(_worksession.length == 0){
+    QuerySnapshot collectionReference = await Firestore.instance.collection('users').document(uid).collection("workoutCollection").getDocuments();
+    for(var doc in collectionReference.documents) {
+      List <Equipment> equipments =[];
+     for (String ref in await _referencesToUsersWorkoutsSessions(doc)){
+      Equipment e = await _getSessionEquipment(ref);
+      equipments.add(e);
+     }
+      WorkoutSession w = WorkoutSession(
+          doc.data['Name'],
+          null,
+          doc.data["Location"],
+          (doc.data['Date'] as Timestamp).toDate(),
+          null,
+          equipments);
+      _worksession.add(w);
+      }
+    }
+    return _worksession;
+    }
+
+    void createNewExercises(List <Exercise> list, OutdoorGym gym,String name ){
+    userCollection.document(uid).collection("workoutCollection").document(uid).setData({
+    'Date': DateTime.now(),
+    'Location': gym.name,
+    'Name': name,
+      });
+    }
+
+
+
+
+
+
 
   Future<String> getNickname() async {
     var nickname =

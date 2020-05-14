@@ -89,7 +89,6 @@ class MapSampleState extends State< MapSample> {
               },
             ),
             Container(
-
               alignment: Alignment.bottomCenter,
               child: RaisedButton.icon(
                 color: Color.fromARGB(255, 132, 50, 155),
