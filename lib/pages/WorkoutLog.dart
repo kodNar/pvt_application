@@ -65,7 +65,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
               icon: Icon(Icons.save),
               color: Colors.green,
               iconSize: 40,
-              onPressed: () {},
+              onPressed: saveWorkout,
             ),
           ],
         ),
@@ -97,7 +97,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
                           return isDigitsOnly == null ? 'Input needs to be digits only' : null;
                         },
                         onSaved: (input) {
-                          String sets = input;
+                          exerciseList[index].setSets(int.tryParse(input));
                         }
 
                       ),
@@ -112,8 +112,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
                           return isDigitsOnly == null ? 'Input needs to be digits only' : null;
                         },
                         onSaved: (input) {
-                          String reps = input;
-
+                          exerciseList[index].setReps(int.tryParse(input));
                         },
                       ),
                 ],
@@ -173,12 +172,18 @@ class _WorkoutLogState extends State<WorkoutLog> {
     }
   }
 
-  Future<void> saveWorkout() async {
+    void saveWorkout() {
     final formState = _formKey.currentState;
-
     if (formState.validate()) {
       formState.save();
       try {
+        for(Exercise exercise in exerciseList){
+          print('ny exercise!');
+          print(exercise.name);
+          print(exercise.sets);
+          print(exercise.reps);
+
+        }
 
 
       } catch (e) {
