@@ -6,7 +6,7 @@ import 'package:flutterapp/Exercise.dart';
 class WorkoutSession{
   String _name;
   String _user;
-  String _location;
+  String _location; //Ändra till att location är ett Gym inte en String
   DateTime _dateTime;
   int _likes = 0;
   List <Equipment> _equipment =[];

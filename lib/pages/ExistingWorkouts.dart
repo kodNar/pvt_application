@@ -27,7 +27,8 @@ class _ExistingState extends State<ExistingWorkouts> {
           children: <Widget>[
             Container(child: _topImage()),
             Container(child: _toggleSearch()),
-            Container(// add search field
+            Container(
+                // add search field
                 ),
             _loaded? Container(child: _listView()) :Center()
           ],
@@ -131,7 +132,7 @@ class _ExistingState extends State<ExistingWorkouts> {
       String location = doc.data['Location'];
       String user =doc.data['User'];
       DateTime date = (doc.data['Published']as Timestamp).toDate();
-      WorkoutSession w = WorkoutSession(name,user,location,date,null,null);
+      WorkoutSession w = WorkoutSession(name,user,location,date,null);
       w.setLikes(likes);
       sessions.add(w);
     }
