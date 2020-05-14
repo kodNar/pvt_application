@@ -147,18 +147,27 @@ class _ExistingState extends State<ExistingWorkouts> {
                                             MainAxisAlignment.center,
                                         children: <Widget>[
                                           Container(
-                                            padding: EdgeInsets.all(8),
+                                            padding: EdgeInsets.all(5),
                                             child: Column(
                                               children: <Widget>[
+                                                Row(
+                                                  children: <Widget>[
+                                                    Icon(
+                                                      Icons.perm_identity
+                                                    ),
+                                                    Text(sessions[index].name),
+                                                  ],
+
+                                                ),
                                                 //Text(sessions[index]._dateTime),
-                                                Text("Datum fixa"),
-                                                Text(sessions[index].name),
+
+                                                Text(sessions[index].getDateTime().toString()), //KOLLA DETTA
                                               ],
                                             )
                                             //child: Text(sessions[index].name),
                                           ),
                                           Container(
-                                            padding: EdgeInsets.all(8),
+                                            padding: EdgeInsets.all(5),
                                             child: Column(
                                           children: <Widget>[
                                             Text(" Location: "),
@@ -167,6 +176,7 @@ class _ExistingState extends State<ExistingWorkouts> {
                                           ),
                                           ),
                                           Container(
+                                              padding: EdgeInsets.all(5),
                                             child: Column(
                                               children: <Widget>[
                                                 Icon(
