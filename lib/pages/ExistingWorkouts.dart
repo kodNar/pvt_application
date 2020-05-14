@@ -15,7 +15,7 @@ class _ExistingState extends State<ExistingWorkouts> {
   @override
   List<bool> _isSelected = [false, true];
   List <WorkoutSession> sessions= [];
-  List <WorkoutSession> selectedSessions = [];
+  //List <WorkoutSession> selectedSessions = [];
   bool _loaded = false;
   String searchGym = "";
 
@@ -130,10 +130,10 @@ class _ExistingState extends State<ExistingWorkouts> {
               return Container(
                   child: Expanded(
                       child: ListView.builder(
-                          itemCount: selectedSessions.length,
+                          itemCount: sessions.length,
                           itemBuilder: (context, index) {
                             return Container(
-                                height: 50,
+                                height: 70,
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(5),
                                 color: Color.fromARGB(
@@ -147,10 +147,35 @@ class _ExistingState extends State<ExistingWorkouts> {
                                             MainAxisAlignment.center,
                                         children: <Widget>[
                                           Container(
-                                            child: Text(selectedSessions[index].name),
+                                            padding: EdgeInsets.all(8),
+                                            child: Column(
+                                              children: <Widget>[
+                                                //Text(sessions[index]._dateTime),
+                                                Text("Datum fixa"),
+                                                Text(sessions[index].name),
+                                              ],
+                                            )
+                                            //child: Text(sessions[index].name),
                                           ),
-                                          Container(child: Text(" Location: ")),
-                                          Container(child: Text("Likes " + selectedSessions[index].likes.toString()),)
+                                          Container(
+                                            padding: EdgeInsets.all(8),
+                                            child: Column(
+                                          children: <Widget>[
+                                            Text(" Location: "),
+                                            Text(sessions[index].location),
+                                          ],
+                                          ),
+                                          ),
+                                          Container(
+                                            child: Column(
+                                              children: <Widget>[
+                                                Icon(
+                                                  Icons.thumb_up,
+                                                ),
+                                                Text("Likes " + sessions[index].likes.toString()),
+                                              ],
+                                            )
+                                            )
                                         ])));
                           })));
   }
@@ -167,17 +192,17 @@ class _ExistingState extends State<ExistingWorkouts> {
       WorkoutSession w = WorkoutSession(name,user,location,date,null, null);
       w.setLikes(likes);
       sessions.add(w);
-      selectedSessions = sessions;
+      sessions = sessions;
     }
   }
  sortListVoted(){
     print("sort voted");
-   selectedSessions.sort((a,b){
+   sessions.sort((a,b){
      return b.likes.compareTo(a.likes);
    });
  }
   sortListRecent(){
-    selectedSessions.sort((a,b){
+    sessions.sort((a,b){
       return b.getDateTime().compareTo(a.getDateTime());
     });
   }
