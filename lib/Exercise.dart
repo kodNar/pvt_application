@@ -14,11 +14,11 @@ class Exercise{
 
   Exercise(this._name, this._desc);
 
-  set sets(int value) {
+  void setSets(int value) {
     _sets = value;
   }
 
-  set reps(int value) {
+  void setReps(int value) {
     _reps = value;
   }
 
