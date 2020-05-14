@@ -1,38 +1,27 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/Equipment.dart';
-import 'package:flutterapp/FaultyEquipmentReport.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:flutterapp/pages/EquipmentOrExercise.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
 import 'package:flutterapp/OutdoorGym.dart';
-import 'package:flutterapp/pages/AboutUs.dart';
+import 'package:flutterapp/Equipment.dart';
 import 'package:camera/camera.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutterapp/pages/WorkoutGymList.dart';
-
-import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
-
 import 'ReportPageEquipmentList.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-//import 'package:image/image.dart';
-
-const shift = (0xFF << 24);
 String picPath = 'assets/images/bok.png';
 bool gymChosen = false;
 bool eqChosen = false;
 String description;
 
-Equipment equipment;
+String equipment = 'Not Specified';
 OutdoorGym outdoorGym;
-//hej
+
 class ReportPage extends StatefulWidget {
   @override
   _ReportPageState createState() => _ReportPageState();
@@ -43,13 +32,10 @@ class _ReportPageState extends State<ReportPage> {
   List<DropdownMenuItem<OutdoorGym>> dropDownMenuItems;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  CameraController _controller;
-  Future<void> _initializeControllerFuture;
   bool isCameraReady = false;
   bool showCapturedPhoto = false;
+  bool buttonDisabled = true;
 
-//  bool mounted = false;
-  var ImagePath;
 
   @override
   void initState() {}
@@ -62,7 +48,14 @@ class _ReportPageState extends State<ReportPage> {
     myController.dispose();
     super.dispose();
   }
-
+  void disableButton(){
+    if (description == null || outdoorGym == null){
+      buttonDisabled = true;
+    }
+    else{
+      buttonDisabled = false;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +65,6 @@ class _ReportPageState extends State<ReportPage> {
         IconButton(
           icon: Icon(Icons.home),
           onPressed: () {
-            picPath = 'assets/images/bok.png';
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => MapSample()));
           },
@@ -167,7 +159,7 @@ class _ReportPageState extends State<ReportPage> {
                 ),
 
                 child: RaisedButton(
-//        onPressed: main(),
+
                   color: Colors.transparent,
                   child: Text('Send',
                       textAlign: TextAlign.center,
@@ -178,7 +170,22 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                   onPressed: () {
                     description = myController.text;
-                    main();
+                    disableButton();
+                    if(!buttonDisabled) {
+
+                      main();
+                      thankYouMessage();
+
+                    }else{
+                      Fluttertoast.showToast(
+                          msg: "Please select a gym and provide a short description",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                    }
                   },
                 ),
               ),
@@ -261,7 +268,7 @@ class _ReportPageState extends State<ReportPage> {
               _pushContextChooseGym(context);
             },
             child: Text(
-              equipment.getName(),
+              equipment,
               style: TextStyle(
                 fontSize: 20.0,
                 color: Colors.white,
@@ -312,14 +319,21 @@ class _ReportPageState extends State<ReportPage> {
         MaterialPageRoute(
             builder: (context) => ReportPageEquipmentList(outdoorGym)));
     eqChosen = true;
-    equipment = result;
+    equipment = result.getName();
   }
 
+  void thankYouMessage(){
 
+    Fluttertoast.showToast(
+        msg: "Thank you for your input! We will look into the matter ASAP",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.lightGreen,
+        textColor: Colors.white,
+        fontSize: 16.0
 
-
-
-
+    );
+  }
 
 }
 
@@ -345,8 +359,8 @@ Future<void> main2(context) async {
       MaterialPageRoute(
           builder: (context) => TakePictureScreen(camera: firstCamera)));
 
-  /// Sätt din testsida här! ///
-  //TakePictureScreen(camera: firstCamera);
+
+
 }
 
 // A screen that allows users to take a picture using a given camera.
@@ -434,13 +448,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
             print(picPath.toString());
 
-            // If the picture was taken, display it on a new screen.
-            /*Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(imagePath: path),
-              ),
-            );*/
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => ReportPage()));
           } catch (e) {
@@ -456,11 +463,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 ///////////////////////////////////EMAIL///////////////////////////////////////////
 
 main() async {
-//  final formState = _formKey.currentState;
-//  if (formState.validate()) {
-//    //Checks so that the inputs are correct
-//    formState.save(); //ser till att vi kan hämta variablerna.
-//  }
 
   gymChosen = false;
   eqChosen = false;
@@ -470,14 +472,29 @@ main() async {
   final smtpServer =
       SmtpServer('smtp.sendgrid.net', username: userName, password: passWord);
 
-  final message = Message()
+  Message message = new Message();
 
-    ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
-    ..recipients.add('simon.schoolsoft@gmail.com')
-    ..subject = 'Test Dart Mailer library ${DateTime.now()}'
-    ..text = ('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
-          equipment.getName() + '\n' + description)
-    ..attachments.add(new FileAttachment(File('$picPath')));
+  if(picPath != 'assets/images/bok.png') {
+    message = Message()
+
+
+      ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
+      ..recipients.add('simon.schoolsoft@gmail.com')
+      ..subject = 'Outdoor Gym Error Report ${DateTime.now()}'
+      ..text = ('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
+          equipment + '\n' + '\n' + description)
+      ..attachments.add(new FileAttachment(File('$picPath')));
+  }else{
+    message = Message()
+  ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
+  ..recipients.add('simon.schoolsoft@gmail.com')
+  ..subject = 'Outdoor Gym Error Report ${DateTime.now()}'
+  ..text = ('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
+  equipment + '\n' + '\n' + description);
+
+  }
+
+
 
   try {
     final sendReport = await send(message, smtpServer);
