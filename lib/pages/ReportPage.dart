@@ -22,6 +22,9 @@ import 'package:path_provider/path_provider.dart';
 
 import 'ReportPageEquipmentList.dart';
 
+//import 'package:image/image.dart';
+
+const shift = (0xFF << 24);
 String picPath = 'assets/images/bok.png';
 bool gymChosen = false;
 bool eqChosen = false;
@@ -312,6 +315,12 @@ class _ReportPageState extends State<ReportPage> {
     equipment = result;
   }
 
+
+
+
+
+
+
 }
 
 
@@ -462,13 +471,13 @@ main() async {
       SmtpServer('smtp.sendgrid.net', username: userName, password: passWord);
 
   final message = Message()
+
     ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
     ..recipients.add('simon.schoolsoft@gmail.com')
     ..subject = 'Test Dart Mailer library ${DateTime.now()}'
-    ..text = description;
-  /*('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
-          equipment.getName() + '\n' + description)*/
-//      ..attachments = Image.file(File(picPath)) as List<Attachment>;
+    ..text = ('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
+          equipment.getName() + '\n' + description)
+    ..attachments.add(new FileAttachment(File('$picPath')));
 
   try {
     final sendReport = await send(message, smtpServer);
