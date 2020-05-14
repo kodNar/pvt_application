@@ -14,6 +14,7 @@ class RecentWorkouts extends StatefulWidget {
 }
 
 class _RecentState extends State<RecentWorkouts> {
+  bool _loaded =false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,66 +23,51 @@ class _RecentState extends State<RecentWorkouts> {
           title: "Recent Workouts",
         ),
         body: Center(
-            child: Container(
-                padding: EdgeInsets.all(20),
-                child: FutureBuilder<List<WorkoutSession>>(
-                    future: _getList(),
-                    builder: (context, snapshot) {
-                      return snapshot.hasData
-                          ? Container(
-                          child: ListView.builder(
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (context, index) {
+            child: Container(child:_listView())));
+  }
+  Widget _listView() {
+    return
+      FutureBuilder<List <WorkoutSession>>(
+        future:_getList(),
+        builder: (context, snapshot) {
+          return snapshot.hasData ?Container(
+                  child: ListView.builder(
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                            height: 50,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(5),
+                            color: Color.fromARGB(
+                                255, 200 + index * 30, 50, 155),
+                            child: InkWell(
+                                onTap: () {
+                                  // länka till Session
+                                },
+                                child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                        child: Text(snapshot.data[index].name),
+                                      ),
+                                      Container(child: Text(" Location: " + snapshot.data[index].location)),
+                                      Container(child: Text("Likes " )
+                                      )])));
+                      })):Center( child:  CircularProgressIndicator(),
 
-                                return Container(
-                                    alignment: Alignment.center,
-                                    height: 80,
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(50)),
-                                      color: Color.fromARGB(
-                                          255, 200 + index * 30, 50, 155),
-                                    ),
-                                    child: InkWell(
-                                        onTap: (){
-                                          // länka till övning
-                                        },
-                                        child: Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Container(
-                                                child: RichText(
-                                                  overflow:
-                                                  TextOverflow.ellipsis,
-                                                  strutStyle: StrutStyle(
-                                                      fontSize: 22.0),
-                                                  text: TextSpan(
-                                                      style: TextStyle(
-                                                          fontSize: 23,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                          FontWeight.bold),
-                                                      text: snapshot
-                                                          .data[index].name),
-                                                ),
-                                              ),
-                                              Container(child: Text("Time: " +snapshot.data[index].getDateTime().toString().substring(0,16))),
-                                              Container(child:Text("Location: " ))
-                                            ])));
-                              }))
-                          : Center();
-                    }))));
+          );
+        });
   }
 
   Future<List<WorkoutSession>> _getSessions() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-
     List<WorkoutSession> workouts =
-        await DatabaseService(uid: user.uid).getWorkouts();
+        await DatabaseService(uid: user.uid).getUserWorkoutSessions();
+        print(workouts.length);
     return workouts;
   }
+
   Future <List<WorkoutSession>> _getList() async{
     List <WorkoutSession> old = await _getSessions();
     old.sort((a,b){

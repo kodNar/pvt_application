@@ -13,14 +13,17 @@ class WorkoutSession{
   OutdoorGym _outdoorGym;
   List <Exercise> _exercises;
 
-  WorkoutSession(String name,String user, String location,DateTime dateTime, OutdoorGym outdoorGym){
+  WorkoutSession(String name,String user, String location,DateTime dateTime, OutdoorGym outdoorGym, List <Equipment> equipments){
     _user = user;
     _location = location;
     _name = name;
     _dateTime = dateTime;
     _outdoorGym = outdoorGym;
-
+    _equipment = equipments;
   }
+
+  String get location => _location;
+
   void addLike(){
     _likes += 1;
   }
