@@ -22,6 +22,8 @@ String description;
 String equipment = 'Not Specified';
 OutdoorGym outdoorGym;
 
+//kommentar
+
 class ReportPage extends StatefulWidget {
   @override
   _ReportPageState createState() => _ReportPageState();
