@@ -97,6 +97,20 @@ class DatabaseService {
     return _worksession;
     }
 
+    void createNewExercises(List <Exercise> list, OutdoorGym gym,String name ){
+    userCollection.document(uid).collection("workoutCollection").document(uid).setData({
+    'Date': DateTime.now(),
+    'Location': gym.name,
+    'Name': name,
+      });
+    }
+
+
+
+
+
+
+
   Future<String> getNickname() async {
     var nickname =
         await Firestore.instance.collection('users').document(uid).get();

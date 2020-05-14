@@ -15,6 +15,7 @@ class WorkoutLog extends StatefulWidget {
 }
 
 class _WorkoutLogState extends State<WorkoutLog> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool gymChosen = false;
   bool exerciseChosen = true;
   List<Exercise> exerciseList = [];
@@ -74,16 +75,56 @@ class _WorkoutLogState extends State<WorkoutLog> {
 
   Widget workoutLog() {
     if (exerciseChosen) {
-      return ListView.builder(
-        shrinkWrap: true,
-        itemCount: exerciseList.length,
-        itemBuilder: (context, index){
-          return Card(
-            child: ListTile(
-            title: Text('${exerciseList[index].getName()}'),
-            ),
-          );
-        },
+      return Form(
+        key: _formKey,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: exerciseList.length,
+          itemBuilder: (context, index){
+            return Card(
+              child: ExpansionTile(
+              title: Text('${exerciseList[index].getName()}'),
+                children: <Widget>[
+
+                      TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Sets',
+                        ),
+                        keyboardType: TextInputType.number,
+                        validator: (input) {
+                          final isDigitsOnly = int.tryParse(input);
+                          return isDigitsOnly == null ? 'Input needs to be digits only' : null;
+                        },
+                        onSaved: (input) {
+                          String sets = input;
+                        }
+
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Reps',
+                        ),
+                        keyboardType: TextInputType.number,
+                        validator: (input) {
+                          final isDigitsOnly = int.tryParse(input);
+                          return isDigitsOnly == null ? 'Input needs to be digits only' : null;
+                        },
+                        onSaved: (input) {
+                          String reps = input;
+
+                        },
+                      ),
+                ],
+                trailing: Icon(
+                  Icons.add,
+                  color: Colors.green,
+                ),
+              ),
+            );
+          },
+        ),
       );
     }else{
       return Text('No exercise chosen');
@@ -129,6 +170,20 @@ class _WorkoutLogState extends State<WorkoutLog> {
           ),
         ),
       );
+    }
+  }
+
+  Future<void> saveWorkout() async {
+    final formState = _formKey.currentState;
+
+    if (formState.validate()) {
+      formState.save();
+      try {
+
+
+      } catch (e) {
+        print(e.message);
+      }
     }
   }
 
