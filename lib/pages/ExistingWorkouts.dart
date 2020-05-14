@@ -170,7 +170,15 @@ class _ExistingState extends State<ExistingWorkouts> {
                                             padding: EdgeInsets.all(5),
                                             child: Column(
                                           children: <Widget>[
-                                            Text(" Location: "),
+                                            Row(
+                                              children: <Widget>[
+                                                Icon(
+                                                    Icons.gps_fixed
+                                                ),
+                                                Text("Location"),
+                                              ],
+                                            ),
+
                                             Text(sessions[index].location),
                                           ],
                                           ),
@@ -182,7 +190,7 @@ class _ExistingState extends State<ExistingWorkouts> {
                                                 Icon(
                                                   Icons.thumb_up,
                                                 ),
-                                                Text("Likes " + sessions[index].likes.toString()),
+                                                Text(sessions[index].likes.toString()),
                                               ],
                                             )
                                             )
