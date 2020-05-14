@@ -15,8 +15,8 @@ class _ExistingState extends State<ExistingWorkouts> {
   @override
   List<bool> _isSelected = [false, true];
   List <WorkoutSession>  sessions= [];
-  List <WorkoutSession> displayList=[];
   bool _loaded = false;
+  String searchGym = "";
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,14 +26,39 @@ class _ExistingState extends State<ExistingWorkouts> {
         ),
         body: Column(
           children: <Widget>[
-            Container(child: _topImage()),
-            Container(child: _toggleSearch()),
-            Container(
-              // add search field
-            ),
+           // Container(child: _topImage()),
+            //Lägg till upload your own workout
+
+            Container(child: _toggleSearch()), //byt vad som visas
+            Container(child: _searchField()),
             _loaded? Container(child: _listView()) :Center()
           ],
         ));
+  }
+  Widget _searchField(){
+    return Container(
+      child: TextFormField(
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.transparent),
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.transparent),
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+          ),
+          prefixIcon: Icon(Icons.search),
+          hintText: "Search for a gym",
+          filled: true,
+          fillColor: Colors.white,
+        ),
+        style: TextStyle(
+          color: Colors.white,
+        ),
+        cursorColor: Colors.white,
+        onSaved: (input) => searchGym = input,
+      ),
+    );
   }
   Widget _topImage() {
     return Container(
@@ -99,7 +124,7 @@ class _ExistingState extends State<ExistingWorkouts> {
               return Container(
                   child: Expanded(
                       child: ListView.builder(
-                          itemCount: displayList.length,
+                          itemCount: sessions.length,
                           itemBuilder: (context, index) {
                             return Container(
                                 height: 50,
@@ -116,21 +141,12 @@ class _ExistingState extends State<ExistingWorkouts> {
                                             MainAxisAlignment.center,
                                         children: <Widget>[
                                           Container(
-                                            child: Text(displayList[index].name),
+                                            child: Text(sessions[index].name),
                                           ),
                                           Container(child: Text(" Location: ")),
-                                          Container(child: Text("Likes " + displayList[index].likes.toString()),)
+                                          Container(child: Text("Likes " + sessions[index].likes.toString()),)
                                         ])));
                           })));
-  }
-
-
-
-  _changeDisplayItems(){
-    //sök medtod session
-    setState(() {
-
-    });
   }
 
     _getSessions() async {
@@ -145,7 +161,6 @@ class _ExistingState extends State<ExistingWorkouts> {
       WorkoutSession w = WorkoutSession(name,user,location,date,null, null);
       w.setLikes(likes);
       sessions.add(w);
-      displayList = sessions;
     }
   }
  sortListVoted(){
