@@ -14,7 +14,8 @@ class ExistingWorkouts extends StatefulWidget {
 class _ExistingState extends State<ExistingWorkouts> {
   @override
   List<bool> _isSelected = [false, true];
-  List <WorkoutSession>  sessions= [];
+  List <WorkoutSession> sessions= [];
+  List <WorkoutSession> selectedSessions = [];
   bool _loaded = false;
   String searchGym = "";
 
@@ -30,10 +31,15 @@ class _ExistingState extends State<ExistingWorkouts> {
             //Lägg till upload your own workout
 
             Container(child: _toggleSearch()), //byt vad som visas
+            Container(child: _test()),
             Container(child: _searchField()),
-            _loaded? Container(child: _listView()) :Center()
+            _loaded? Container(child: _listView()) :Center() //prova !_loaded så kanske den laddar direkt sen
           ],
         ));
+  }
+  Widget _test(){
+
+    return Text("Testström" + " " + searchGym);
   }
   Widget _searchField(){
     return Container(
@@ -124,7 +130,7 @@ class _ExistingState extends State<ExistingWorkouts> {
               return Container(
                   child: Expanded(
                       child: ListView.builder(
-                          itemCount: sessions.length,
+                          itemCount: selectedSessions.length,
                           itemBuilder: (context, index) {
                             return Container(
                                 height: 50,
@@ -141,10 +147,10 @@ class _ExistingState extends State<ExistingWorkouts> {
                                             MainAxisAlignment.center,
                                         children: <Widget>[
                                           Container(
-                                            child: Text(sessions[index].name),
+                                            child: Text(selectedSessions[index].name),
                                           ),
                                           Container(child: Text(" Location: ")),
-                                          Container(child: Text("Likes " + sessions[index].likes.toString()),)
+                                          Container(child: Text("Likes " + selectedSessions[index].likes.toString()),)
                                         ])));
                           })));
   }
@@ -161,16 +167,17 @@ class _ExistingState extends State<ExistingWorkouts> {
       WorkoutSession w = WorkoutSession(name,user,location,date,null, null);
       w.setLikes(likes);
       sessions.add(w);
+      selectedSessions = sessions;
     }
   }
  sortListVoted(){
     print("sort voted");
-   sessions.sort((a,b){
+   selectedSessions.sort((a,b){
      return b.likes.compareTo(a.likes);
    });
  }
   sortListRecent(){
-    sessions.sort((a,b){
+    selectedSessions.sort((a,b){
       return b.getDateTime().compareTo(a.getDateTime());
     });
   }
