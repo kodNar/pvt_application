@@ -3,23 +3,21 @@ import 'package:flutterapp/widgets/Appbar.dart';
 
 import 'HomePage.dart';
 
-//void main() => runApp(MaterialApp(
-//  home: FAQ(),
-//));
+
 
 class FAQ extends StatelessWidget {
   String clickedFAQ;
   String clickedAnswer;
   String answer1 = "";
 
-  createAlertDialog(BuildContext context) {
-    return showDialog(context: context, builder: (context) {
-      return AlertDialog(
-        title: Text(clickedFAQ),
-        content: Text(clickedAnswer),
-      );
-    });
-  }
+//  createAlertDialog(BuildContext context) {
+//    return showDialog(context: context, builder: (context) {
+//      return AlertDialog(
+//        title: Text(clickedFAQ),
+//        content: Text(clickedAnswer),
+//      );
+//    });
+//  }
 
   @override
   Widget build(BuildContext context) {
