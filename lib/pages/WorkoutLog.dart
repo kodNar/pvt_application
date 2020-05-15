@@ -5,7 +5,12 @@ import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/pages/EquipmentOrExercise.dart';
 import 'package:flutterapp/pages/WorkoutGymList.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
+import 'package:flutterapp/services/Database.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
+import 'dart:collection';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
 
 import 'MapsTest.dart';
 
@@ -21,6 +26,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
   List<Exercise> exerciseList = [];
   Exercise exercise;
   OutdoorGym outdoorGym;
+  FirebaseUser user;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +78,15 @@ class _WorkoutLogState extends State<WorkoutLog> {
       ),
     );
   }
+  @override
+  void initState() {
+    super.initState();
+    getUsers();
+  }
 
+  getUsers() async{
+    user = await FirebaseAuth.instance.currentUser();
+  }
   Widget workoutLog() {
     if (exerciseChosen) {
       return Form(
@@ -175,20 +189,8 @@ class _WorkoutLogState extends State<WorkoutLog> {
     void saveWorkout() {
     final formState = _formKey.currentState;
     if (formState.validate()) {
+      DatabaseService(uid:user.uid).createNewExercises(exerciseList, outdoorGym, "test");
       formState.save();
-      try {
-        for(Exercise exercise in exerciseList){
-          print('ny exercise!');
-          print(exercise.name);
-          print(exercise.sets);
-          print(exercise.reps);
-
-        }
-
-
-      } catch (e) {
-        print(e.message);
-      }
     }
   }
 

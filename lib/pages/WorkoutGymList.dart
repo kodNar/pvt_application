@@ -4,6 +4,7 @@ import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
+import 'package:flutterapp/User.dart';
 
 class WorkoutGymList extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ void initState() {
   }
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
