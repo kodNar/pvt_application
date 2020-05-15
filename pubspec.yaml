@@ -34,6 +34,7 @@ dependencies:
   email_validator: ^1.0.0
   camera: ^0.5.7+4
   path: ^1.6.4
+  fluttertoast: ^4.0.0
 
   cloud_firestore: ^0.13.5 #Database
   provider: ^4.0.5 #Firestore

@@ -72,127 +72,129 @@ class _ReportPageState extends State<ReportPage> {
           },
         ),
       ]),
-      body: Column(
-          key: _formKey,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-              child: gymReturn(),
-            ),
-            Container(
-              child: eqReturn(),
-            ),
-            Container(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                ButtonTheme(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+      body: SingleChildScrollView(
+        child: Column(
+            key: _formKey,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                child: gymReturn(),
+              ),
+              Container(
+                child: eqReturn(),
+              ),
+              Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      ButtonTheme(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        buttonColor: Colors.orange,
+                        child: RaisedButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text('Take a Picture'),
+                              Icon(Icons.camera_alt),
+                            ],
+                          ),
+                          onPressed: () {
+                            main2(context);
+                          },
+                        ),
+                      ),
+                      Container(
+                        //sök här
+                        width: 200,
+                        height: 200,
+                        child: Image.file(File(picPath)),
+                      ),
+                    ],
+                  )),
+              Container(
+                child: Text(
+                  'Open Comments',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
                   ),
-                  buttonColor: Colors.orange,
-                  child: RaisedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text('Take a Picture'),
-                        Icon(Icons.camera_alt),
-                      ],
+                ),
+              ),
+              Container(
+                child: TextField(
+                  controller: myController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
-                    onPressed: () {
-                      main2(context);
-                    },
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    prefixIcon: Icon(Icons.description),
+                    hintText: "Describe your issue",
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
-                ),
-                Container(
-                  //sök här
-                  width: 200,
-                  height: 200,
-                  child: Image.file(File(picPath)),
-                ),
-              ],
-            )),
-            Container(
-              child: Text(
-                'Open Comments',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  cursorColor: Colors.black38,
+
                 ),
               ),
-            ),
-            Container(
-              child: TextField(
-                controller: myController,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
+              Container(
+                alignment: Alignment.center,
+                width: 200,
+                height: 100,
+                child: ButtonTheme(
+                  minWidth: 200,
+                  height: 50,
+                  shape: RoundedRectangleBorder(
+
+                    borderRadius: BorderRadius.circular(20.0),
+                    side: BorderSide(color: Colors.white, width: 1.5),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  prefixIcon: Icon(Icons.description),
-                  hintText: "Describe your issue",
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-                cursorColor: Colors.black38,
 
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              width: 200,
-              height: 100,
-              child: ButtonTheme(
-                minWidth: 200,
-                height: 50,
-                shape: RoundedRectangleBorder(
+                  child: RaisedButton(
 
-                  borderRadius: BorderRadius.circular(20.0),
-                  side: BorderSide(color: Colors.white, width: 1.5),
-                ),
-
-                child: RaisedButton(
-
-                  color: Colors.transparent,
-                  child: Text('Send',
+                    color: Colors.transparent,
+                    child: Text('Send',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
                       ),
+                    ),
+                    onPressed: () {
+                      description = myController.text;
+                      disableButton();
+                      if(!buttonDisabled) {
+
+                        main();
+                        thankYouMessage();
+
+                      }else{
+                        Fluttertoast.showToast(
+                            msg: "Please select a gym and provide a short description",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                      }
+                    },
                   ),
-                  onPressed: () {
-                    description = myController.text;
-                    disableButton();
-                    if(!buttonDisabled) {
-
-                      main();
-                      thankYouMessage();
-
-                    }else{
-                      Fluttertoast.showToast(
-                          msg: "Please select a gym and provide a short description",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 16.0
-                      );
-                    }
-                  },
                 ),
-              ),
-            )
-          ]),
+              )
+            ]),
+      ),
     );
   }
 
