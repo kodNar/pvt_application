@@ -21,7 +21,7 @@ String description;
 
 String equipment = 'Not Specified';
 OutdoorGym outdoorGym;
-
+enum SingingCharacter { error, suggestion }
 //kommentar
 
 class ReportPage extends StatefulWidget {
@@ -30,12 +30,10 @@ class ReportPage extends StatefulWidget {
 }
 
 class _ReportPageState extends State<ReportPage> {
+
   final List<OutdoorGym> allOutdoorGym = MapSampleState.allOutdoorGym;
-  List<DropdownMenuItem<OutdoorGym>> dropDownMenuItems;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool isCameraReady = false;
-  bool showCapturedPhoto = false;
   bool buttonDisabled = true;
 
 
@@ -58,6 +56,10 @@ class _ReportPageState extends State<ReportPage> {
       buttonDisabled = false;
     }
   }
+
+  SingingCharacter _radioChoice = SingingCharacter.error;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,9 +76,52 @@ class _ReportPageState extends State<ReportPage> {
       ]),
       body: SingleChildScrollView(
         child: Column(
+
             key: _formKey,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(left: 75),
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        title: const Text('Error Report',style: TextStyle(
+                          color: Colors.white,
+                        ),
+                        ),
+                        leading: Radio(
+                          activeColor: Colors.white,
+                          focusColor: Colors.white,
+
+                          value: SingingCharacter.error,
+                          groupValue: _radioChoice,
+                          onChanged: (SingingCharacter value) {
+                            setState(() {
+                              _radioChoice = value;
+                            });
+                          },
+                        ),
+                      ),
+                      ListTile(
+                        title: const Text('Suggestion',style: TextStyle(
+                          color: Colors.white,
+                        ),
+                        ),
+                        leading: Radio(
+                          activeColor: Colors.white,
+                          focusColor: Colors.white,
+                          value: SingingCharacter.suggestion,
+                          groupValue: _radioChoice,
+                          onChanged: (SingingCharacter value) {
+                            setState(() {
+                              _radioChoice = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  )
+              ),
               Container(
                 child: gymReturn(),
               ),
@@ -474,7 +519,7 @@ main() async {
   String passWord =
       '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';
   final smtpServer =
-      SmtpServer('smtp.sendgrid.net', username: userName, password: passWord);
+  SmtpServer('smtp.sendgrid.net', username: userName, password: passWord);
 
   Message message = new Message();
 
@@ -490,11 +535,11 @@ main() async {
       ..attachments.add(new FileAttachment(File('$picPath')));
   }else{
     message = Message()
-  ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
-  ..recipients.add('simon.schoolsoft@gmail.com')
-  ..subject = 'Outdoor Gym Error Report ${DateTime.now()}'
-  ..text = ('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
-  equipment + '\n' + '\n' + description);
+      ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
+      ..recipients.add('simon.schoolsoft@gmail.com')
+      ..subject = 'Outdoor Gym Error Report ${DateTime.now()}'
+      ..text = ('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
+          equipment + '\n' + '\n' + description);
 
   }
 
