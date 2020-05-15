@@ -3,11 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/Exercise.dart';
 
-class Library extends StatelessWidget {
-  List<Equipment> _equipment = [];
-  Map _map;
+import 'OutdoorGym.dart';
 
-  Library(Map map) {
+class Library extends StatelessWidget {
+  Map _map = Map<String, List<OutdoorGym>>();
+
+  Library( Map map) {
     this._map = map;
   }
 
@@ -16,7 +17,7 @@ class Library extends StatelessWidget {
     return new Scaffold(
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
       appBar: new AppBar(
-        title: Text("hej"),
+        title: Text("Equipments"),
       ),
       body: ListView.builder(
           padding: const EdgeInsets.all(8),
@@ -42,7 +43,7 @@ class Library extends StatelessWidget {
                           children: <Widget>[
                             Padding(
                                 padding: EdgeInsets.only(),
-                                child: new Text(_map[index].toString(),
+                                child: new Text(_map.keys.elementAt(index),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Colors.white,
