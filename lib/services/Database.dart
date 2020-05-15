@@ -114,9 +114,9 @@ class DatabaseService {
         .document(uid)
         .collection("workoutCollection")
         .add({'Location': gym.name,
-      'Name': name,
-      'Reference': exercises,
-      'Date': DateTime.now()
+        'Name': name,
+       'Reference': exercises,
+        'Date': DateTime.now()
         });
   }
 
