@@ -60,6 +60,8 @@ class OutdoorGym{
   Marker get marker => _marker;
   String get name => _name;
   GeoPoint get geo => _geo;
+  List<String> get equipmentRef => _equipmentRef;
+
   @override
   String toString() {
     return 'OutdoorGym{_name: $_name, _geo: $_geo}';
