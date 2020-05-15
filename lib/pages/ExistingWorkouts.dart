@@ -13,7 +13,7 @@ class ExistingWorkouts extends StatefulWidget {
 class _ExistingState extends State<ExistingWorkouts> {
   @override
   List<bool> _isSelected = [false, true];
-  List <WorkoutSession> sessions= [];
+  final List <WorkoutSession> sessions= [];
   List <WorkoutSession> selectedSessions = [];
   List<String> allGymNames = List<String>();
   List<String> queriedGymNames = List<String>();
@@ -253,7 +253,7 @@ class _ExistingState extends State<ExistingWorkouts> {
     } else{
       setState(() {
         selectedSessions.clear();
-        selectedSessions = sessions;
+        selectedSessions.addAll(sessions);
       });
     }
   }

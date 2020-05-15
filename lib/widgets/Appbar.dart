@@ -34,8 +34,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       leading: InkWell(
         onTap: () {
-          Navigator.pop(context,
-              MaterialPageRoute(builder: (context) => WorkoutPortal()));
+          Navigator.pop(context);
         },
         child: Icon(
           Icons.arrow_back_ios,
