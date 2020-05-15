@@ -1,34 +1,28 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/Equipment.dart';
-import 'package:flutterapp/FaultyEquipmentReport.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:flutterapp/pages/EquipmentOrExercise.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
 import 'package:flutterapp/OutdoorGym.dart';
-import 'package:flutterapp/pages/AboutUs.dart';
+import 'package:flutterapp/Equipment.dart';
 import 'package:camera/camera.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutterapp/pages/WorkoutGymList.dart';
-
-import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
-
 import 'ReportPageEquipmentList.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 String picPath = 'assets/images/bok.png';
 bool gymChosen = false;
 bool eqChosen = false;
 String description;
 
-Equipment equipment;
+String equipment = 'Not Specified';
 OutdoorGym outdoorGym;
+
+//kommentar
 
 class ReportPage extends StatefulWidget {
   @override
@@ -40,13 +34,10 @@ class _ReportPageState extends State<ReportPage> {
   List<DropdownMenuItem<OutdoorGym>> dropDownMenuItems;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  CameraController _controller;
-  Future<void> _initializeControllerFuture;
   bool isCameraReady = false;
   bool showCapturedPhoto = false;
+  bool buttonDisabled = true;
 
-//  bool mounted = false;
-  var ImagePath;
 
   @override
   void initState() {}
@@ -59,7 +50,14 @@ class _ReportPageState extends State<ReportPage> {
     myController.dispose();
     super.dispose();
   }
-
+  void disableButton(){
+    if (description == null || outdoorGym == null){
+      buttonDisabled = true;
+    }
+    else{
+      buttonDisabled = false;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,118 +67,134 @@ class _ReportPageState extends State<ReportPage> {
         IconButton(
           icon: Icon(Icons.home),
           onPressed: () {
-            picPath = 'assets/images/bok.png';
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => MapSample()));
           },
         ),
       ]),
-      body: Column(
-          key: _formKey,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-              child: gymReturn(),
-            ),
-            Container(
-              child: eqReturn(),
-            ),
-            Container(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                ButtonTheme(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+      body: SingleChildScrollView(
+        child: Column(
+            key: _formKey,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                child: gymReturn(),
+              ),
+              Container(
+                child: eqReturn(),
+              ),
+              Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      ButtonTheme(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        buttonColor: Colors.orange,
+                        child: RaisedButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text('Take a Picture'),
+                              Icon(Icons.camera_alt),
+                            ],
+                          ),
+                          onPressed: () {
+                            main2(context);
+                          },
+                        ),
+                      ),
+                      Container(
+                        //sök här
+                        width: 200,
+                        height: 200,
+                        child: Image.file(File(picPath)),
+                      ),
+                    ],
+                  )),
+              Container(
+                child: Text(
+                  'Open Comments',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
                   ),
-                  buttonColor: Colors.orange,
-                  child: RaisedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text('Take a Picture'),
-                        Icon(Icons.camera_alt),
-                      ],
+                ),
+              ),
+              Container(
+                child: TextField(
+                  controller: myController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
-                    onPressed: () {
-                      main2(context);
-                    },
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    prefixIcon: Icon(Icons.description),
+                    hintText: "Describe your issue",
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
-                ),
-                Container(
-                  //sök här
-                  width: 200,
-                  height: 200,
-                  child: Image.file(File(picPath)),
-                ),
-              ],
-            )),
-            Container(
-              child: Text(
-                'Open Comments',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  cursorColor: Colors.black38,
+
                 ),
               ),
-            ),
-            Container(
-              child: TextField(
-                controller: myController,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
+              Container(
+                alignment: Alignment.center,
+                width: 200,
+                height: 100,
+                child: ButtonTheme(
+                  minWidth: 200,
+                  height: 50,
+                  shape: RoundedRectangleBorder(
+
+                    borderRadius: BorderRadius.circular(20.0),
+                    side: BorderSide(color: Colors.white, width: 1.5),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  prefixIcon: Icon(Icons.description),
-                  hintText: "Describe your issue",
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-                cursorColor: Colors.black38,
 
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              width: 200,
-              height: 100,
-              child: ButtonTheme(
-                minWidth: 200,
-                height: 50,
-                shape: RoundedRectangleBorder(
+                  child: RaisedButton(
 
-                  borderRadius: BorderRadius.circular(20.0),
-                  side: BorderSide(color: Colors.white, width: 1.5),
-                ),
-
-                child: RaisedButton(
-//        onPressed: main(),
-                  color: Colors.transparent,
-                  child: Text('Send',
+                    color: Colors.transparent,
+                    child: Text('Send',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
                       ),
+                    ),
+                    onPressed: () {
+                      description = myController.text;
+                      disableButton();
+                      if(!buttonDisabled) {
+
+                        main();
+                        thankYouMessage();
+
+                      }else{
+                        Fluttertoast.showToast(
+                            msg: "Please select a gym and provide a short description",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                      }
+                    },
                   ),
-                  onPressed: () {
-                    description = myController.text;
-                    main();
-                  },
                 ),
-              ),
-            )
-          ]),
+              )
+            ]),
+      ),
     );
   }
 
@@ -258,7 +272,7 @@ class _ReportPageState extends State<ReportPage> {
               _pushContextChooseGym(context);
             },
             child: Text(
-              equipment.getName(),
+              equipment,
               style: TextStyle(
                 fontSize: 20.0,
                 color: Colors.white,
@@ -309,7 +323,20 @@ class _ReportPageState extends State<ReportPage> {
         MaterialPageRoute(
             builder: (context) => ReportPageEquipmentList(outdoorGym)));
     eqChosen = true;
-    equipment = result;
+    equipment = result.getName();
+  }
+
+  void thankYouMessage(){
+
+    Fluttertoast.showToast(
+        msg: "Thank you for your input! We will look into the matter ASAP",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.lightGreen,
+        textColor: Colors.white,
+        fontSize: 16.0
+
+    );
   }
 
 }
@@ -336,8 +363,8 @@ Future<void> main2(context) async {
       MaterialPageRoute(
           builder: (context) => TakePictureScreen(camera: firstCamera)));
 
-  /// Sätt din testsida här! ///
-  //TakePictureScreen(camera: firstCamera);
+
+
 }
 
 // A screen that allows users to take a picture using a given camera.
@@ -425,13 +452,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
             print(picPath.toString());
 
-            // If the picture was taken, display it on a new screen.
-            /*Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(imagePath: path),
-              ),
-            );*/
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => ReportPage()));
           } catch (e) {
@@ -447,11 +467,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 ///////////////////////////////////EMAIL///////////////////////////////////////////
 
 main() async {
-//  final formState = _formKey.currentState;
-//  if (formState.validate()) {
-//    //Checks so that the inputs are correct
-//    formState.save(); //ser till att vi kan hämta variablerna.
-//  }
 
   gymChosen = false;
   eqChosen = false;
@@ -461,14 +476,29 @@ main() async {
   final smtpServer =
       SmtpServer('smtp.sendgrid.net', username: userName, password: passWord);
 
-  final message = Message()
-    ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
-    ..recipients.add('simon.schoolsoft@gmail.com')
-    ..subject = 'Test Dart Mailer library ${DateTime.now()}'
-    ..text = description;
-  /*('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
-          equipment.getName() + '\n' + description)*/
-//      ..attachments = Image.file(File(picPath)) as List<Attachment>;
+  Message message = new Message();
+
+  if(picPath != 'assets/images/bok.png') {
+    message = Message()
+
+
+      ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
+      ..recipients.add('simon.schoolsoft@gmail.com')
+      ..subject = 'Outdoor Gym Error Report ${DateTime.now()}'
+      ..text = ('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
+          equipment + '\n' + '\n' + description)
+      ..attachments.add(new FileAttachment(File('$picPath')));
+  }else{
+    message = Message()
+  ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
+  ..recipients.add('simon.schoolsoft@gmail.com')
+  ..subject = 'Outdoor Gym Error Report ${DateTime.now()}'
+  ..text = ('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
+  equipment + '\n' + '\n' + description);
+
+  }
+
+
 
   try {
     final sendReport = await send(message, smtpServer);

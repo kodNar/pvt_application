@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutterapp/Library.dart';
 import 'package:flutterapp/models/user.dart';
 import 'package:flutterapp/pages/AboutUs.dart';
 import 'package:flutterapp/pages/FAQ.dart';
+import 'package:flutterapp/pages/ReportPage.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
@@ -25,27 +27,27 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Google Maps Demo',
-      home:  MapSample(),
+      home: MapSample(),
     );
   }
 }
 
 class MapSample extends StatefulWidget {
   @override
-
-  State <MapSample> createState() => MapSampleState();
+  State<MapSample> createState() => MapSampleState();
 }
 
-class MapSampleState extends State< MapSample> {
+class MapSampleState extends State<MapSample> {
   List<Marker> allMarkers = [];
   static List<OutdoorGym> allOutdoorGym = [];
+  Map map = new Map<String, List<OutdoorGym>>();
   static const nycLat = 59.328560;
   static const nycLng = 18.065836;
-  bool _loggedIn =false;
+  bool _loggedIn = false;
   bool _cancelButton = false;
 
   GoogleMapPolyline _googleMapPolyline =
-  new GoogleMapPolyline(apiKey: (apiKey));
+      new GoogleMapPolyline(apiKey: (apiKey));
   List<LatLng> routeCoords;
   final Set<Polyline> polyline = {};
 
@@ -71,76 +73,80 @@ class MapSampleState extends State< MapSample> {
               MediaQuery.of(context).padding.top,
           child: mapToggle
               ? Stack(children: <Widget>[
-            GoogleMap(
-              myLocationEnabled: true,
-              myLocationButtonEnabled: true,
-              mapType: MapType.normal,
-              //     initialCameraPosition: _kGooglePlex,
-              initialCameraPosition: CameraPosition(
-                target: LatLng(
-                    currentLocation.latitude, currentLocation.longitude),
-                zoom: 14.4746,
-              ),
+                  GoogleMap(
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                    mapType: MapType.normal,
+                    //     initialCameraPosition: _kGooglePlex,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(
+                          currentLocation.latitude, currentLocation.longitude),
+                      zoom: 14.4746,
+                    ),
 
-              polylines: polyline,
-              markers: Set.from(allMarkers),
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-            ),
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: RaisedButton.icon(
-                color: Color.fromARGB(255, 132, 50, 155),
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => WorkoutPortal()));
-                },
-                icon: Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.white,
-                ),
-                label: Text(
-                  'Start workout',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    polylines: polyline,
+                    markers: Set.from(allMarkers),
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
                   ),
-                ),
-              ),
-            ),
-            Container(
-                alignment: Alignment.bottomLeft,
-                padding: EdgeInsets.all(10),
-                child: _cancelButton ? ClipOval(
-                  child: Material(
-                    color: Colors.red, // button color
-                    child: InkWell(
-                      splashColor: Colors.white, // inkwell color
-                      child: SizedBox(width: 56, height: 56, child: Icon(Icons.cancel)),
-                      onTap: () {
-                        setState(() {
-                          polyline.clear();
-                          _cancelButton = !_cancelButton;
-                        });
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    child: RaisedButton.icon(
+                      color: Color.fromARGB(255, 132, 50, 155),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => WorkoutPortal()));
                       },
+                      icon: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        'Start workout',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
-                ):Center()
-            ),
-          ])
+                  Container(
+                      alignment: Alignment.bottomLeft,
+                      padding: EdgeInsets.all(10),
+                      child: _cancelButton
+                          ? ClipOval(
+                              child: Material(
+                                color: Colors.red, // button color
+                                child: InkWell(
+                                  splashColor: Colors.white, // inkwell color
+                                  child: SizedBox(
+                                      width: 56,
+                                      height: 56,
+                                      child: Icon(Icons.cancel)),
+                                  onTap: () {
+                                    setState(() {
+                                      polyline.clear();
+                                      _cancelButton = !_cancelButton;
+                                    });
+                                  },
+                                ),
+                              ),
+                            )
+                          : Center()),
+                ])
               : Center(
-            child: Text('Loading...'),
-          ),
+                  child: Text('Loading...'),
+                ),
         ),
         Container(
             width: double.infinity,
             height: (MediaQuery.of(context).size.height / 7) * 2,
             child: listView2()),
-      ]
-
-      ),
-
+      ]),
     );
   }
 
@@ -155,43 +161,72 @@ class MapSampleState extends State< MapSample> {
       });
     });
     populateOutdoorGymList();
-   // checkIfSignedIn();
+    // checkIfSignedIn();
   }
 
   /// Loads the outdoorgyms from the database and populates the outdoor gym list.
   populateOutdoorGymList() async {
     QuerySnapshot outdoorGymCollection =
-    await Firestore.instance.collection("OutdoorGyms").getDocuments();
+        await Firestore.instance.collection("OutdoorGyms").getDocuments();
     for (var doc in outdoorGymCollection.documents) {
       String name = doc.data['Name'];
       GeoPoint geoPoint = doc.data['GeoPoint'];
-      List<String>  equipmentListRef = [];
+      List<String> equipmentListRef = [];
       if (doc.data['Equipment'] != null) {
         equipmentListRef.addAll(_getReferenceToEquipment(doc));
-        }
+      }
       try {
-        allOutdoorGym.add(new OutdoorGym(name, equipmentListRef, geoPoint, context));
+        allOutdoorGym
+            .add(new OutdoorGym(name, equipmentListRef, geoPoint, context));
       } catch (e) {
         print("Error creating gym");
       }
     }
     _addGymsToMarkers();
+    libraryEq();
   }
 
-  List<String>_getReferenceToEquipment(var doc){
-    List <String> output = [];
+  List<String> _getReferenceToEquipment(var doc) {
+    List<String> output = [];
     try {
-      List <Object> objectList = doc.data['Equipment'];
-      objectList.forEach((e) =>
-        output.add(e.toString())
-      );
-    }catch(e){
+      List<Object> objectList = doc.data['Equipment'];
+      objectList.forEach((e) => output.add(e.toString()));
+    } catch (e) {
       print("Error creating Equipment Reference");
       return output;
     }
     return output;
   }
 
+  libraryEq() {
+    for (OutdoorGym outdoorGym in allOutdoorGym) {
+      for (String equipment in outdoorGym.equipmentRef) {
+        List<OutdoorGym> list = map[equipment];
+        if (map.containsKey(equipment)) {
+          if (list == null) {
+            list.add(outdoorGym);
+            map[equipment] = list;
+          }
+          if (!list.contains(outdoorGym)) {
+            list.add(outdoorGym);
+            map[equipment] = list;
+          }
+        } else {
+          List<OutdoorGym> gymList = [];
+          gymList.add(outdoorGym);
+          //map.putIfAbsent(equipment, () => gymList);
+          map[equipment] = gymList;
+        }
+      }
+    }
+    for (final name in map.keys) {
+      var value = map[name];
+      for (OutdoorGym obj in value) {
+        print(obj.toString());
+      }
+      print('$name'); // prints entries like "AED,3.672940"
+    }
+  }
 
   _addGymsToMarkers() {
     for (int i = 0; i < allOutdoorGym.length; i++) {
@@ -218,7 +253,7 @@ class MapSampleState extends State< MapSample> {
 
   getSomePoints(var goal) async {
     polyline.clear();
-    currentLocation  = await Geolocator().getCurrentPosition();
+    currentLocation = await Geolocator().getCurrentPosition();
     List<LatLng> points = await _googleMapPolyline.getCoordinatesWithLocation(
         origin: LatLng(currentLocation.latitude, currentLocation.longitude),
         destination: LatLng(goal.latitude, goal.longitude),
@@ -239,99 +274,99 @@ class MapSampleState extends State< MapSample> {
       ));
     });
   }
+
   Widget listView2() {
     bool route = true;
     return FutureBuilder<SplayTreeMap>(
-        future:_getSortedListOnDistance(),
+        future: _getSortedListOnDistance(),
         builder: (context, snapshot) {
           return snapshot.hasData
-              ? Container(child:ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, index) {
-                int key = snapshot.data.keys.elementAt(index);
-                OutdoorGym value = snapshot.data.values.elementAt(index);
-                return Container(
-                    color: Color.fromARGB(255, 132 + index * 30, 50, 155),
-                    height: 50,
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Flexible(
-                            fit: FlexFit.tight,
-                            flex: 5,
-                            child:InkWell(
-                              onTap: () {
-                                _goToGym(value);
-                              },
-                              child:RichText(
-                                overflow: TextOverflow.ellipsis,
-                                strutStyle: StrutStyle(fontSize: 16.0),
-                                text: TextSpan(
-                                    style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-                                    text: value.name),
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            flex: 3,
-                            child: RichText(
-                              overflow: TextOverflow.ellipsis,
-                              strutStyle: StrutStyle(fontSize: 16.0),
-                              text: TextSpan(
-                                  style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-                                  text: key.toString() + "m"),
-                            ),
-                          ),
-                          Flexible(
-                            flex: 5,
-                            child:SizedBox(child:RaisedButton.icon(
-                              icon: Icon(Icons.play_arrow,
-                              ),
-                              color: Color.fromARGB(
-                                  255, 200 + index * 30, 50, 155),
-                              label: Text('Show route'),
-                              onPressed: () {
-                                setState(() {
-                                  route = !route;
-                                  _cancelButton = true;
-                                }
-                                );
-                                // getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
-                                _goToGym(value);
-                              },
-                            )
-                            ),
-                          )]
-                    )
-                );
-
-              })
-          ) : Center(child: CircularProgressIndicator()
-          );
-
-
+              ? Container(
+                  child: ListView.builder(
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        int key = snapshot.data.keys.elementAt(index);
+                        OutdoorGym value =
+                            snapshot.data.values.elementAt(index);
+                        return Container(
+                            color:
+                                Color.fromARGB(255, 132 + index * 30, 50, 155),
+                            height: 50,
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Flexible(
+                                    fit: FlexFit.tight,
+                                    flex: 5,
+                                    child: InkWell(
+                                      onTap: () {
+                                        _goToGym(value);
+                                      },
+                                      child: RichText(
+                                        overflow: TextOverflow.ellipsis,
+                                        strutStyle: StrutStyle(fontSize: 16.0),
+                                        text: TextSpan(
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                            text: value.name),
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 3,
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      strutStyle: StrutStyle(fontSize: 16.0),
+                                      text: TextSpan(
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                          text: key.toString() + "m"),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 5,
+                                    child: SizedBox(
+                                        child: RaisedButton.icon(
+                                      icon: Icon(
+                                        Icons.play_arrow,
+                                      ),
+                                      color: Color.fromARGB(
+                                          255, 200 + index * 30, 50, 155),
+                                      label: Text('Show route'),
+                                      onPressed: () {
+                                        setState(() {
+                                          route = !route;
+                                          _cancelButton = true;
+                                        });
+                                        // getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
+                                        _goToGym(value);
+                                      },
+                                    )),
+                                  )
+                                ]));
+                      }))
+              : Center(child: CircularProgressIndicator());
         });
-
-
   }
 
   checkIfSignedIn() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     setState(() {
-      if(user != null){
+      if (user != null) {
         _loggedIn = true;
-      }else{
+      } else {
         _loggedIn = false;
       }
     });
-
   }
 
-
-  Future<SplayTreeMap> _getSortedListOnDistance() async{
+  Future<SplayTreeMap> _getSortedListOnDistance() async {
     SplayTreeMap st = new SplayTreeMap<int, OutdoorGym>();
-    for(int i = 0; i< allOutdoorGym.length; i++){
+    for (int i = 0; i < allOutdoorGym.length; i++) {
       st[await _calculateDistance(i)] = allOutdoorGym[i];
     }
     return st;
@@ -354,10 +389,10 @@ class MapSampleState extends State< MapSample> {
         tilt: 0,
         zoom: 16)));
   }
+
   Widget _navDrawer() {
     return Drawer(
       child: ListView(
-
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
@@ -377,6 +412,13 @@ class MapSampleState extends State< MapSample> {
             onTap: () => {},
           ),
           ListTile(
+              leading: Icon(Icons.verified_user),
+              title: Text('Library'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Library(map)));
+              }),
+          ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
             onTap: () => {},
@@ -385,41 +427,43 @@ class MapSampleState extends State< MapSample> {
             leading: Icon(Icons.border_color),
             title: Text('About us'),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => AboutUs()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => AboutUs()));
             },
           ),
           ListTile(
             leading: Icon(Icons.question_answer),
             title: Text('FAQ'),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => FAQ()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => FAQ()));
             },
           ),
           _loggedIn
               ? ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-            onTap: ()  {
-              setState(() {
-                FirebaseAuth.instance.signOut();
-                _loggedIn = false;
-              });
-            },
-          )
+                  leading: Icon(Icons.exit_to_app),
+                  title: Text('Logout'),
+                  onTap: () {
+                    setState(() {
+                      FirebaseAuth.instance.signOut();
+                      _loggedIn = false;
+                    });
+                  },
+                )
               : Center(
-              child: ListTile(
-                leading: Icon(Icons.exit_to_app),
-                title: Text('Login'),
-                onTap: () {
-                  if (_loggedIn) {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MapSample()));
-                  } else {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomePage()));
-                  }
-                },
-              ))
+                  child: ListTile(
+                  leading: Icon(Icons.exit_to_app),
+                  title: Text('Login'),
+                  onTap: () {
+                    if (_loggedIn) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => MapSample()));
+                    } else {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomePage()));
+                    }
+                  },
+                ))
         ],
       ),
     );
