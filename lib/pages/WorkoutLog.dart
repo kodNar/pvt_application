@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
+import 'package:flutterapp/EquipmentExercisePair.dart';
 import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/pages/EquipmentOrExercise.dart';
@@ -201,7 +202,8 @@ class _WorkoutLogState extends State<WorkoutLog> {
 
       );
       _scaffoldKey.currentState.showSnackBar(snackBar);
-      DatabaseService(uid:user.uid).createNewExercises(exerciseList, outdoorGym, "test");
+      DatabaseService(uid:user.uid).createNewExercises(exerciseList, outdoorGym, "Name");
+
       formState.save();
     }
   }
@@ -214,9 +216,9 @@ class _WorkoutLogState extends State<WorkoutLog> {
   }
 
   _pushContextChooseExercise(BuildContext context) async {
-    final Exercise result = await Navigator.push(context, MaterialPageRoute(builder: (context) => EquipmentOrExercise(outdoorGym)));
-    exerciseList.add(result);
+    final EquipmentExercisePair result = await Navigator.push(context, MaterialPageRoute(builder: (context) => EquipmentOrExercise(outdoorGym)));
+    exerciseList.add(result.exercise);
     exerciseChosen = true;
-    exercise = result;
+    exercise = result.exercise;
   }
 }

@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
+import 'package:flutterapp/EquipmentExercisePair.dart';
 import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/OutdoorGym.dart';
+import 'package:flutterapp/pages/ReportPage.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 
 class EquipmentOrExercise extends StatefulWidget {
@@ -106,7 +110,8 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
                               child: ListTile(
                                 title: Text('${equipmentList[index].getExercises()[index2].getName()}'),
                                 onTap: () {
-                                Navigator.pop(context, (equipmentList[index].getExercises()[index2]));
+                                  EquipmentExercisePair e = EquipmentExercisePair(equipmentList[index],equipmentList[index].getExercises()[index2]);
+                                   Navigator.pop(context,e);
                                 },
                               ),
                             );

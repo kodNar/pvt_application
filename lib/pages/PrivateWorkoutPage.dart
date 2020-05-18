@@ -15,26 +15,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'MapsTest.dart';
 
 class PrivateWorkoutPage extends StatefulWidget {
-  List<Exercise> exerciseList;
   String _name ="";
- // PrivateWorkoutPage.name(this.exerciseList, this._name);
+  List <Exercise> ex = [];
+  PrivateWorkoutPage(this.ex, this._name);
   @override
-  _PrivateWorkoutState createState() => _PrivateWorkoutState();
+  _PrivateWorkoutState createState() => _PrivateWorkoutState(ex,_name);
 }
 
 class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool gymChosen = false;
-  bool exerciseChosen = true;
-  List<Exercise> exerciseList = [];
-  Exercise exercise;
+  List<Exercise> exerciseList;
   OutdoorGym outdoorGym;
-  FirebaseUser user;
-  String _name = "jek";
+  String _name;
 
 
- // _PrivateWorkoutState(this.exerciseList, this._name);
-
+  _PrivateWorkoutState(List<Exercise> ex, String name) {
+    this._name = name;
+    this.exerciseList = ex;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,19 +44,18 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
         child: Form(
           child: Column(
             children: <Widget>[
-              gymReturn(),
-              workoutLog()
+              workoutsItemList()
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         elevation: 4.0,
-        backgroundColor: Color(0xFF42A5F5),
+        backgroundColor: Colors.amber,
         icon: const Icon(Icons.share),
         label: const Text('Share'),
         onPressed: () {
-          _pushContextChooseExercise(context);
+          //share function
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -67,130 +64,57 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
   @override
   void initState() {
     super.initState();
-    getUsers();
+    print(exerciseList.length);
   }
 
-  getUsers() async{
-    user = await FirebaseAuth.instance.currentUser();
-  }
-  Widget workoutLog() {
-    if (exerciseChosen) {
-      return Form(
-        key: _formKey,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: exerciseList.length,
-          itemBuilder: (context, index){
-            return Card(
-              child: ExpansionTile(
-                title: Text('${exerciseList[index].getName()}'),
-                children: <Widget>[
 
-                  TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Sets',
-                      ),
-                      keyboardType: TextInputType.number,
-                      validator: (input) {
-                        final isDigitsOnly = int.tryParse(input);
-                        return isDigitsOnly == null ? 'Input needs to be digits only' : null;
-                      },
-                      onSaved: (input) {
-                        exerciseList[index].setSets(int.tryParse(input));
-                      }
+    Widget workoutsItemList(){
+    return Expanded(child:ListView.builder(
+      itemCount: exerciseList.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index){
+          return Card(
+            color: Colors.purple,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  child: Text(exerciseList[index].name,
+                      style: TextStyle(fontWeight: FontWeight.bold,
+              fontSize: 23,
 
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Reps',
-                    ),
-                    keyboardType: TextInputType.number,
-                    validator: (input) {
-                      final isDigitsOnly = int.tryParse(input);
-                      return isDigitsOnly == null ? 'Input needs to be digits only' : null;
-                    },
-                    onSaved: (input) {
-                      exerciseList[index].setReps(int.tryParse(input));
-                    },
-                  ),
-                ],
-                trailing: Icon(
-                  Icons.add,
-                  color: Colors.green,
+            )),
                 ),
-              ),
-            );
-          },
-        ),
-      );
-    }else{
-      return Text('No exercise chosen');
-    }
-  }
-
-  Widget gymReturn() {
-    if (gymChosen) {
-      return Container(
-        padding: EdgeInsets.all(20),
-        child: Text(
-          'At the gym: ${outdoorGym.name}',
-          style: TextStyle(
-            fontSize: 17,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      );
-    } else {
-      return Container(
-        padding: EdgeInsets.all(20),
-        child: ButtonTheme(
-          minWidth: 250,
-          height: 48,
-          child: RaisedButton(
-            //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-              side: BorderSide(color: Colors.white, width: 1.5),
+                Container(child:setWidget(index)),
+                Container(),
+              ],
             ),
-            color: Colors.transparent,
-            onPressed: () {
-              _pushContextChooseGym(context);
-            },
-            child: Text(
-              'Choose gym',
-              style: TextStyle(
-                fontSize: 25.0,
-                color: Colors.white,
+          );
+        }
+    ));
+    }
+  Widget setWidget(int i){
+    return ListView.builder(
+      padding: EdgeInsets.all(10),
+        itemCount: exerciseList[i].sets,
+        shrinkWrap: true,
+        itemBuilder: (context, index){
+          return Row(children: <Widget>[
+
+            Container(child: Text((index+1).toString()+".",
+              style: TextStyle(fontWeight: FontWeight.bold,
+              fontSize: 20,
+
               ),
-            ),
-          ),
-        ),
-      );
-    }
+
+            )),
+            Container(child: Text("               Reps:  ")),
+            Container(child: Text(exerciseList[i].reps.toString()),),
+            Divider(thickness: 2,
+            height: 2,
+            color: Colors.white,)
+          ],);
+        }
+    );
+  }
   }
 
-  void saveWorkout() {
-    final formState = _formKey.currentState;
-    if (formState.validate()) {
-      DatabaseService(uid:user.uid).createNewExercises(exerciseList, outdoorGym, "test");
-      formState.save();
-    }
-  }
-
-  _pushContextChooseGym(BuildContext context) async {
-    final OutdoorGym result = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => WorkoutGymList()));
-    gymChosen = true;
-    outdoorGym = result;
-  }
-
-  _pushContextChooseExercise(BuildContext context) async {
-    final Exercise result = await Navigator.push(context, MaterialPageRoute(builder: (context) => EquipmentOrExercise(outdoorGym)));
-    exerciseList.add(result);
-    exerciseChosen = true;
-    exercise = result;
-  }
-}

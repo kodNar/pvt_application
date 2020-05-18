@@ -13,13 +13,14 @@ class WorkoutSession{
   OutdoorGym _outdoorGym;
   List <Exercise> _exercises;
 
-  WorkoutSession(String name,String user, String location,DateTime dateTime, OutdoorGym outdoorGym, List <Equipment> equipments){
+  WorkoutSession(String name,String user, String location,DateTime dateTime, OutdoorGym outdoorGym, List <Equipment> equipments,List <Exercise> exercise){
     _user = user;
     _location = location;
     _name = name;
     _dateTime = dateTime;
     _outdoorGym = outdoorGym;
     _equipment = equipments;
+    _exercises = exercise;
   }
 
   String get location => _location;
@@ -33,6 +34,14 @@ class WorkoutSession{
   void addEquipment(Equipment e){
     _equipment.add(e);
   }
+
+  @override
+  String toString() {
+    return 'WorkoutSession{_name: $_name, _user: $_user, _location: $_location, _likes: $_likes}';
+  }
+
+  List<Equipment> get equipment => _equipment;
+
   void removeLike(){
     _likes -= 1;
   }

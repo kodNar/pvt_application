@@ -45,7 +45,7 @@ class _RecentState extends State<RecentWorkouts> {
                                 Color.fromARGB(255, 200 + index * 30, 50, 155),
                             child: InkWell(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => PrivateWorkoutPage()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => PrivateWorkoutPage(snapshot.data[index].getExercises(),snapshot.data[index].name)));
                                 },
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
