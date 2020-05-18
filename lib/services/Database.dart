@@ -29,7 +29,7 @@ class DatabaseService {
         .document(uid)
         .collection('workoutCollection')
         .document(uid)
-        .setData({'Name': 'Test', 'kuken': 'snälla fungera'});
+        .setData({'Name': 'Test', 'blomman': 'snälla fungera'});
     return await userCollection.document(uid).setData({
       'userID': userID,
       'email': email,

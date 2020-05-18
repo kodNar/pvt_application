@@ -15,6 +15,12 @@ import 'package:flutterapp/pages/MapsTest.dart';
 import 'package:flutterapp/pages/EquipmentSelection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+class EmailFieldValidator{
+  static String validate(String input){
+    return input.isEmpty ? 'Please provide an Email' : null;
+  }
+}
+
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
   final String title;
@@ -22,6 +28,8 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
+
+
 
 class _HomePageState extends State<HomePage> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -109,10 +117,7 @@ class _HomePageState extends State<HomePage> {
                         cursorColor: Colors.white,
                         // ignore: missing_return
                         validator: (input) {
-                          if (input.isEmpty) {
-                            //Check if auth sign or something
-                            return 'Please provide an Email';
-                          }
+                          EmailFieldValidator.validate(input);
                         },
                         onSaved: (input) => _email = input,
                       ),

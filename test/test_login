@@ -1,0 +1,20 @@
+import 'package:test/test.dart';
+
+
+void main(){
+
+  test('title', () {
+
+    //Setup
+
+
+    //Run
+
+
+    //Verify
+  });
+  test('empty mail returns error string',(){
+
+  })
+
+}
