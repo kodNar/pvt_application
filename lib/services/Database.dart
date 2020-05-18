@@ -87,19 +87,23 @@ class DatabaseService {
           .collection("workoutCollection")
           .getDocuments();
       for (var doc in collectionReference.documents) {
-        List<Equipment> equipments = [];
-        for (String ref in await _referencesToUsersWorkoutsSessions(doc)) {
-          Equipment e = await _getSessionEquipment(ref);
-          equipments.add(e);
+        try {
+          List<Equipment> equipments = [];
+          for (String ref in await _referencesToUsersWorkoutsSessions(doc)) {
+            Equipment e = await _getSessionEquipment(ref);
+            equipments.add(e);
+          }
+          WorkoutSession w = WorkoutSession(
+              doc.data['Name'],
+              null,
+              doc.data["Location"],
+              (doc.data['Date'] as Timestamp).toDate(),
+              null,
+              equipments);
+          _worksession.add(w);
+        }catch(e){
+          print(e.toString());
         }
-        WorkoutSession w = WorkoutSession(
-            doc.data['Name'],
-            null,
-            doc.data["Location"],
-            (doc.data['Date'] as Timestamp).toDate(),
-            null,
-            equipments);
-        _worksession.add(w);
       }
     }
     return _worksession;

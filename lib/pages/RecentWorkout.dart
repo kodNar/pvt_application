@@ -8,6 +8,8 @@ import 'package:flutterapp/WorkoutSession.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 import 'package:flutterapp/services/Database.dart';
 
+import 'PrivateWorkoutPage.dart';
+
 class RecentWorkouts extends StatefulWidget {
   @override
   _RecentState createState() => _RecentState();
@@ -43,7 +45,7 @@ class _RecentState extends State<RecentWorkouts> {
                                 Color.fromARGB(255, 200 + index * 30, 50, 155),
                             child: InkWell(
                                 onTap: () {
-                                  // länka till Session
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => PrivateWorkoutPage()));
                                 },
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
