@@ -453,7 +453,7 @@ class MapSampleState extends State<MapSample> {
               : Center(
                   child: ListTile(
                   leading: Icon(Icons.exit_to_app),
-                  title: Text('Lougout'),
+                  title: Text('Login'),
                   onTap: () {
                     if (_loggedIn) {
                       Navigator.push(context,
