@@ -13,6 +13,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
 import 'package:flutterapp/pages/EquipmentSelection.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -61,12 +62,16 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text("Stockholm outdoor gyms",
-                  style: TextStyle(
+              Text("Stockholm Outdoor Gyms",
+              textAlign: TextAlign.center,
+                style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Stockholm',
                       fontStyle: FontStyle.italic,
-                      fontSize: 35)),
+                      fontSize: 35
+
+                  ),
+              ),
               Container(
                 margin: EdgeInsets.all(5.0),
                 height: 125,
@@ -153,7 +158,10 @@ class _HomePageState extends State<HomePage> {
               ),
 
               CheckboxListTile(
-                title: Text("Remember login"),
+                title: Text("Remember login", style: TextStyle(
+                  color: Colors.white
+                ),
+                ),
                 activeColor: Colors.green,
                 value: true,
                 onChanged: (newValue) {
@@ -395,6 +403,15 @@ class _HomePageState extends State<HomePage> {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => MapSample()));
       } catch (e) {
+        Fluttertoast.showToast(
+            msg: "Invalid credentials",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+
         print(e.message);
       }
     }

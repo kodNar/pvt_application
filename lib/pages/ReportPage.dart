@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
@@ -8,7 +9,7 @@ import 'package:flutterapp/Equipment.dart';
 import 'package:camera/camera.dart';
 import 'dart:async';
 import 'dart:io';
-import 'package:flutterapp/pages/WorkoutGymList.dart';
+import 'package:flutterapp/pages/ReportGymList.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'ReportPageEquipmentList.dart';
@@ -35,11 +36,6 @@ class _ReportPageState extends State<ReportPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool buttonDisabled = true;
-
-
-  @override
-  void initState() {}
-
   final myController = TextEditingController();
 
   @override
@@ -76,12 +72,12 @@ class _ReportPageState extends State<ReportPage> {
       ]),
       body: SingleChildScrollView(
         child: Column(
-
             key: _formKey,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     ListTile(
                       title: const Text('Error Report',style: TextStyle(
@@ -356,7 +352,7 @@ class _ReportPageState extends State<ReportPage> {
 
   _pushContextChooseGym(BuildContext context) async {
     final OutdoorGym result = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => WorkoutGymList()));
+        context, MaterialPageRoute(builder: (context) => ReportGymList()));
     gymChosen = true;
     outdoorGym = result;
   }
