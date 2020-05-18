@@ -13,16 +13,16 @@ class DatabaseService {
    */
 
   final String uid;
-  List<WorkoutSession> _worksession = [];
+  static List<WorkoutSession> _worksession = [];
 
   DatabaseService({this.uid});
 
   //a reference to a collection in our firestore database.
   final CollectionReference userCollection =
-      Firestore.instance.collection('users'); //Creates/references a collection
+  Firestore.instance.collection('users'); //Creates/references a collection
 
   final CollectionReference outdoorGymsCollection =
-      Firestore.instance.collection('OutdoorGyms');
+  Firestore.instance.collection('OutdoorGyms');
 
   Future updateUserData(String userID, String email, String nickName) async {
     userCollection
@@ -63,7 +63,7 @@ class DatabaseService {
     List<Exercise> exercises = [];
     Equipment equipment;
     var temp =
-        (await Firestore.instance.collection('Equipment').document(ref).get());
+    (await Firestore.instance.collection('Equipment').document(ref).get());
     var exerTemp = await Firestore.instance
         .collection('Equipment')
         .document(ref)
@@ -118,15 +118,15 @@ class DatabaseService {
         .document(uid)
         .collection("workoutCollection")
         .add({'Location': gym.name,
-        'Name': name,
-       'Reference': exercises,
-        'Date': DateTime.now()
-        });
+      'Name': name,
+      'Reference': exercises,
+      'Date': DateTime.now()
+    });
   }
 
   Future<String> getNickname() async {
     var nickname =
-        await Firestore.instance.collection('users').document(uid).get();
+    await Firestore.instance.collection('users').document(uid).get();
     String unickName = nickname.data['nickName'];
     return unickName;
   }

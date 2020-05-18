@@ -102,7 +102,7 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
                       ],
                     ),
                   ),
-                  child: Text('+ Existing workouts',
+                  child: Text('+ Discover workouts',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.black,

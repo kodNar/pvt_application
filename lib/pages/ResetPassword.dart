@@ -34,116 +34,118 @@ class _ResetPassword extends State<ResetPassword> {
           'Reset Password'
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Forgot your password?',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30
-                  ),
-                )
-              ],
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(40),
-            child: Text(
-              'Please enter your email adress which you registered with and we will send you a link to recover your password',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18
-              )
-            )
-          ),
-          Form(
-            key: _formKey,
-            child: Container(
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              alignment: Alignment.center,
               padding: EdgeInsets.all(20),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                  ),
-                  prefixIcon: Icon(Icons.email),
-                  hintText: 'E-mail',
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-                cursorColor: Colors.black,
-                //ignore: missing_return
-                validator: (input) {
-                  if(input.isEmpty) {
-                    return 'Please provide an e-mail';
-                  }
-                  if(!input.contains('@')) {
-                    // ignore: unnecessary_statements
-                    'Please provide a valid e-mail';
-                  }
-                },
-                onSaved: (input) => _email = input,
-              ),
-            ),
-
-          ),
-
-          Container(
-            margin: EdgeInsets.only(top: 40),
-            height: 50,
-            width: 225,
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-                side: BorderSide(color: Colors.white, width: 2.5),
-              ),
-              color: Colors.blue,
-              onPressed: () {
-                //reset();
-                /*final snackBar = SnackBar(
-                  content: Text("An e-mail has been sent to " + _email,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Forgot your password?',
                     style: TextStyle(
                       color: Colors.white,
+                      fontSize: 30
                     ),
-                  ),
-                  duration: Duration(seconds: 5),
-
-                );
-                _scaffoldKey.currentState.showSnackBar(snackBar);*/
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ReportPage()));
-
-                },
+                  )
+                ],
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(40),
               child: Text(
-                "Send",
+                'Please enter your email adress which you registered with and we will send you a link to recover your password',
                 style: TextStyle(
                   color: Colors.white,
+                  fontSize: 18
+                )
+              )
+            ),
+            Form(
+              key: _formKey,
+              child: Container(
+                padding: EdgeInsets.all(20),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                    ),
+                    prefixIcon: Icon(Icons.email),
+                    hintText: 'E-mail',
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  cursorColor: Colors.black,
+                  //ignore: missing_return
+                  validator: (input) {
+                    if(input.isEmpty) {
+                      return 'Please provide an e-mail';
+                    }
+                    if(!input.contains('@')) {
+                      // ignore: unnecessary_statements
+                      'Please provide a valid e-mail';
+                    }
+                  },
+                  onSaved: (input) => _email = input,
+                ),
+              ),
+
+            ),
+
+            Container(
+              margin: EdgeInsets.only(top: 40),
+              height: 50,
+              width: 225,
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: BorderSide(color: Colors.white, width: 2.5),
+                ),
+                color: Colors.blue,
+                onPressed: () {
+                  reset();
+                  final snackBar = SnackBar(
+                    content: Text("An e-mail has been sent to " + _email,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    duration: Duration(seconds: 5),
+
+                  );
+                  _scaffoldKey.currentState.showSnackBar(snackBar);
+                //  Navigator.push(context, MaterialPageRoute(builder: (context) => ReportPage()));
+
+                  },
+                child: Text(
+                  "Send",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 60),
-            height: 75,
-            width: 75,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                    'assets/images/Stockholm_endast_logga_vit.png'
+            Container(
+              margin: EdgeInsets.only(top: 60),
+              height: 75,
+              width: 75,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                      'assets/images/Stockholm_endast_logga_vit.png'
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
 
 

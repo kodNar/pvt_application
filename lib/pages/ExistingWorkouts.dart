@@ -59,7 +59,7 @@ class _ExistingState extends State<ExistingWorkouts> {
           fillColor: Colors.white,
         ),
         style: TextStyle(
-          color: Colors.white,
+          color: Colors.black,
         ),
         cursorColor: Colors.white,
         onChanged: (value){

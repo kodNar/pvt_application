@@ -56,7 +56,10 @@ class FAQ extends StatelessWidget {
 
           ),
           ExpansionTile(
-            title: Text("Why are some gyms made from wood and some from steel?", style: TextStyle( color: Colors.white),),
+            title: Text("Why are some gyms made from wood and some from steel?", style: TextStyle( color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),),
 //            leading: ExpandIcon(
 //              color: Colors.black,
 //            ),
@@ -68,23 +71,43 @@ class FAQ extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            title: Text("Why is my gym not included in the app?", style: TextStyle( color: Colors.white),),
+            title: Text("Why is my gym not included in the app?",
+              style: TextStyle( color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+
+            ),
             children: <Widget>[
-              Text("Svar",style: TextStyle( color: Colors.white),),
+              Text("The reason your gym is not included in the application is because it is located outside of Stockholm City.",
+                style: TextStyle( color: Colors.white,
+                  fontSize: 17,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
           ExpansionTile(
-            title: Text("How do I give feedback on a gym I recently visited?", style: TextStyle( color: Colors.white),),
+            title: Text("How do I give feedback on a gym I recently visited?", style: TextStyle( color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),),
             children: <Widget>[
               Text("Svar",style: TextStyle( color: Colors.white),),
             ],
           ),ExpansionTile(
-            title: Text("How do I report faulty equipment?", style: TextStyle( color: Colors.white),),
+            title: Text("How do I report faulty equipment?", style: TextStyle( color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),),
             children: <Widget>[
               Text("Svar",style: TextStyle( color: Colors.white),),
             ],
           ),ExpansionTile(
-            title: Text("How do I change my nickname?", style: TextStyle( color: Colors.white),),
+            title: Text("How do I change my nickname?", style: TextStyle( color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),),
             children: <Widget>[
               Text("Svar",style: TextStyle( color: Colors.white),),
             ],

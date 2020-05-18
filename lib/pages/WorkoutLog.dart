@@ -27,10 +27,12 @@ class _WorkoutLogState extends State<WorkoutLog> {
   Exercise exercise;
   OutdoorGym outdoorGym;
   FirebaseUser user;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: BaseAppBar(
         title: "Workout Log",
       ),
@@ -189,6 +191,16 @@ class _WorkoutLogState extends State<WorkoutLog> {
     void saveWorkout() {
     final formState = _formKey.currentState;
     if (formState.validate()) {
+      final snackBar = SnackBar(
+        content: Text("Your workout has been saved!",
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        duration: Duration(seconds: 5),
+
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
       DatabaseService(uid:user.uid).createNewExercises(exerciseList, outdoorGym, "test");
       formState.save();
     }

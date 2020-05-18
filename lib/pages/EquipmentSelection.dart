@@ -79,6 +79,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 132, 50, 155),
       appBar: AppBar(
         title: Text(widget.post),
       ),
