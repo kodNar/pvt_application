@@ -156,7 +156,7 @@ class MapSampleState extends State<MapSample> {
     Geolocator().getCurrentPosition().then((currloc) {
       setState(() {
         currentLocation = currloc;
-        // currentLocation = LatLng(59.3274, 18.055);
+        currentLocation = LatLng(59.3274, 18.055);
         mapToggle = true;
       });
     });
@@ -248,12 +248,12 @@ class MapSampleState extends State<MapSample> {
         bearing: 0,
         target: LatLng(currentLocation.latitude, currentLocation.longitude),
         tilt: 0,
-        zoom: 15)));
+        zoom: 17)));
   }
 
   getSomePoints(var goal) async {
     polyline.clear();
-    currentLocation = await Geolocator().getCurrentPosition();
+    //currentLocation = await Geolocator().getCurrentPosition();
     List<LatLng> points = await _googleMapPolyline.getCoordinatesWithLocation(
         origin: LatLng(currentLocation.latitude, currentLocation.longitude),
         destination: LatLng(goal.latitude, goal.longitude),
@@ -342,7 +342,7 @@ class MapSampleState extends State<MapSample> {
                                           route = !route;
                                           _cancelButton = true;
                                         });
-                                        // getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
+                                         getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
                                         _goToGym(value);
                                       },
                                     )),
@@ -453,7 +453,7 @@ class MapSampleState extends State<MapSample> {
               : Center(
                   child: ListTile(
                   leading: Icon(Icons.exit_to_app),
-                  title: Text('Login'),
+                  title: Text('Lougout'),
                   onTap: () {
                     if (_loggedIn) {
                       Navigator.push(context,

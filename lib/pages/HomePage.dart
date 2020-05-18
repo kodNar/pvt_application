@@ -335,6 +335,7 @@ class _HomePageState extends State<HomePage> {
         AuthCredential credential =
             FacebookAuthProvider.getCredential(accessToken: myToken.token);
         AuthResult user = await _auth.signInWithCredential(credential);
+        isLoggedIn = true;
         goToHomePage();
     }
   }
@@ -360,8 +361,8 @@ class _HomePageState extends State<HomePage> {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-
     AuthResult user = await _auth.signInWithCredential(credential);
+    isLoggedIn = true;
     goToHomePage();
     /*
     FirebaseUser user = authResult.user;
