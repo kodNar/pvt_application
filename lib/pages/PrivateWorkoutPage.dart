@@ -14,12 +14,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'MapsTest.dart';
 
-class WorkoutLog extends StatefulWidget {
+class PrivateWorkoutPage extends StatefulWidget {
+  List<Exercise> exerciseList;
+  String _name ="";
+ // PrivateWorkoutPage.name(this.exerciseList, this._name);
   @override
-  _WorkoutLogState createState() => _WorkoutLogState();
+  _PrivateWorkoutState createState() => _PrivateWorkoutState();
 }
 
-class _WorkoutLogState extends State<WorkoutLog> {
+class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool gymChosen = false;
   bool exerciseChosen = true;
@@ -27,12 +30,16 @@ class _WorkoutLogState extends State<WorkoutLog> {
   Exercise exercise;
   OutdoorGym outdoorGym;
   FirebaseUser user;
+  String _name = "jek";
+
+
+ // _PrivateWorkoutState(this.exerciseList, this._name);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppBar(
-        title: "Workout Log",
+        title: _name,
       ),
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
       body: Center(
@@ -48,34 +55,13 @@ class _WorkoutLogState extends State<WorkoutLog> {
       floatingActionButton: FloatingActionButton.extended(
         elevation: 4.0,
         backgroundColor: Color(0xFF42A5F5),
-        icon: const Icon(Icons.add),
-        label: const Text('Add exercise/equipment'),
+        icon: const Icon(Icons.share),
+        label: const Text('Share'),
         onPressed: () {
           _pushContextChooseExercise(context);
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.delete),
-              color: Colors.red,
-              iconSize: 40,
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.save),
-              color: Colors.green,
-              iconSize: 40,
-              onPressed: saveWorkout,
-            ),
-          ],
-        ),
-      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
   @override
@@ -97,38 +83,38 @@ class _WorkoutLogState extends State<WorkoutLog> {
           itemBuilder: (context, index){
             return Card(
               child: ExpansionTile(
-              title: Text('${exerciseList[index].getName()}'),
+                title: Text('${exerciseList[index].getName()}'),
                 children: <Widget>[
 
-                      TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Sets',
-                        ),
-                        keyboardType: TextInputType.number,
-                        validator: (input) {
-                          final isDigitsOnly = int.tryParse(input);
-                          return isDigitsOnly == null ? 'Input needs to be digits only' : null;
-                        },
-                        onSaved: (input) {
-                          exerciseList[index].setSets(int.tryParse(input));
-                        }
+                  TextFormField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Sets',
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: (input) {
+                        final isDigitsOnly = int.tryParse(input);
+                        return isDigitsOnly == null ? 'Input needs to be digits only' : null;
+                      },
+                      onSaved: (input) {
+                        exerciseList[index].setSets(int.tryParse(input));
+                      }
 
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Reps',
-                        ),
-                        keyboardType: TextInputType.number,
-                        validator: (input) {
-                          final isDigitsOnly = int.tryParse(input);
-                          return isDigitsOnly == null ? 'Input needs to be digits only' : null;
-                        },
-                        onSaved: (input) {
-                          exerciseList[index].setReps(int.tryParse(input));
-                        },
-                      ),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Reps',
+                    ),
+                    keyboardType: TextInputType.number,
+                    validator: (input) {
+                      final isDigitsOnly = int.tryParse(input);
+                      return isDigitsOnly == null ? 'Input needs to be digits only' : null;
+                    },
+                    onSaved: (input) {
+                      exerciseList[index].setReps(int.tryParse(input));
+                    },
+                  ),
                 ],
                 trailing: Icon(
                   Icons.add,
@@ -186,7 +172,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
     }
   }
 
-    void saveWorkout() {
+  void saveWorkout() {
     final formState = _formKey.currentState;
     if (formState.validate()) {
       DatabaseService(uid:user.uid).createNewExercises(exerciseList, outdoorGym, "test");

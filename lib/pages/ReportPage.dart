@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
@@ -9,7 +8,7 @@ import 'package:flutterapp/Equipment.dart';
 import 'package:camera/camera.dart';
 import 'dart:async';
 import 'dart:io';
-import 'package:flutterapp/pages/ReportGymList.dart';
+import 'package:flutterapp/pages/WorkoutGymList.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'ReportPageEquipmentList.dart';
@@ -36,6 +35,11 @@ class _ReportPageState extends State<ReportPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool buttonDisabled = true;
+
+
+  @override
+  void initState() {}
+
   final myController = TextEditingController();
 
   @override
@@ -54,8 +58,8 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   SingingCharacter _radioChoice = SingingCharacter.error;
-  
-  
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,50 +76,51 @@ class _ReportPageState extends State<ReportPage> {
       ]),
       body: SingleChildScrollView(
         child: Column(
+
             key: _formKey,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    ListTile(
-                      title: const Text('Error Report',style: TextStyle(
-                        color: Colors.white,
-                      ),
-                      ),
-                      leading: Radio(
-                        activeColor: Colors.white,
-                        focusColor: Colors.white,
+                padding: EdgeInsets.only(left: 75),
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        title: const Text('Error Report',style: TextStyle(
+                          color: Colors.white,
+                        ),
+                        ),
+                        leading: Radio(
+                          activeColor: Colors.white,
+                          focusColor: Colors.white,
 
-                        value: SingingCharacter.error,
-                        groupValue: _radioChoice,
-                        onChanged: (SingingCharacter value) {
-                          setState(() {
-                            _radioChoice = value;
-                          });
-                        },
+                          value: SingingCharacter.error,
+                          groupValue: _radioChoice,
+                          onChanged: (SingingCharacter value) {
+                            setState(() {
+                              _radioChoice = value;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    ListTile(
-                      title: const Text('Suggestion',style: TextStyle(
-                        color: Colors.white,
+                      ListTile(
+                        title: const Text('Suggestion',style: TextStyle(
+                          color: Colors.white,
+                        ),
+                        ),
+                        leading: Radio(
+                          activeColor: Colors.white,
+                          focusColor: Colors.white,
+                          value: SingingCharacter.suggestion,
+                          groupValue: _radioChoice,
+                          onChanged: (SingingCharacter value) {
+                            setState(() {
+                              _radioChoice = value;
+                            });
+                          },
+                        ),
                       ),
-                      ),
-                      leading: Radio(
-                        activeColor: Colors.white,
-                        focusColor: Colors.white,
-                        value: SingingCharacter.suggestion,
-                        groupValue: _radioChoice,
-                        onChanged: (SingingCharacter value) {
-                          setState(() {
-                            _radioChoice = value;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                )
+                    ],
+                  )
               ),
               Container(
                 child: gymReturn(),
@@ -352,7 +357,7 @@ class _ReportPageState extends State<ReportPage> {
 
   _pushContextChooseGym(BuildContext context) async {
     final OutdoorGym result = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ReportGymList()));
+        context, MaterialPageRoute(builder: (context) => WorkoutGymList()));
     gymChosen = true;
     outdoorGym = result;
   }
@@ -514,7 +519,7 @@ main() async {
   String passWord =
       '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';
   final smtpServer =
-      SmtpServer('smtp.sendgrid.net', username: userName, password: passWord);
+  SmtpServer('smtp.sendgrid.net', username: userName, password: passWord);
 
   Message message = new Message();
 
@@ -530,11 +535,11 @@ main() async {
       ..attachments.add(new FileAttachment(File('$picPath')));
   }else{
     message = Message()
-  ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
-  ..recipients.add('simon.schoolsoft@gmail.com')
-  ..subject = 'Outdoor Gym Error Report ${DateTime.now()}'
-  ..text = ('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
-  equipment + '\n' + '\n' + description);
+      ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
+      ..recipients.add('simon.schoolsoft@gmail.com')
+      ..subject = 'Outdoor Gym Error Report ${DateTime.now()}'
+      ..text = ('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
+          equipment + '\n' + '\n' + description);
 
   }
 

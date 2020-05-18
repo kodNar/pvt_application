@@ -201,15 +201,7 @@ class MapSampleState extends State<MapSample> {
   libraryEq() {
     for (OutdoorGym outdoorGym in allOutdoorGym) {
       for (String equipment in outdoorGym.equipmentRef) {
-        List<OutdoorGym> list = [];
-        try {
-          for (OutdoorGym obj in map.values) {
-            //print(obj.toString());
-            list.add(obj);
-            //print(list.length.toString() + "hej");
-          }
-        } catch (e) {}
-
+        List<OutdoorGym> list = map[equipment];
         if (map.containsKey(equipment)) {
           if (list == null) {
             list.add(outdoorGym);
