@@ -8,7 +8,7 @@ import 'package:flutterapp/Equipment.dart';
 import 'package:camera/camera.dart';
 import 'dart:async';
 import 'dart:io';
-import 'package:flutterapp/pages/WorkoutGymList.dart';
+import 'package:flutterapp/pages/ReportGymList.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'ReportPageEquipmentList.dart';
@@ -22,7 +22,7 @@ String description;
 String equipment = 'Not Specified';
 OutdoorGym outdoorGym;
 enum SingingCharacter { error, suggestion }
-//kommentar
+
 
 class ReportPage extends StatefulWidget {
   @override
@@ -35,10 +35,6 @@ class _ReportPageState extends State<ReportPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool buttonDisabled = true;
-
-
-  @override
-  void initState() {}
 
   final myController = TextEditingController();
 
@@ -357,7 +353,7 @@ class _ReportPageState extends State<ReportPage> {
 
   _pushContextChooseGym(BuildContext context) async {
     final OutdoorGym result = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => WorkoutGymList()));
+        context, MaterialPageRoute(builder: (context) => ReportGymList()));
     gymChosen = true;
     outdoorGym = result;
   }
