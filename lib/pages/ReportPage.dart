@@ -45,7 +45,7 @@ class _ReportPageState extends State<ReportPage> {
     super.dispose();
   }
   void disableButton(){
-    if (description == null || outdoorGym == null){
+    if (description == "" || outdoorGym == null){
       buttonDisabled = true;
     }
     else{
@@ -217,7 +217,7 @@ class _ReportPageState extends State<ReportPage> {
                       disableButton();
                       if(!buttonDisabled) {
 
-                        main();
+                        main(_radioChoice);
                         thankYouMessage();
 
                       }else{
@@ -507,7 +507,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
 ///////////////////////////////////EMAIL///////////////////////////////////////////
 
-main() async {
+main(SingingCharacter _radioChoice) async {
 
   gymChosen = false;
   eqChosen = false;
@@ -523,22 +523,21 @@ main() async {
     message = Message()
 
 
-      ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
-      ..recipients.add('simon.schoolsoft@gmail.com')
-      ..subject = 'Outdoor Gym Error Report ${DateTime.now()}'
+      ..from = Address('report.stockholmgym@gmail.com', 'PvTG15')
+      ..recipients.add('report.stockholmgym@gmail.com')
+      ..subject = 'Outdoor Gym' + _radioChoice.toString() +  '${DateTime.now()}'
       ..text = ('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
           equipment + '\n' + '\n' + description)
       ..attachments.add(new FileAttachment(File('$picPath')));
   }else{
     message = Message()
-      ..from = Address('simon.schoolsoft@gmail.com', 'Simon')
-      ..recipients.add('simon.schoolsoft@gmail.com')
-      ..subject = 'Outdoor Gym Error Report ${DateTime.now()}'
+      ..from = Address('report.stockholmgym@gmail.com', 'PvTG15')
+      ..recipients.add('report.stockholmgym@gmail.com')
+      ..subject = 'Outdoor Gym' + _radioChoice.toString() +  '${DateTime.now()}'
       ..text = ('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
           equipment + '\n' + '\n' + description);
 
   }
-
 
 
   try {
