@@ -32,7 +32,6 @@ class SetFieldValidator {
         return 'Input needs to be digits only';
       }
     }
-
     return input.isEmpty ? 'Please add at least 1 set' : null;
   }
 }
@@ -58,12 +57,15 @@ class RepFieldValidator {
 class _WorkoutLogState extends State<WorkoutLog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool gymChosen = false;
-  bool exerciseChosen = true;
+  bool exerciseChosen = false;
   List<Exercise> exerciseList = [];
   Exercise exercise;
   OutdoorGym outdoorGym;
   FirebaseUser user;
+  String _name = "";
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -73,13 +75,19 @@ class _WorkoutLogState extends State<WorkoutLog> {
         title: "Workout Log",
       ),
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
-      body: Center(
-        child: Form(
-          child: Column(
-            children: <Widget>[gymReturn(), workoutLog()],
+      body: Form(
+        // TODO: Fixa så man kan scrolla ordentligt //Einar
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                gymReturn(),
+                workoutLog()
+              ],
+            ),
           ),
         ),
-      ),
+
       floatingActionButton: FloatingActionButton.extended(
         elevation: 4.0,
         backgroundColor: Color(0xFF42A5F5),
@@ -101,6 +109,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
               color: Colors.red,
               iconSize: 40,
               onPressed: () {},
+              // TODO: Fixa så man kan Ta bort exercises eller hela workout:en //Einar
             ),
             IconButton(
               icon: Icon(Icons.save),
@@ -128,43 +137,75 @@ class _WorkoutLogState extends State<WorkoutLog> {
     if (exerciseChosen) {
       return Form(
         key: _formKey,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: exerciseList.length,
-          itemBuilder: (context, index) {
-            return Card(
-              child: ExpansionTile(
-                title: Text('${exerciseList[index].getName()}'),
-                children: <Widget>[
-                  TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Sets',
-                      ),
-                      keyboardType: TextInputType.number,
-                      validator: (input) => SetFieldValidator.validate(input),
-                      onSaved: (input) {
-                        exerciseList[index].setSets(int.tryParse(input));
-                      }),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Reps',
-                    ),
-                    keyboardType: TextInputType.number,
-                    validator: (input) => RepFieldValidator.validate(input),
-                    onSaved: (input) {
-                      exerciseList[index].setReps(int.tryParse(input));
-                    },
-                  ),
-                ],
-                trailing: Icon(
-                  Icons.add,
-                  color: Colors.green,
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent),
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent),
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                ),
+                prefixIcon: Icon(Icons.text_fields),
+                hintText: "Name of the workout",
+                filled: true,
+                fillColor: Colors.white,
               ),
-            );
-          },
+              style: TextStyle(
+                color: Colors.black,
+              ),
+              cursorColor: Colors.white,
+              // ignore: missing_return
+              validator: (input) {
+                if (input.isEmpty) {
+                  //Check if auth sign or something
+                  return 'Please provide a name for the workout';
+                }
+              },
+              onSaved: (input) => _name = input,
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: exerciseList.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: ExpansionTile(
+                    title: Text('${exerciseList[index].getName()}'),
+                    children: <Widget>[
+                      TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Sets',
+                          ),
+                          keyboardType: TextInputType.number,
+                          validator: (input) => SetFieldValidator.validate(input),
+                          onSaved: (input) {
+                            exerciseList[index].setSets(int.tryParse(input));
+                          }),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Reps',
+                        ),
+                        keyboardType: TextInputType.number,
+                        validator: (input) => RepFieldValidator.validate(input),
+                        onSaved: (input) {
+                          exerciseList[index].setReps(int.tryParse(input));
+                        },
+                      ),
+                    ],
+                    trailing: Icon(
+                      Icons.add,
+                      color: Colors.green,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       );
     } else {
@@ -175,15 +216,15 @@ class _WorkoutLogState extends State<WorkoutLog> {
   Widget gymReturn() {
     if (gymChosen) {
       return Container(
-        padding: EdgeInsets.all(20),
-        child: Text(
-          'At the gym: ${outdoorGym.name}',
-          style: TextStyle(
-            fontSize: 17,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+            padding: EdgeInsets.all(20),
+            child: Text(
+              'At the gym: ${outdoorGym.name}',
+              style: TextStyle(
+                fontSize: 17,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
       );
     } else {
       return Container(
@@ -215,6 +256,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
   }
 
   void saveWorkout() {
+
     final formState = _formKey.currentState;
     if (formState.validate()) {
       formState.save();
@@ -234,7 +276,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
         print(exercise.reps);
       }
       DatabaseService(uid: user.uid)
-          .createNewExercises(exerciseList, outdoorGym, "Name");
+          .createNewExercises(exerciseList, outdoorGym, _name);
     }
   }
 
