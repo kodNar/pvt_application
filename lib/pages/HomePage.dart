@@ -21,6 +21,16 @@ class EmailFieldValidator{
   }
 }
 
+class PasswordFieldValidator {
+  static String validate(String input){
+    if(input.length > 0 && input.length < 6){
+      return 'The password needs to be atleast 6 characters';
+    }
+    return input.isEmpty ? 'Please provide a password' : null;
+  }
+
+}
+
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
   final String title;
@@ -116,9 +126,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         cursorColor: Colors.white,
                         // ignore: missing_return
-                        validator: (input) {
-                          EmailFieldValidator.validate(input);
-                        },
+                        validator: (input) => EmailFieldValidator.validate(input),
                         onSaved: (input) => _email = input,
                       ),
                     ),
@@ -144,14 +152,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                         cursorColor: Colors.white,
                         // ignore: missing_return
-                        validator: (input) {
-                          if (input.isEmpty) {
-                            return 'Please provide a password';
-                          }
-                          if (input.length < 6) {
-                            return 'Your password must be atleast 6 characters';
-                          }
-                        },
+                          validator: (input) => PasswordFieldValidator.validate(input),
+
                         onSaved: (input) => _password = input,
                         obscureText: true, //Döljer texten
                       ),
