@@ -3,8 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/WorkoutSession.dart';
+import 'package:flutterapp/pages/PublicWorkoutsSession.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 import 'package:flutterapp/services/Database.dart';
+
+import '../Exercise.dart';
 
 class ExistingWorkouts extends StatefulWidget {
   @override
@@ -144,7 +147,7 @@ class _ExistingState extends State<ExistingWorkouts> {
                                     255, 200 + index * 30, 50, 155),
                                 child: InkWell(
                                     onTap: () {
-                                      // länka till Session
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => PublicWorkoutPage(selectedSessions[index].getExercises(),selectedSessions[index].name)));
                                     },
                                     child: Row(
                                         mainAxisAlignment:
@@ -204,17 +207,35 @@ class _ExistingState extends State<ExistingWorkouts> {
     QuerySnapshot workoutsCollection =
     await Firestore.instance.collection("Workouts").getDocuments();
     for (var doc in workoutsCollection.documents) {
+      List <Exercise> exercisesList = await getExercises(doc.documentID);
       String name = doc.data['Name'];
       int likes = (doc.data['Likes']);
       String location = doc.data['Location'];
       String user =doc.data['User'];
       DateTime date = (doc.data['Published']as Timestamp).toDate();
-      WorkoutSession w = WorkoutSession(name,user,location,date,null, null,null);
+      WorkoutSession w = WorkoutSession(name,user,location,date,null, null,exercisesList);
       w.setLikes(likes);
       sessions.add(w);
       selectedSessions.add(w);
       //sessions = selectedSessions;
     }
+  }
+
+  getExercises(var ref)async{
+    List <Exercise> exercises = [];
+      try {
+        QuerySnapshot collectionReferenceExercise =await Firestore.instance
+            .collection('Workouts').document(ref).collection("Exercises").getDocuments();
+        for(var temp in collectionReferenceExercise.documents){
+          Exercise e = (Exercise(temp.data['Name'], null));
+          e.setReps(temp.data['Reps'],);
+          e.setSets(temp.data['Sets']);
+          exercises.add(e);
+        }
+      }catch(e){
+        print("Error message"+e.toString());
+      }
+    return exercises;
   }
   void searchFilter(String query) {
     List<String> tempSearchList = List<String>();

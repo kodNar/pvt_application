@@ -81,7 +81,6 @@ class DatabaseService {
 
   Future<List<WorkoutSession>> getUserWorkoutSessions() async {
       if(_worksession.length == 0 || changedWorkout){
-        print("ewfe");
       QuerySnapshot collectionReference = await Firestore.instance
           .collection('users')
           .document(uid)

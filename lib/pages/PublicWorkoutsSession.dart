@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/OutdoorGym.dart';
-import 'package:flutterapp/WorkoutSession.dart';
 import 'package:flutterapp/pages/EquipmentOrExercise.dart';
 import 'package:flutterapp/pages/WorkoutGymList.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
@@ -16,28 +14,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'MapsTest.dart';
 
-class PrivateWorkoutPage extends StatefulWidget {
+class PublicWorkoutPage extends StatefulWidget {
   String _name ="";
   List <Exercise> ex = [];
-  WorkoutSession session;
-
-  PrivateWorkoutPage(this.ex, this._name, this.session);
+  PublicWorkoutPage(this.ex, this._name);
   @override
-  _PrivateWorkoutState createState() => _PrivateWorkoutState(ex,_name, session);
+  _PublicWorkoutState createState() => _PublicWorkoutState(ex,_name);
 }
 
-class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
+class _PublicWorkoutState extends State<PublicWorkoutPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<Exercise> exerciseList;
   OutdoorGym outdoorGym;
   String _name;
-  FirebaseUser _user;
-  WorkoutSession session;
 
-  _PrivateWorkoutState(List<Exercise> ex, String name, WorkoutSession s) {
+
+  _PublicWorkoutState(List<Exercise> ex, String name) {
     this._name = name;
     this.exerciseList = ex;
-    this.session =s;
   }
   @override
   Widget build(BuildContext context) {
@@ -50,19 +44,25 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
         child: Form(
           child: Column(
             children: <Widget>[
-              workoutsItemList()
+              workoutsItemList(),
+              Expanded(
+                child: Row(
+                children: <Widget>[
+                Post(),
+                Favorit(),
+              ],),)
+
+
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         elevation: 4.0,
-        backgroundColor: Colors.amber,
-        icon: const Icon(Icons.share),
-        label: const Text('Share'),
+        backgroundColor: Colors.blue,
+        label: const Text('Start this exercise'),
         onPressed: () {
-          shareWorkout();
-          print("workoutShared");
+          //share function
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -71,16 +71,12 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
   @override
   void initState() {
     super.initState();
-    getUsers();
-  }
-  getUsers() async{
-    _user = await FirebaseAuth.instance.currentUser();
   }
 
 
-    Widget workoutsItemList(){
+  Widget workoutsItemList(){
     return Expanded(child:ListView.builder(
-      itemCount: exerciseList.length,
+        itemCount: exerciseList.length,
         shrinkWrap: true,
         itemBuilder: (context, index){
           return Card(
@@ -91,66 +87,102 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
                   width: MediaQuery.of(context).size.width-20 ,
                   child: Text(exerciseList[index].name,
                       style: TextStyle(fontWeight: FontWeight.bold,
-              fontSize: 23,
-
-            )),
+                        fontSize: 23,
+                      )),
                 ),
                 Container(child:setWidget(index)),
-                Container(),
+
               ],
             ),
           );
         }
     ));
-    }
+  }
   Widget setWidget(int i){
     return ListView.builder(
-      padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(10),
         itemCount: exerciseList[i].sets,
         shrinkWrap: true,
         itemBuilder: (context, index){
           return Row(children: <Widget>[
-
             Container(child: Text((index+1).toString()+".",
               style: TextStyle(fontWeight: FontWeight.bold,
-              fontSize: 20,
-
+                fontSize: 20,
               ),
-
             )),
             Container(child: Text("               Reps:  ")),
             Container(child: Text(exerciseList[i].reps.toString()),),
-            Divider(thickness: 2,
-            height: 2,
-            color: Colors.white,)
           ],);
         }
     );
   }
-
-    createNewExercises(var ref) async {
-
-      for(var exercise in exerciseList){
-      await Firestore.instance.collection("Workouts").document(ref).collection("Exercises").document().setData({
-        'Name': exercise.name,
-        'Reps':exercise.reps,
-        'Sets':exercise.sets,
-      }
-      );
-
+}
+class Post extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() => new PostState();
   }
+
+class PostState extends State<Post>{
+  bool liked =false;
+
+  _pressed() {
+  setState(() {
+    liked = !liked;
+  });
   }
-  shareWorkout(){
-    String ref =Firestore.instance.collection("Workouts").document().documentID;
-    createNewExercises(ref);
-    Firestore.instance.collection("Workouts").document(ref).setData({
-      'Likes': 0,
-      'Location': session.location,
-      'Name': session.name,
-      'Published': DateTime.now(),
-      'User':_user.displayName
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+      child:Column(
+        children: <Widget>[
+          ListTile(
+            leading: IconButton(
+              icon:Icon(liked ? Icons.favorite: Icons.favorite_border),
+              color: liked? Colors.red: Colors.black,
+              iconSize: 60,
+              onPressed: () {
+                _pressed();
+              },
+            ),
+          )
+        ],
+      )
+    );
+  }
+}
+class Favorit extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() => new FavoritState();
+}
+
+class FavoritState extends State<Favorit>{
+  bool favorit =false;
+
+  _pressed() {
+    setState(() {
+      favorit = !favorit;
     });
-    print("workoutShared");
+  }
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+        child:Column(
+          children: <Widget>[
+            ListTile(
+              leading: IconButton(
+                icon:Icon(favorit ? Icons.star: Icons.star_border),
+                color: favorit? Colors.amber: Colors.black,
+                iconSize: 60,
+                onPressed: () {
+                  _pressed();
+                },
+              ),
+            )
+          ],
+        )
+    );
   }
 }
 
