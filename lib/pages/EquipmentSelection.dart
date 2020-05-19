@@ -28,16 +28,17 @@ class EquipmentSelection extends StatelessWidget {
               padding: EdgeInsets.all(8),
               color: Colors.transparent,
               width: MediaQuery.of(context).size.width,
-              height: 100,
+              height: 75,
               child: RaisedButton(
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
-                    side: BorderSide(color: Colors.black),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                    side: BorderSide(color: Colors.white, width: 1.5),
                   ),
+                  color: Colors.transparent,
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(_equipment[index].getName(),_equipment[index].exercises)));
                   },
-                  color: Color.fromARGB(255, 132, 50, 155),
+
                   child: Align(
                       alignment: Alignment.center,
                       child: Row(
