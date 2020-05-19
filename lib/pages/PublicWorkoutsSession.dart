@@ -45,13 +45,7 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
           child: Column(
             children: <Widget>[
               workoutsItemList(),
-              Expanded(
-                child: Row(
-                children: <Widget>[
-                Post(),
-                Favorit(),
-              ],),)
-
+                bottomAppBar(),
 
             ],
           ),
@@ -65,7 +59,7 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
           //share function
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
   @override
@@ -116,6 +110,20 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
         }
     );
   }
+  Widget bottomAppBar() {
+    return  BottomAppBar(
+
+      child: Row(
+        children: <Widget>[
+          Flexible(child: Post(),),
+          Spacer(),
+          Spacer(),
+          Flexible(child:Favorit(),),
+
+      ],)
+    );
+  }
+
 }
 class Post extends StatefulWidget{
   @override
@@ -129,6 +137,7 @@ class PostState extends State<Post>{
   setState(() {
     liked = !liked;
   });
+
   }
   @override
   Widget build(BuildContext context) {
@@ -139,8 +148,8 @@ class PostState extends State<Post>{
           ListTile(
             leading: IconButton(
               icon:Icon(liked ? Icons.favorite: Icons.favorite_border),
-              color: liked? Colors.red: Colors.black,
-              iconSize: 60,
+              color: liked? Colors.red: Colors.black26,
+              iconSize: 50,
               onPressed: () {
                 _pressed();
               },
@@ -173,8 +182,8 @@ class FavoritState extends State<Favorit>{
             ListTile(
               leading: IconButton(
                 icon:Icon(favorit ? Icons.star: Icons.star_border),
-                color: favorit? Colors.amber: Colors.black,
-                iconSize: 60,
+                color: favorit? Colors.amber: Colors.black26,
+                iconSize: 50,
                 onPressed: () {
                   _pressed();
                 },
