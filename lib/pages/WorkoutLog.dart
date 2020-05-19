@@ -223,6 +223,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
   void saveWorkout() {
     final formState = _formKey.currentState;
     if (formState.validate()) {
+      formState.save();
       final snackBar = SnackBar(
         content: Text(
           "Your workout has been saved!",
@@ -233,10 +234,13 @@ class _WorkoutLogState extends State<WorkoutLog> {
         duration: Duration(seconds: 5),
       );
       _scaffoldKey.currentState.showSnackBar(snackBar);
+      for(Exercise exercise in exerciseList){
+        print(exercise.name);
+        print(exercise.sets);
+        print(exercise.reps);
+      }
       DatabaseService(uid: user.uid)
           .createNewExercises(exerciseList, outdoorGym, "Name");
-
-      formState.save();
     }
   }
 
