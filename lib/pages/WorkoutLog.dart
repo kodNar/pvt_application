@@ -11,13 +11,48 @@ import 'package:flutterapp/widgets/Appbar.dart';
 import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
-
 import 'MapsTest.dart';
 
 class WorkoutLog extends StatefulWidget {
   @override
   _WorkoutLogState createState() => _WorkoutLogState();
+}
+
+class SetFieldValidator {
+  static String validate(String input) {
+    if (input.length > 0) {
+      final isDigitsOnly = int.tryParse(input);
+      if (isDigitsOnly <= 0) {
+        return 'Input needs to be 1 or higher only';
+      }
+      if (isDigitsOnly > 99) {
+        return 'There is no way you did that amount of sets';
+      }
+      if (isDigitsOnly == null) {
+        return 'Input needs to be digits only';
+      }
+    }
+
+    return input.isEmpty ? 'Please add at least 1 set' : null;
+  }
+}
+
+class RepFieldValidator {
+  static String validate(String input) {
+    if (input.length > 0) {
+      final isDigitsOnly = int.tryParse(input);
+      if (isDigitsOnly <= 0) {
+        return 'Input needs to be 1 or higher';
+      }
+      if (isDigitsOnly > 999) {
+        return 'There is no way you did that amount of reps';
+      }
+      if (isDigitsOnly == null) {
+        return 'Input needs to be digits only';
+      }
+    }
+    return input.isEmpty ? 'Please add at least 1 set' : null;
+  }
 }
 
 class _WorkoutLogState extends State<WorkoutLog> {
@@ -41,10 +76,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
       body: Center(
         child: Form(
           child: Column(
-            children: <Widget>[
-              gymReturn(),
-              workoutLog()
-            ],
+            children: <Widget>[gymReturn(), workoutLog()],
           ),
         ),
       ),
@@ -81,15 +113,17 @@ class _WorkoutLogState extends State<WorkoutLog> {
       ),
     );
   }
+
   @override
   void initState() {
     super.initState();
     getUsers();
   }
 
-  getUsers() async{
+  getUsers() async {
     user = await FirebaseAuth.instance.currentUser();
   }
+
   Widget workoutLog() {
     if (exerciseChosen) {
       return Form(
@@ -97,41 +131,38 @@ class _WorkoutLogState extends State<WorkoutLog> {
         child: ListView.builder(
           shrinkWrap: true,
           itemCount: exerciseList.length,
-          itemBuilder: (context, index){
+          itemBuilder: (context, index) {
             return Card(
               child: ExpansionTile(
-              title: Text('${exerciseList[index].getName()}'),
+                title: Text('${exerciseList[index].getName()}'),
                 children: <Widget>[
-
-                      TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Sets',
-                        ),
-                        keyboardType: TextInputType.number,
-                        validator: (input) {
+                  TextFormField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Sets',
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: (input) => SetFieldValidator.validate(input),
+                      /*
+                          validator: (input) {
                           final isDigitsOnly = int.tryParse(input);
                           return isDigitsOnly == null ? 'Input needs to be digits only' : null;
                         },
-                        onSaved: (input) {
-                          exerciseList[index].setSets(int.tryParse(input));
-                        }
-
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Reps',
-                        ),
-                        keyboardType: TextInputType.number,
-                        validator: (input) {
-                          final isDigitsOnly = int.tryParse(input);
-                          return isDigitsOnly == null ? 'Input needs to be digits only' : null;
-                        },
-                        onSaved: (input) {
-                          exerciseList[index].setReps(int.tryParse(input));
-                        },
-                      ),
+                        */
+                      onSaved: (input) {
+                        exerciseList[index].setSets(int.tryParse(input));
+                      }),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Reps',
+                    ),
+                    keyboardType: TextInputType.number,
+                    validator: (input) => RepFieldValidator.validate(input),
+                    onSaved: (input) {
+                      exerciseList[index].setReps(int.tryParse(input));
+                    },
+                  ),
                 ],
                 trailing: Icon(
                   Icons.add,
@@ -142,7 +173,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
           },
         ),
       );
-    }else{
+    } else {
       return Text('No exercise chosen');
     }
   }
@@ -189,20 +220,21 @@ class _WorkoutLogState extends State<WorkoutLog> {
     }
   }
 
-    void saveWorkout() {
+  void saveWorkout() {
     final formState = _formKey.currentState;
     if (formState.validate()) {
       final snackBar = SnackBar(
-        content: Text("Your workout has been saved!",
+        content: Text(
+          "Your workout has been saved!",
           style: TextStyle(
             color: Colors.white,
           ),
         ),
         duration: Duration(seconds: 5),
-
       );
       _scaffoldKey.currentState.showSnackBar(snackBar);
-      DatabaseService(uid:user.uid).createNewExercises(exerciseList, outdoorGym, "Name");
+      DatabaseService(uid: user.uid)
+          .createNewExercises(exerciseList, outdoorGym, "Name");
 
       formState.save();
     }
@@ -216,7 +248,10 @@ class _WorkoutLogState extends State<WorkoutLog> {
   }
 
   _pushContextChooseExercise(BuildContext context) async {
-    final EquipmentExercisePair result = await Navigator.push(context, MaterialPageRoute(builder: (context) => EquipmentOrExercise(outdoorGym)));
+    final EquipmentExercisePair result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => EquipmentOrExercise(outdoorGym)));
     exerciseList.add(result.exercise);
     exerciseChosen = true;
     exercise = result.exercise;

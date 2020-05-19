@@ -28,7 +28,6 @@ class PasswordFieldValidator {
     }
     return input.isEmpty ? 'Please provide a password' : null;
   }
-
 }
 
 class HomePage extends StatefulWidget {
