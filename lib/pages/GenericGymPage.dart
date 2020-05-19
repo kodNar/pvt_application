@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/pages/EquipmentSelection.dart';
 import 'package:flutterapp/OutdoorGym.dart';
-import 'package:flutterapp/pages/AboutGymsPage.dart';
+
 
 class GenericGymPage extends StatefulWidget {
   OutdoorGym outdoorGym;
@@ -62,13 +61,15 @@ class GenericGymPage extends StatefulWidget {
                         width: MediaQuery.of(context).size.width,
                         height: 60,
                         child: RaisedButton(
-                            shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Colors.white, width: 1.5),
                             ),
+                            color: Colors.transparent,
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => EquipmentSelection(_name, _equipment)));
                             },
-                            color: Color.fromARGB(255, 132, 50, 155),
+
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Row(
@@ -100,11 +101,13 @@ class GenericGymPage extends StatefulWidget {
                         width: MediaQuery.of(context).size.width,
                         height: 60,
                         child: RaisedButton(
-                            shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Colors.white, width: 1.5),
                             ),
+                            color: Colors.transparent,
                             onPressed: () {},
-                            color: Color.fromARGB(255, 132, 50, 155),
+
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Row(
@@ -134,14 +137,16 @@ class GenericGymPage extends StatefulWidget {
                           width: MediaQuery.of(context).size.width,
                           height: 60,
                           child: RaisedButton(
-                            shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Colors.white, width: 1.5),
                             ),
+                            color: Colors.transparent,
                             onPressed: () {
                               /*Navigator.push(context,
                               MaterialPageRoute(builder: (context) => AboutGymsPage()));*/
                             },
-                            color: Color.fromARGB(255, 132, 50, 155),
+
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Row(
@@ -177,6 +182,7 @@ class GenericGymPage extends StatefulWidget {
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
 
                     ),
                   )),
