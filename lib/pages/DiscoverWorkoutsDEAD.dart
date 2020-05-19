@@ -34,11 +34,9 @@ class DiscoverWorkouts extends StatelessWidget {
           ),
         ),
         Container(
-
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-
             Flexible(
              fit: FlexFit.tight,
               child:
