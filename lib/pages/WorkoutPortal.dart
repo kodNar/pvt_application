@@ -36,7 +36,7 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
             },
             child: Icon(
               Icons.home,
-              color: Colors.black,
+              color: Colors.white,
               size: 40,
               semanticLabel: 'Home button',
             ),
@@ -134,7 +134,7 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
                       ],
                     ),
                   ),
-                  child: Text('Recent workouts',
+                  child: Text('My workouts',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.black,

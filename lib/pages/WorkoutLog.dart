@@ -143,12 +143,6 @@ class _WorkoutLogState extends State<WorkoutLog> {
                       ),
                       keyboardType: TextInputType.number,
                       validator: (input) => SetFieldValidator.validate(input),
-                      /*
-                          validator: (input) {
-                          final isDigitsOnly = int.tryParse(input);
-                          return isDigitsOnly == null ? 'Input needs to be digits only' : null;
-                        },
-                        */
                       onSaved: (input) {
                         exerciseList[index].setSets(int.tryParse(input));
                       }),
