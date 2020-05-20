@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/OutdoorGym.dart';
+import 'package:flutterapp/WorkoutSession.dart';
 import 'package:flutterapp/pages/EquipmentOrExercise.dart';
 import 'package:flutterapp/pages/WorkoutGymList.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
@@ -13,24 +16,26 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 
 import 'MapsTest.dart';
-import 'StartWorkout.dart';
 
-class PublicWorkoutPage extends StatefulWidget {
+class StartWorkout extends StatefulWidget {
   String _name ="";
   List <Exercise> ex = [];
-  PublicWorkoutPage(this.ex, this._name);
+
+
+  StartWorkout(this.ex, this._name);
   @override
-  _PublicWorkoutState createState() => _PublicWorkoutState(ex,_name);
+  _StartWorkoutState createState() => _StartWorkoutState(ex,_name,);
 }
 
-class _PublicWorkoutState extends State<PublicWorkoutPage> {
+class _StartWorkoutState extends State<StartWorkout> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<Exercise> exerciseList;
   OutdoorGym outdoorGym;
   String _name;
+  FirebaseUser _user;
+  WorkoutSession session;
 
-
-  _PublicWorkoutState(List<Exercise> ex, String name) {
+  _StartWorkoutState(List<Exercise> ex, String name, ) {
     this._name = name;
     this.exerciseList = ex;
   }
@@ -45,9 +50,7 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
         child: Form(
           child: Column(
             children: <Widget>[
-              workoutsItemList(),
-                bottomAppBar(),
-
+              workoutsItemList()
             ],
           ),
         ),
@@ -55,9 +58,9 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
       floatingActionButton: FloatingActionButton.extended(
         elevation: 4.0,
         backgroundColor: Colors.blue,
-        label: const Text('Start this exercise'),
+        label: const Text('Complete Workout'),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => StartWorkout(exerciseList,_name,)));
+          _showRoshSpawnDialog();
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -66,8 +69,11 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
   @override
   void initState() {
     super.initState();
+    getUsers();
   }
-
+  getUsers() async{
+    _user = await FirebaseAuth.instance.currentUser();
+  }
 
   Widget workoutsItemList(){
     return Expanded(child:ListView.builder(
@@ -83,10 +89,11 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
                   child: Text(exerciseList[index].name,
                       style: TextStyle(fontWeight: FontWeight.bold,
                         fontSize: 23,
+
                       )),
                 ),
                 Container(child:setWidget(index)),
-
+                Container(),
               ],
             ),
           );
@@ -95,104 +102,82 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
   }
   Widget setWidget(int i){
     return ListView.builder(
+
         padding: EdgeInsets.all(10),
         itemCount: exerciseList[i].sets,
         shrinkWrap: true,
         itemBuilder: (context, index){
           return Row(children: <Widget>[
+
             Container(child: Text((index+1).toString()+".",
               style: TextStyle(fontWeight: FontWeight.bold,
                 fontSize: 20,
+
               ),
+
             )),
-            Container(child: Text("               Reps:  ")),
+            Spacer(),
+            Container(child: Text("Reps:  ")),
             Container(child: Text(exerciseList[i].reps.toString()),),
-          ],);
+            ShoppingItemList(CheckBox(false),)],);
         }
     );
   }
-  Widget bottomAppBar() {
-    return  BottomAppBar(
 
-      child: Row(
-        children: <Widget>[
-          Flexible(child: Post(),),
-          Spacer(),
-          Spacer(),
-          Flexible(child:Favorit(),),
-
-      ],)
-    );
-  }
-
-}
-class Post extends StatefulWidget{
-  @override
-  State<StatefulWidget> createState() => new PostState();
-  }
-
-class PostState extends State<Post>{
-  bool liked =false;
-
-  _pressed() {
-  setState(() {
-    liked = !liked;
-  });
-
-  }
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      child:Column(
-        children: <Widget>[
-          ListTile(
-            leading: IconButton(
-              icon:Icon(liked ? Icons.favorite: Icons.favorite_border),
-              color: liked? Colors.red: Colors.black26,
-              iconSize: 50,
-              onPressed: () {
-                _pressed();
+  void _showRoshSpawnDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) =>  CupertinoAlertDialog(
+          title: Text('Success!'),
+          content: alertContent(),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Hurra!'),
+              onPressed: (){
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pop(context);
               },
             ),
-          )
-        ],
-      )
-    );
-  }
-}
-class Favorit extends StatefulWidget{
-  @override
-  State<StatefulWidget> createState() => new FavoritState();
-}
-
-class FavoritState extends State<Favorit>{
-  bool favorit =false;
-
-  _pressed() {
-    setState(() {
-      favorit = !favorit;
-    });
-  }
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-        child:Column(
-          children: <Widget>[
-            ListTile(
-              leading: IconButton(
-                icon:Icon(favorit ? Icons.star: Icons.star_border),
-                color: favorit? Colors.amber: Colors.black26,
-                iconSize: 50,
-                onPressed: () {
-                  _pressed();
-                },
-              ),
-            )
           ],
         )
     );
   }
-}
+  Widget alertContent(){
+    return Container(child: Row(children: <Widget>[
+      Image.asset('assets/images/borat.Gif'),
 
+    ],),);
+  }
+
+}
+class CheckBox{
+  bool isCheck;
+  CheckBox(this.isCheck);
+}
+class ShoppingItemState extends State<ShoppingItemList> {
+  final CheckBox product;
+  ShoppingItemState(this.product);
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox(
+                value: product.isCheck,
+                onChanged: (bool value) {
+                  setState(() {
+                    product.isCheck = value;
+                  });
+                });
+  }
+}
+class ShoppingItemList extends StatefulWidget {
+  final CheckBox product;
+
+  ShoppingItemList(CheckBox product)
+      : product = product,
+        super(key: new ObjectKey(product));
+
+  @override
+  ShoppingItemState createState() {
+    return new ShoppingItemState(product);
+  }
+}
