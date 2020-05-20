@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/pages/Login.dart';
 import 'package:flutterapp/pages/MenuPage.dart';
 import 'package:flutterapp/pages/TestPage.dart';
 import 'package:flutterapp/services/DatabaseTestPage.dart';
@@ -24,7 +23,7 @@ class EmailFieldValidator{
 class PasswordFieldValidator {
   static String validate(String input){
     if(input.length > 0 && input.length < 6){
-      return 'The password needs to be atleast 6 characters';
+      return 'The password needs to be at least 6 characters';
     }
     return input.isEmpty ? 'Please provide a password' : null;
   }

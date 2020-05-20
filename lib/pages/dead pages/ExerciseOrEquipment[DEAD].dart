@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 
-import 'Login.dart';
-import 'WorkoutLog.dart';
+import '../WorkoutLog.dart';
 
 class ExcerciseOrEquipment extends StatefulWidget {
   @override
