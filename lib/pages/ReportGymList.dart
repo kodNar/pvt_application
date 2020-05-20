@@ -146,7 +146,7 @@ class _ReportGymListState extends State<ReportGymList> {
         queriedGymNames.clear();
         queriedGymNames.addAll(tempListData);
       });
-      return;
+      //return;
     } else {
       setState(() {
         queriedGymNames.clear();
