@@ -228,6 +228,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
       );
     } else {
       return Container(
+        alignment: Alignment.center,
         padding: EdgeInsets.all(20),
         child: ButtonTheme(
           minWidth: 250,
@@ -256,7 +257,6 @@ class _WorkoutLogState extends State<WorkoutLog> {
   }
 
   void saveWorkout() {
-
     final formState = _formKey.currentState;
     if (formState.validate()) {
       formState.save();

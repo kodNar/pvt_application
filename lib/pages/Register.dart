@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/WorkoutSession.dart';
-import 'package:flutterapp/pages/Login.dart';
+import 'package:flutterapp/pages/dead%20pages/Login%5BDEAD%5D.dart';
 import 'package:flutterapp/services/Database.dart';
 
 class Register extends StatefulWidget {

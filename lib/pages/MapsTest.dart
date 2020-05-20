@@ -19,7 +19,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:geoflutterfire/geoflutterfire.dart';
 import '../Equipment.dart';
 import 'HomePage.dart';
-import 'Login.dart';
+import 'dead pages/Login[DEAD].dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyApp extends StatelessWidget {
