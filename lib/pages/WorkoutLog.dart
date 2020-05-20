@@ -56,6 +56,7 @@ class RepFieldValidator {
 
 class _WorkoutLogState extends State<WorkoutLog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool editingMode = false;
   bool gymChosen = false;
   bool exerciseChosen = false;
   List<Exercise> exerciseList = [];
@@ -64,6 +65,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
   FirebaseUser user;
   String _name = "";
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
 
 
 
@@ -108,7 +110,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
               icon: Icon(Icons.delete),
               color: Colors.red,
               iconSize: 40,
-              onPressed: () {},
+              onPressed: (){},
               // TODO: Fixa så man kan Ta bort exercises eller hela workout:en //Einar
             ),
             IconButton(
@@ -121,6 +123,12 @@ class _WorkoutLogState extends State<WorkoutLog> {
         ),
       ),
     );
+  }
+
+  void workoutEditMode(){
+    if(editingMode){
+
+    }
   }
 
   @override
@@ -255,6 +263,8 @@ class _WorkoutLogState extends State<WorkoutLog> {
       );
     }
   }
+
+
 
   void saveWorkout() {
     final formState = _formKey.currentState;
