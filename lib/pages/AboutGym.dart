@@ -2,14 +2,24 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutterapp/OutdoorGym.dart';
 
-class AboutUs extends StatelessWidget {
+class AboutGym extends StatelessWidget {
+  String name;
+  OutdoorGym gym;
+  String about;
+
+  AboutGym(String name) {
+    this.name = name;
+  }
+
   Future<String> getAboutPage() async {
-    var fireStore = Firestore.instance;
-    QuerySnapshot docs = await fireStore.collection("Documents").getDocuments();
-    String about;
-    for (var doc in docs.documents) {
-      about = doc.data['AboutUs'];
+    QuerySnapshot outdoorGymCollection =
+        await Firestore.instance.collection("OutdoorGyms").getDocuments();
+    for (var doc in outdoorGymCollection.documents) {
+      if (doc.data['Name'] == name && doc.data['About'] != null) {
+        about = doc.data['About'];
+      }
     }
     return about;
   }
@@ -19,22 +29,21 @@ class AboutUs extends StatelessWidget {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 132, 50, 155),
         appBar: AppBar(
-          title: Text('About us'),
+          title: Text(name),
           centerTitle: true,
           backgroundColor: Color.fromARGB(255, 132, 50, 155),
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Container(
-              alignment: Alignment.center,
-              child: Text(
-                'Welcome!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
+              padding: EdgeInsets.only(top: 20),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.5,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/OutdoorGymPicture.png'),
+                    fit: BoxFit.fill),
               ),
             ),
             Container(
@@ -73,6 +82,9 @@ class AboutUs extends StatelessWidget {
                   image: AssetImage(
                       'assets/images/Stockholm_endast_logga_vit.png'),
                 )),
+            SizedBox(
+              height: 30,
+            ),
           ],
         ));
   }

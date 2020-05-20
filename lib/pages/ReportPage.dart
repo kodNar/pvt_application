@@ -60,7 +60,9 @@ class _ReportPageState extends State<ReportPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
-      appBar: AppBar(title: const Text('Report / Contact'), actions: <Widget>[
+      appBar: AppBar(
+          title: const Text('Report / Contact'),
+          actions: <Widget>[
         // action button
         IconButton(
           icon: Icon(Icons.home),

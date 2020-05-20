@@ -3,6 +3,8 @@ import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/pages/EquipmentSelection.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 
+import 'AboutGym.dart';
+
 
 class GenericGymPage extends StatefulWidget {
   OutdoorGym outdoorGym;
@@ -143,8 +145,8 @@ class GenericGymPage extends StatefulWidget {
                             ),
                             color: Colors.transparent,
                             onPressed: () {
-                              /*Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => AboutGymsPage()));*/
+                              Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => AboutGym(_name)));
                             },
 
                             child: Align(
