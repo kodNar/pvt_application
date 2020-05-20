@@ -5,6 +5,7 @@ import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/WorkoutSession.dart';
 import 'package:flutterapp/pages/EquipmentOrExercise.dart';
+import 'package:flutterapp/pages/StartWorkout.dart';
 import 'package:flutterapp/pages/WorkoutGymList.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:flutterapp/services/Database.dart';
@@ -55,17 +56,35 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        elevation: 4.0,
-        backgroundColor: Colors.amber,
-        icon: const Icon(Icons.share),
-        label: const Text('Share'),
-        onPressed: () {
-          shareWorkout();
-          print("workoutShared");
+      floatingActionButton: Row(
+
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Spacer(),
+        FloatingActionButton.extended(
+          elevation: 4.0,
+          backgroundColor: Colors.amber,
+          icon: const Icon(Icons.share),
+          label: const Text('Share'),
+          onPressed: () {
+            shareWorkout();
+          },
+        ),
+      Spacer(),
+          ButtonTheme(
+            height: 50.0,
+      child: RaisedButton(
+        child: Text("Start Workout",style: TextStyle(fontSize: 16, color: Colors.white,),),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0),
+        ),
+        onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>  StartWorkout(exerciseList,_name,)));
         },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        color: Colors.blue,
+      ),),Spacer(),
+      ],),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
   @override
