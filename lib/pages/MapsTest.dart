@@ -89,30 +89,7 @@ class MapSampleState extends State<MapSample> {
                       _controller.complete(controller);
                     },
                   ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    child: RaisedButton.icon(
-                      color: Color.fromARGB(255, 132, 50, 155),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => WorkoutPortal()));
-                      },
-                      icon: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                      label: Text(
-                        'Start workout',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
+
                   Container(
                       alignment: Alignment.bottomLeft,
                       padding: EdgeInsets.all(10),
@@ -416,6 +393,14 @@ class MapSampleState extends State<MapSample> {
             leading: Icon(Icons.verified_user),
             title: Text('Profile'),
             onTap: () => {},
+          ),
+          ListTile(
+            leading: Icon(Icons.directions_run),
+            title: Text('Workout Logs'),
+            onTap: () {
+              Navigator.push(context,
+              MaterialPageRoute(builder: (context) => WorkoutPortal()));
+            }
           ),
           ListTile(
               leading: Icon(Icons.verified_user),
