@@ -42,19 +42,30 @@ class _StartWorkoutState extends State<StartWorkout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar(
-        title: _name,
-      ),
-      backgroundColor: Color.fromARGB(255, 132, 50, 155),
-      body: Center(
-        child: Form(
-          child: Column(
-            children: <Widget>[
-              workoutsItemList()
-            ],
-          ),
+        appBar: BaseAppBar(
+          title: _name,
         ),
-      ),
+        body: Center(
+        child: Container(
+        decoration: BoxDecoration(
+        gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: [
+              Color.fromARGB(255, 132, 50, 155),
+              Color.fromARGB(255, 132, 50, 155),
+              Color.fromARGB(255, 144, 55, 169),
+              Color.fromARGB(255, 184, 75, 214),
+              Color.fromARGB(255, 157, 97, 173),
+              Color.fromARGB(255, 198, 93, 200),
+            ])),
+    child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: <Widget>[
+    workoutsItemList()
+    ],
+    ))),
       floatingActionButton: FloatingActionButton.extended(
         elevation: 4.0,
         backgroundColor: Colors.blue,
@@ -80,29 +91,32 @@ class _StartWorkoutState extends State<StartWorkout> {
         itemCount: exerciseList.length,
         shrinkWrap: true,
         itemBuilder: (context, index){
-          return Card(
-            color: Colors.purple,
-            child: Column(
+          return Column(
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width-20 ,
+                  width: MediaQuery.of(context).size.width,
                   child: Text(exerciseList[index].name,
                       style: TextStyle(fontWeight: FontWeight.bold,
-                        fontSize: 23,
+                        fontSize: 23,color: Colors.white,
 
                       )),
                 ),
-                Container(child:setWidget(index)),
-                Container(),
-              ],
-            ),
-          );
+                Card(
+                  color: Colors.white,
+                  child: Column(
+                    children: <Widget>[
+
+                      Container(child:setWidget(index)),
+                      Container(),
+                    ],
+                  ),
+                )
+              ]);
         }
     ));
   }
   Widget setWidget(int i){
     return ListView.builder(
-
         padding: EdgeInsets.all(10),
         itemCount: exerciseList[i].sets,
         shrinkWrap: true,
@@ -116,9 +130,9 @@ class _StartWorkoutState extends State<StartWorkout> {
               ),
 
             )),
-            Spacer(),
-            Container(child: Text("Reps:  ")),
+            Container(child: Text("               Reps:  ")),
             Container(child: Text(exerciseList[i].reps.toString()),),
+            Spacer(),
             ShoppingItemList(CheckBox(false),)],);
         }
     );

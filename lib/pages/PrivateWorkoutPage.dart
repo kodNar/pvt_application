@@ -50,10 +50,17 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
       body: Center(
         child: Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [Colors.white,Color.fromARGB(255, 132, 50, 155)])),
+    gradient: LinearGradient(
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+    colors: [
+    Color.fromARGB(255, 132, 50, 155),
+    Color.fromARGB(255, 132, 50, 155),
+    Color.fromARGB(255, 144, 55, 169),
+    Color.fromARGB(255, 184, 75, 214),
+    Color.fromARGB(255, 157, 97, 173),
+    Color.fromARGB(255, 198, 93, 200),
+    ]),),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -115,7 +122,7 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
               width: MediaQuery.of(context).size.width,
               child: Text(exerciseList[index].name,
                   style: TextStyle(fontWeight: FontWeight.bold,
-                    fontSize: 23,
+                    fontSize: 23,color: Colors.white,
 
                   )),
             ),
@@ -150,9 +157,6 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
             )),
             Container(child: Text("               Reps:  ")),
             Container(child: Text(exerciseList[i].reps.toString()),),
-            Divider(thickness: 2,
-            height: 2,
-            color: Colors.white,)
           ],);
         }
     );

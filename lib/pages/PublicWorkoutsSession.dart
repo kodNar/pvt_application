@@ -41,7 +41,18 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
         title: _name,
       ),
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
-      body: Center(
+      body: Center(child:Container(decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [
+                Color.fromARGB(255, 132, 50, 155),
+                Color.fromARGB(255, 132, 50, 155),
+                Color.fromARGB(255, 144, 55, 169),
+                Color.fromARGB(255, 184, 75, 214),
+                Color.fromARGB(255, 157, 97, 173),
+                Color.fromARGB(255, 198, 93, 200),
+              ])),
         child: Form(
           child: Column(
             children: <Widget>[
@@ -51,7 +62,7 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
             ],
           ),
         ),
-      ),
+      )),
       floatingActionButton: FloatingActionButton.extended(
         elevation: 4.0,
         backgroundColor: Colors.blue,
@@ -74,22 +85,27 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
         itemCount: exerciseList.length,
         shrinkWrap: true,
         itemBuilder: (context, index){
-          return Card(
-            color: Colors.purple,
-            child: Column(
+          return Column(
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width-20 ,
+                  width: MediaQuery.of(context).size.width,
                   child: Text(exerciseList[index].name,
                       style: TextStyle(fontWeight: FontWeight.bold,
-                        fontSize: 23,
+                        fontSize: 23,color: Colors.white,
+
                       )),
                 ),
-                Container(child:setWidget(index)),
+                Card(
+                  color: Colors.white,
+                  child: Column(
+                    children: <Widget>[
 
-              ],
-            ),
-          );
+                      Container(child:setWidget(index)),
+                      Container(),
+                    ],
+                  ),
+                )
+              ]);
         }
     ));
   }
@@ -100,16 +116,20 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
         shrinkWrap: true,
         itemBuilder: (context, index){
           return Row(children: <Widget>[
+
             Container(child: Text((index+1).toString()+".",
               style: TextStyle(fontWeight: FontWeight.bold,
                 fontSize: 20,
+
               ),
+
             )),
             Container(child: Text("               Reps:  ")),
             Container(child: Text(exerciseList[i].reps.toString()),),
           ],);
         }
     );
+  }
   }
   Widget bottomAppBar() {
     return  BottomAppBar(
@@ -125,7 +145,7 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
     );
   }
 
-}
+
 class Post extends StatefulWidget{
   @override
   State<StatefulWidget> createState() => new PostState();
