@@ -47,6 +47,7 @@ class _ExistingState extends State<ExistingWorkouts> {
 
   Widget _searchField() {
     return Container(
+      padding: EdgeInsets.all(20),
       child: TextFormField(
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
@@ -90,25 +91,27 @@ class _ExistingState extends State<ExistingWorkouts> {
 
   Widget _toggleSearch() {
     return ToggleButtons(
-      fillColor: Colors.pink,
+      fillColor: Colors.white70,
       children: <Widget>[
         Container(
+          color: Colors.white54,
           width: MediaQuery.of(context).size.width / 2 - 2,
           child: Text(
             "Most Recent",
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontSize: 15,
             ),
           ),
           alignment: Alignment.center,
         ),
         Container(
+          color: Colors.white54,
           width: MediaQuery.of(context).size.width / 2 - 1,
           child: Text(
             "Highest Voted",
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontSize: 15,
             ),
           ),
@@ -137,84 +140,84 @@ class _ExistingState extends State<ExistingWorkouts> {
     return Container(
         child: Expanded(
             child: ListView.builder(
-                //itemCount: sessions.length,
+              //itemCount: sessions.length,
                 itemCount: selectedSessions.length,
                 itemBuilder: (context, index) {
                   return Column(children: <Widget>[
                     Container(
-                      height: 70,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.all(5),
-                      color: Colors.purple,
+                        height: 70,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(5),
+                        color: Color(0xFF5D226D),
 
-                      child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PublicWorkoutPage(
-                                        selectedSessions[index].getExercises(),
-                                        selectedSessions[index].name)));
-                          },
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PublicWorkoutPage(
+                                          selectedSessions[index].getExercises(),
+                                          selectedSessions[index].name)));
+                            },
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                      padding: EdgeInsets.all(5),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              Icon(Icons.perm_identity,color: Colors.white,),
+                                              //Text(sessions[index].name),
+                                              Text(selectedSessions[index].name, style: TextStyle(color: Colors.white),),
+                                            ],
+                                          ),
+                                          Text(selectedSessions[index]
+                                              .getDateTime()
+                                              .toString(), style: TextStyle(color: Colors.white)),
+                                        ],
+                                      )),
+                                  Container(
                                     padding: EdgeInsets.all(5),
                                     child: Column(
                                       children: <Widget>[
                                         Row(
                                           children: <Widget>[
-                                            Icon(Icons.perm_identity,color: Colors.white,),
-                                            //Text(sessions[index].name),
-                                            Text(selectedSessions[index].name, style: TextStyle(color: Colors.white),),
+                                            Icon(Icons.gps_fixed,color: Colors.white,),
+                                            Text("Location", style: TextStyle(color: Colors.white)),
                                           ],
                                         ),
-                                        Text(selectedSessions[index]
-                                            .getDateTime()
-                                            .toString(), style: TextStyle(color: Colors.white)),
+                                        Text(selectedSessions[index].location, style: TextStyle(color: Colors.white)),
                                       ],
-                                    )),
-                                Container(
-                                  padding: EdgeInsets.all(5),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Row(
-                                        children: <Widget>[
-                                          Icon(Icons.gps_fixed,color: Colors.white,),
-                                          Text("Location", style: TextStyle(color: Colors.white)),
-                                        ],
-                                      ),
-                                      Text(selectedSessions[index].location, style: TextStyle(color: Colors.white)),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                    padding: EdgeInsets.all(5),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.thumb_up,
-                                          color: Colors.white,
-                                        ),
-                                        //Text(sessions[index].likes.toString()),
-                                        Text(selectedSessions[index]
-                                            .likes
-                                            .toString(), style: TextStyle(color: Colors.white)),
-                                      ],
-                                    ))
-                              ]))),
-                  Divider(
-                    height:7,
-                    color: Color.fromARGB(255, 200 , 50, 155),
-                  ),
+                                  Container(
+                                      padding: EdgeInsets.all(5),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.thumb_up,
+                                            color: Colors.white,
+                                          ),
+                                          //Text(sessions[index].likes.toString()),
+                                          Text(selectedSessions[index]
+                                              .likes
+                                              .toString(), style: TextStyle(color: Colors.white)),
+                                        ],
+                                      ))
+                                ]))),
+                    Divider(
+                      height:7,
+                      color: Color.fromARGB(255, 132, 50, 155),
+                    ),
                   ],);
                 })));
   }
 
   _getSessions() async {
     QuerySnapshot workoutsCollection =
-        await Firestore.instance.collection("Workouts").getDocuments();
+    await Firestore.instance.collection("Workouts").getDocuments();
     for (var doc in workoutsCollection.documents) {
       List<Exercise> exercisesList = await getExercises(doc.documentID);
       String name = doc.data['Name'];
@@ -223,7 +226,7 @@ class _ExistingState extends State<ExistingWorkouts> {
       String user = doc.data['User'];
       DateTime date = (doc.data['Published'] as Timestamp).toDate();
       WorkoutSession w =
-          WorkoutSession(name, user, location, date, null, null, exercisesList);
+      WorkoutSession(name, user, location, date, null, null, exercisesList);
       w.setLikes(likes);
       sessions.add(w);
       selectedSessions.add(w);
