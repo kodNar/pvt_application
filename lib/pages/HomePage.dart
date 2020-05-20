@@ -14,15 +14,15 @@ import 'package:flutterapp/pages/MapsTest.dart';
 import 'package:flutterapp/pages/EquipmentSelection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class EmailFieldValidator{
-  static String validate(String input){
+class EmailFieldValidator {
+  static String validate(String input) {
     return input.isEmpty ? 'Please provide an Email' : null;
   }
 }
 
 class PasswordFieldValidator {
-  static String validate(String input){
-    if(input.length > 0 && input.length < 6){
+  static String validate(String input) {
+    if (input.length > 0 && input.length < 6) {
       return 'The password needs to be at least 6 characters';
     }
     return input.isEmpty ? 'Please provide a password' : null;
@@ -37,8 +37,6 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-
-
 class _HomePageState extends State<HomePage> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -50,274 +48,285 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 132, 50, 155),
-      extendBodyBehindAppBar: true,
-      /*
-      appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 132, 50, 155),
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.settings),
-              tooltip: 'Settings',
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Settings()));
-              },
-            ),
-          ]),
-       */
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.only(top:20),
-          width: size.width,
-          height: size.height,
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text("Stockholm Outdoor Gyms",
-              textAlign: TextAlign.center,
-                style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Stockholm',
-                      fontStyle: FontStyle.italic,
-                      fontSize: 35
-
-                  ),
-              ),
-              Container(
-                margin: EdgeInsets.all(5.0),
-                height: 125,
-                width: 125,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/applogga_vit_liten.png'),
-                  ),
-                ),
-              ),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          prefixIcon: Icon(Icons.email),
-                          hintText: "Email",
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                        cursorColor: Colors.white,
-                        // ignore: missing_return
-                        validator: (input) => EmailFieldValidator.validate(input),
-                        onSaved: (input) => _email = input,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          prefixIcon: Icon(Icons.lock),
-                          hintText: "Password",
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                        cursorColor: Colors.white,
-                        // ignore: missing_return
-                          validator: (input) => PasswordFieldValidator.validate(input),
-
-                        onSaved: (input) => _password = input,
-                        obscureText: true, //Döljer texten
-                      ),
-                    ),
-
-                  ],
-                ),
-
-              ),
-
-              CheckboxListTile(
-                title: Text("Remember login", style: TextStyle(
-                  color: Colors.white
-                ),
-                ),
-                activeColor: Colors.green,
-                value: true,
-                onChanged: (newValue) {
-                },
-                controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-              ),
-              Container(
-                padding: EdgeInsets.all(8),
-                child: Container(
-                  width: 250,
-                  height: 50,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(15.0),
-                      side: BorderSide(color: Colors.white),
-                    ),
-                    color: Color.fromARGB(255, 0, 110, 191),
-                    onPressed: signIn,
-                    child: Text(
-                      'Login',
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        backgroundColor: Color.fromARGB(255, 132, 50, 155),
+        extendBodyBehindAppBar: true,
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  Color.fromARGB(255, 132, 50, 155),
+                  Color.fromARGB(255, 132, 50, 155),
+                  Color.fromARGB(255, 144, 55, 169),
+                  Color.fromARGB(255, 184, 75, 214),
+                  Color.fromARGB(255, 157, 97, 173),
+                  Color.fromARGB(255, 198, 93, 227),
+                ]),
+          ),
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(top: 20),
+              width: size.width,
+              height: size.height,
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.only(top:8),
-                    child: GestureDetector(
-                      onTap: () => initiateGoogleLogin(),
-                      child: Image.asset(
-                        'assets/images/googleLoggaKnapp.png',
-                        width: 180,
-                        height: 50,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top:8),
-                    child: GestureDetector(
-                      onTap: () => initiateFacebookLogin(),
-                      child: Image.asset(
-                        'assets/images/facebookLoggaKnapp.png',
-                        width: 180,
-                        height: 50,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 12),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Register()));
-                  },
-                  child: Text(
-                    'Create account',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(0,10,0,0),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ResetPassword()));
-                  },
-                  // ignore: unnecessary_statements
-                  child: Text(
-                    'Forgot password?',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 4),
-                width: 175,
-                height: 75,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 132, 50, 155),
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/StockholmStadLogga.png'),
-                  ),
-                ),
-              ),
-
-              /*
-            BottomAppBar(
-              color: Color.fromARGB(255, 132, 50, 155),
-              elevation: 0, //tar bort liten linje
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(8.0),
-                    width: 62,
-                    height: 62,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(
-                                'assets/images/Stockholm_endast_logga_vit.png'),
-                            fit: BoxFit.fill)),
-                  ),
-                  Text("Stockholms Stad",
+                  Text(
+                    "Stockholm Outdoor Gyms",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Stockholm',
                         fontStyle: FontStyle.italic,
-                        fontSize: 29.0),
+                        fontSize: 35),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(5.0),
+                    height: 125,
+                    width: 125,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image:
+                            AssetImage('assets/images/applogga_vit_liten.png'),
+                      ),
+                    ),
+                  ),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.transparent),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.transparent),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                              ),
+                              prefixIcon: Icon(Icons.email),
+                              hintText: "Email",
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                            cursorColor: Colors.white,
+                            // ignore: missing_return
+                            validator: (input) =>
+                                EmailFieldValidator.validate(input),
+                            onSaved: (input) => _email = input,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.transparent),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.transparent),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                              ),
+                              prefixIcon: Icon(Icons.lock),
+                              hintText: "Password",
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                            cursorColor: Colors.white,
+                            // ignore: missing_return
+                            validator: (input) =>
+                                PasswordFieldValidator.validate(input),
+
+                            onSaved: (input) => _password = input,
+                            obscureText: true, //Döljer texten
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  CheckboxListTile(
+                    title: Text(
+                      "Remember login",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    activeColor: Colors.green,
+                    value: true,
+                    onChanged: (newValue) {},
+                    controlAffinity: ListTileControlAffinity
+                        .leading, //  <-- leading Checkbox
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    child: Container(
+                      width: 250,
+                      height: 50,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(15.0),
+                          side: BorderSide(color: Colors.white),
+                        ),
+                        color: Color.fromARGB(255, 0, 110, 191),
+                        onPressed: signIn,
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                            fontSize: 22,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(top: 8),
+                        child: GestureDetector(
+                          onTap: () => initiateGoogleLogin(),
+                          child: Image.asset(
+                            'assets/images/googleLoggaKnapp.png',
+                            width: 180,
+                            height: 50,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(top: 8),
+                        child: GestureDetector(
+                          onTap: () => initiateFacebookLogin(),
+                          child: Image.asset(
+                            'assets/images/facebookLoggaKnapp.png',
+                            width: 180,
+                            height: 50,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 12),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Register()));
+                      },
+                      child: Text(
+                        'Create account',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResetPassword()));
+                      },
+                      // ignore: unnecessary_statements
+                      child: Text(
+                        'Forgot password?',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 4),
+                    width: 175,
+                    height: 75,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 132, 50, 155),
+                      image: DecorationImage(
+                        image:
+                            AssetImage('assets/images/StockholmStadLogga.png'),
+                      ),
+                    ),
+                  ),
+
+                  /*
+              BottomAppBar(
+                color: Color.fromARGB(255, 132, 50, 155),
+                elevation: 0, //tar bort liten linje
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.all(8.0),
+                      width: 62,
+                      height: 62,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(
+                                  'assets/images/Stockholm_endast_logga_vit.png'),
+                              fit: BoxFit.fill)),
+                    ),
+                    Text("Stockholms Stad",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Stockholm',
+                          fontStyle: FontStyle.italic,
+                          fontSize: 29.0),
+                    ),
+                  ],
+                ),
+              ),
+              */
+
+                  Container(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TestPage()));
+                      },
+                      child: Text(
+                        'Testknappar',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-            */
-
-              Container(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => TestPage()));
-                  },
-                  child: Text(
-                    'Testknappar',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ],
           ),
-        ),
-      )
-    );
+        ));
   }
 
   //Facebook login
@@ -402,7 +411,8 @@ class _HomePageState extends State<HomePage> {
       //Checks so that the inputs are correct
       formState.save(); //ser till att vi kan hämta variablerna.
       try {
-        AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
+        AuthResult result = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: _email, password: _password);
         String uid = result.user.uid;
         //hej
 
@@ -415,8 +425,7 @@ class _HomePageState extends State<HomePage> {
             gravity: ToastGravity.CENTER,
             backgroundColor: Colors.red,
             textColor: Colors.white,
-            fontSize: 16.0
-        );
+            fontSize: 16.0);
 
         print(e.message);
       }

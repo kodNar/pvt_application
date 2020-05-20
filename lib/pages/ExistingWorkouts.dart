@@ -6,18 +6,18 @@ import 'package:flutterapp/WorkoutSession.dart';
 import 'package:flutterapp/pages/PublicWorkoutsSession.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 import 'package:flutterapp/services/Database.dart';
-
 import '../Exercise.dart';
 
 class ExistingWorkouts extends StatefulWidget {
   @override
   _ExistingState createState() => _ExistingState();
 }
+
 class _ExistingState extends State<ExistingWorkouts> {
   @override
-  List<bool> _isSelected = [false, true];
-  final List <WorkoutSession> sessions= [];
-  List <WorkoutSession> selectedSessions = [];
+  List<bool> _isSelected = [false, false];
+  final List<WorkoutSession> sessions = [];
+  List<WorkoutSession> selectedSessions = [];
   List<String> allGymNames = List<String>();
   List<String> queriedGymNames = List<String>();
   bool _loaded = false;
@@ -31,20 +31,21 @@ class _ExistingState extends State<ExistingWorkouts> {
         ),
         body: Column(
           children: <Widget>[
-           // Container(child: _topImage()),
+            // Container(child: _topImage()),
             //Lägg till upload your own workout
-            Container(child: _toggleSearch()), //byt vad som visas
-           // Container(child: _test()),
+            Container(child: _toggleSearch()),
+            //byt vad som visas
+            // Container(child: _test()),
             Container(child: _searchField()),
-            _loaded? Container(child: _listView()) :Center() //prova !_loaded så kanske den laddar direkt sen
+            _loaded
+                ? Container(child: _listView())
+                : Center(child: Text("Loading..."))
+            //prova !_loaded så kanske den laddar direkt sen
           ],
         ));
   }
-  Widget _test(){
 
-    return Text("Testström" + " " + searchGym);
-  }
-  Widget _searchField(){
+  Widget _searchField() {
     return Container(
       child: TextFormField(
         decoration: InputDecoration(
@@ -65,13 +66,14 @@ class _ExistingState extends State<ExistingWorkouts> {
           color: Colors.black,
         ),
         cursorColor: Colors.white,
-        onChanged: (value){
+        onChanged: (value) {
           selectedList(value);
         },
         //onSaved: (input) => input = searchGym,
       ),
     );
   }
+
   Widget _topImage() {
     return Container(
       margin: EdgeInsets.only(top: 10),
@@ -91,7 +93,6 @@ class _ExistingState extends State<ExistingWorkouts> {
       fillColor: Colors.pink,
       children: <Widget>[
         Container(
-
           width: MediaQuery.of(context).size.width / 2 - 2,
           child: Text(
             "Most Recent",
@@ -133,87 +134,96 @@ class _ExistingState extends State<ExistingWorkouts> {
   }
 
   Widget _listView() {
-              return Container(
-                  child: Expanded(
-                      child: ListView.builder(
-                         //itemCount: sessions.length,
-                        itemCount: selectedSessions.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                                height: 70,
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(5),
-                                color: Color.fromARGB(
-                                    255, 200 + index * 30, 50, 155),
-                                child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => PublicWorkoutPage(selectedSessions[index].getExercises(),selectedSessions[index].name)));
-                                    },
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+    return Container(
+        child: Expanded(
+            child: ListView.builder(
+              //itemCount: sessions.length,
+                itemCount: selectedSessions.length,
+                itemBuilder: (context, index) {
+                  return Column(children: <Widget>[
+                    Container(
+                        height: 70,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(5),
+                        color: Colors.purple,
+
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PublicWorkoutPage(
+                                          selectedSessions[index].getExercises(),
+                                          selectedSessions[index].name)));
+                            },
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                      padding: EdgeInsets.all(5),
+                                      child: Column(
                                         children: <Widget>[
-                                          Container(
-                                            padding: EdgeInsets.all(5),
-                                            child: Column(
-                                              children: <Widget>[
-                                                Row(
-                                                  children: <Widget>[
-                                                    Icon(
-                                                      Icons.perm_identity
-                                                    ),
-                                                    //Text(sessions[index].name),
-                                                    Text(selectedSessions[index].name),
-                                                  ],
-                                                ),
-                                                //Text(sessions[index].getDateTime().toString()),
-                                                Text(selectedSessions[index].getDateTime().toString()),//KOLLA DETTA
-                                              ],
-                                            )
+                                          Row(
+                                            children: <Widget>[
+                                              Icon(Icons.perm_identity,color: Colors.white,),
+                                              //Text(sessions[index].name),
+                                              Text(selectedSessions[index].name, style: TextStyle(color: Colors.white),),
+                                            ],
                                           ),
-                                          Container(
-                                            padding: EdgeInsets.all(5),
-                                            child: Column(
+                                          Text(selectedSessions[index]
+                                              .getDateTime()
+                                              .toString(), style: TextStyle(color: Colors.white)),
+                                        ],
+                                      )),
+                                  Container(
+                                    padding: EdgeInsets.all(5),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
                                           children: <Widget>[
-                                            Row(
-                                              children: <Widget>[
-                                                Icon(
-                                                    Icons.gps_fixed
-                                                ),
-                                                Text("Location"),
-                                              ],
-                                            ),
-                                            //Text(sessions[index].location),
-                                            Text(selectedSessions[index].location),
+                                            Icon(Icons.gps_fixed,color: Colors.white,),
+                                            Text("Location", style: TextStyle(color: Colors.white)),
                                           ],
+                                        ),
+                                        Text(selectedSessions[index].location, style: TextStyle(color: Colors.white)),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                      padding: EdgeInsets.all(5),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.thumb_up,
+                                            color: Colors.white,
                                           ),
-                                          ),
-                                          Container(
-                                              padding: EdgeInsets.all(5),
-                                            child: Column(
-                                              children: <Widget>[
-                                                Icon(
-                                                  Icons.thumb_up,
-                                                ),
-                                                //Text(sessions[index].likes.toString()),
-                                                Text(selectedSessions[index].likes.toString()),
-                                              ],
-                                            )
-                                            )
-                                        ])));
-                          })));
+                                          //Text(sessions[index].likes.toString()),
+                                          Text(selectedSessions[index]
+                                              .likes
+                                              .toString(), style: TextStyle(color: Colors.white)),
+                                        ],
+                                      ))
+                                ]))),
+                    Divider(
+                      height:7,
+                      color: Color.fromARGB(255, 200 , 50, 155),
+                    ),
+                  ],);
+                })));
   }
-    _getSessions() async {
+
+  _getSessions() async {
     QuerySnapshot workoutsCollection =
     await Firestore.instance.collection("Workouts").getDocuments();
     for (var doc in workoutsCollection.documents) {
-      List <Exercise> exercisesList = await getExercises(doc.documentID);
+      List<Exercise> exercisesList = await getExercises(doc.documentID);
       String name = doc.data['Name'];
       int likes = (doc.data['Likes']);
       String location = doc.data['Location'];
-      String user =doc.data['User'];
-      DateTime date = (doc.data['Published']as Timestamp).toDate();
-      WorkoutSession w = WorkoutSession(name,user,location,date,null, null,exercisesList);
+      String user = doc.data['User'];
+      DateTime date = (doc.data['Published'] as Timestamp).toDate();
+      WorkoutSession w =
+      WorkoutSession(name, user, location, date, null, null, exercisesList);
       w.setLikes(likes);
       sessions.add(w);
       selectedSessions.add(w);
@@ -221,30 +231,36 @@ class _ExistingState extends State<ExistingWorkouts> {
     }
   }
 
-  getExercises(var ref)async{
-    List <Exercise> exercises = [];
-      try {
-        QuerySnapshot collectionReferenceExercise =await Firestore.instance
-            .collection('Workouts').document(ref).collection("Exercises").getDocuments();
-        for(var temp in collectionReferenceExercise.documents){
-          Exercise e = (Exercise(temp.data['Name'], null));
-          e.setReps(temp.data['Reps'],);
-          e.setSets(temp.data['Sets']);
-          exercises.add(e);
-        }
-      }catch(e){
-        print("Error message"+e.toString());
+  getExercises(var ref) async {
+    List<Exercise> exercises = [];
+    try {
+      QuerySnapshot collectionReferenceExercise = await Firestore.instance
+          .collection('Workouts')
+          .document(ref)
+          .collection("Exercises")
+          .getDocuments();
+      for (var temp in collectionReferenceExercise.documents) {
+        Exercise e = (Exercise(temp.data['Name'], null));
+        e.setReps(
+          temp.data['Reps'],
+        );
+        e.setSets(temp.data['Sets']);
+        exercises.add(e);
       }
+    } catch (e) {
+      print("Error message" + e.toString());
+    }
     return exercises;
   }
+
   void searchFilter(String query) {
     List<String> tempSearchList = List<String>();
     tempSearchList.addAll(allGymNames);
     print('Tempsearch list: $tempSearchList'.length);
-    if(query.isNotEmpty) {
+    if (query.isNotEmpty) {
       List<String> tempListData = List<String>();
       tempSearchList.forEach((item) {
-        if(item.contains(query)) {
+        if (item.contains(query)) {
           tempListData.add(item);
         }
       });
@@ -263,15 +279,15 @@ class _ExistingState extends State<ExistingWorkouts> {
 
   void selectedList(String query) {
     selectedSessions.clear();
-    if(query.isNotEmpty){
-      for (var s in sessions){
-        if(s.getGym().contains(query)){
+    if (query.isNotEmpty) {
+      for (var s in sessions) {
+        if (s.getGym().contains(query)) {
           setState(() {
             selectedSessions.add(s);
           });
         }
       }
-    } else{
+    } else {
       setState(() {
         selectedSessions.clear();
         selectedSessions.addAll(sessions);
@@ -279,36 +295,29 @@ class _ExistingState extends State<ExistingWorkouts> {
     }
   }
 
-//  void selectedList(String query) {
-//    selectedSessions.clear();
-//    for (var s in sessions){
-//      if(s.getGym() == searchGym){
-//        selectedSessions.add(s);
-//      }
-//    }
-//    setState(() {
-//      //hur uppdaterar man?
-//      _loaded = true;
-//    });
-//  }
-
- sortListVoted(){
+  sortListVoted() {
     print("sort voted");
-    sessions.sort((a,b){
-     return b.likes.compareTo(a.likes);
-   });
- }
-  sortListRecent(){
-    sessions.sort((a,b){
+    selectedSessions.sort((a, b) {
+      return b.likes.compareTo(a.likes);
+    });
+  }
+
+  sortListRecent() {
+    selectedSessions.sort((a, b) {
       return b.getDateTime().compareTo(a.getDateTime());
     });
   }
+
   @override
   void initState() {
     super.initState();
-      setState(() {
-        _loaded = true;
-      });
-    _getSessions();
+    startMethod();
+  }
+
+  startMethod() async {
+    await _getSessions();
+    setState(() {
+      _loaded = true;
+    });
   }
 }
