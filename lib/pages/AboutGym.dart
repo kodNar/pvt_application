@@ -8,6 +8,7 @@ class AboutGym extends StatelessWidget {
   String name;
   OutdoorGym gym;
   String about;
+  String picURL;
 
   AboutGym(String name) {
     this.name = name;
@@ -19,6 +20,8 @@ class AboutGym extends StatelessWidget {
     for (var doc in outdoorGymCollection.documents) {
       if (doc.data['Name'] == name && doc.data['About'] != null) {
         about = doc.data['About'];
+        picURL = doc.data['PictureURL'];
+        print(picURL);
       }
     }
     return about;
@@ -27,27 +30,71 @@ class AboutGym extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 132, 50, 155),
+      appBar: AppBar(
+        title: Text(name),
+        centerTitle: true,
         backgroundColor: Color.fromARGB(255, 132, 50, 155),
-        appBar: AppBar(
-          title: Text(name),
-          centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 132, 50, 155),
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(top: 20),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.5,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/images/OutdoorGymPicture.png'),
-                    fit: BoxFit.fill),
-              ),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+//            picURL != null ?
+          Container(
+            child: FutureBuilder(
+              future: getAboutPage(),
+              builder: (context, snapshot) {
+                return snapshot.hasData
+                    ? Container(
+                        child: Container(
+                          padding: EdgeInsets.only(top: 20),
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.5,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: NetworkImage(picURL), fit: BoxFit.fill),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        child: Container(
+                          padding: EdgeInsets.only(top: 20),
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.5,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage('assets/images/OutdoorGymPicture.png'), fit: BoxFit.fill),
+                          ),
+                        ),
+                      );
+              },
             ),
-            Container(
-                child: FutureBuilder(
+          ),
+//          Container(
+//            padding: EdgeInsets.only(top: 20),
+//            width: MediaQuery.of(context).size.width,
+//            height: MediaQuery.of(context).size.height * 0.5,
+//            decoration: BoxDecoration(
+//              image: DecorationImage(
+//                  image: NetworkImage(picURL), fit: BoxFit.fill),
+//            ),
+//          ),
+//            :Container(
+//              padding: EdgeInsets.only(top: 20),
+//              width: MediaQuery.of(context).size.width,
+//              height: MediaQuery.of(context).size.height * 0.5,
+//              decoration: BoxDecoration(
+//                image: DecorationImage(
+//
+//                    image: AssetImage('assets/images/OutdoorGymPicture.png'),
+//                    fit: BoxFit.fill
+//
+//                ),
+//              ),
+//            ),
+
+          Container(
+            child: FutureBuilder(
               future: getAboutPage(),
               builder: (context, snapshot) {
                 return snapshot.hasData
@@ -74,18 +121,20 @@ class AboutGym extends StatelessWidget {
                         ),
                       );
               },
-            )),
-            Container(
-                width: 75,
-                height: 75,
-                child: Image(
-                  image: AssetImage(
-                      'assets/images/Stockholm_endast_logga_vit.png'),
-                )),
-            SizedBox(
-              height: 30,
             ),
-          ],
-        ));
+          ),
+          Container(
+              width: 75,
+              height: 75,
+              child: Image(
+                image:
+                    AssetImage('assets/images/Stockholm_endast_logga_vit.png'),
+              )),
+          SizedBox(
+            height: 30,
+          ),
+        ],
+      ),
+    );
   }
 }
