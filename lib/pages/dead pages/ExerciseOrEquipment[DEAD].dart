@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 
-import 'Login[DEAD].dart';
 import '../WorkoutLog.dart';
 
 class ExcerciseOrEquipment extends StatefulWidget {
