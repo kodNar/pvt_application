@@ -287,66 +287,73 @@ class MapSampleState extends State<MapSample> {
                         int key = snapshot.data.keys.elementAt(index);
                         OutdoorGym value =
                             snapshot.data.values.elementAt(index);
-                        return Container(
-                            color:
-                                Color.fromARGB(255, 132 + index * 30, 50, 155),
-                            height: 50,
-                            padding: EdgeInsets.all(10),
-                            child: Row(
-                                mainAxisAlignment:
+                        return Column(
+                          children: <Widget>[
+                            Container(
+                                color: Color.fromARGB(255, 132, 50, 155),
+                                height: 50,
+                                padding: EdgeInsets.all(10),
+                                child: Row(
+                                    mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Flexible(
-                                    fit: FlexFit.tight,
-                                    flex: 5,
-                                    child: InkWell(
-                                      onTap: () {
-                                        _goToGym(value);
-                                      },
-                                      child: RichText(
-                                        overflow: TextOverflow.ellipsis,
-                                        strutStyle: StrutStyle(fontSize: 16.0),
-                                        text: TextSpan(
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                            text: value.name),
+                                    children: <Widget>[
+                                      Flexible(
+                                        fit: FlexFit.tight,
+                                        flex: 5,
+                                        child: InkWell(
+                                          onTap: () {
+                                            _goToGym(value);
+                                          },
+                                          child: RichText(
+                                            overflow: TextOverflow.ellipsis,
+                                            strutStyle: StrutStyle(fontSize: 16.0),
+                                            text: TextSpan(
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold),
+                                                text: value.name),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    flex: 3,
-                                    child: RichText(
-                                      overflow: TextOverflow.ellipsis,
-                                      strutStyle: StrutStyle(fontSize: 16.0),
-                                      text: TextSpan(
-                                          style: TextStyle(
+                                      Flexible(
+                                        flex: 3,
+                                        child: RichText(
+                                          overflow: TextOverflow.ellipsis,
+                                          strutStyle: StrutStyle(fontSize: 16.0),
+                                          text: TextSpan(
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                              text: key.toString() + "m"),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        flex: 5,
+                                        child: SizedBox(
+                                            child: RaisedButton.icon(
+                                              icon: Icon(
+                                                Icons.play_arrow,
+                                              ),
                                               color: Colors.white,
-                                              fontWeight: FontWeight.bold),
-                                          text: key.toString() + "m"),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    flex: 5,
-                                    child: SizedBox(
-                                        child: RaisedButton.icon(
-                                      icon: Icon(
-                                        Icons.play_arrow,
-                                      ),
-                                      color: Color.fromARGB(
-                                          255, 200 + index * 30, 50, 155),
-                                      label: Text('Show route'),
-                                      onPressed: () {
-                                        setState(() {
-                                          route = !route;
-                                          _cancelButton = true;
-                                        });
-                                         getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
-                                        _goToGym(value);
-                                      },
-                                    )),
-                                  )
-                                ]));
+                                              label: Text('Show route'),
+                                              onPressed: () {
+                                                setState(() {
+                                                  route = !route;
+                                                  _cancelButton = true;
+                                                });
+                                                getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
+                                                _goToGym(value);
+                                              },
+                                            )),
+                                      )
+                                    ])
+                            ),
+                            Divider(
+                              color: Colors.white,
+                              height: 2,
+                            )
+                          ],
+                        );
                       }))
               : Center(child: CircularProgressIndicator());
         });
