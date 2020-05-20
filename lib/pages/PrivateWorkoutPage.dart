@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/OutdoorGym.dart';
@@ -46,16 +47,22 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
       appBar: BaseAppBar(
         title: _name,
       ),
-      backgroundColor: Color.fromARGB(255, 132, 50, 155),
       body: Center(
-        child: Form(
+        child: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Colors.white,Color.fromARGB(255, 132, 50, 155)])),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               workoutsItemList()
             ],
           ),
-        ),
-      ),
+
+      )),
       floatingActionButton: Row(
 
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -102,23 +109,27 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
       itemCount: exerciseList.length,
         shrinkWrap: true,
         itemBuilder: (context, index){
-          return Card(
-            color: Colors.purple,
+          return Column(
+              children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: Text(exerciseList[index].name,
+                  style: TextStyle(fontWeight: FontWeight.bold,
+                    fontSize: 23,
+
+                  )),
+            ),
+            Card(
+          color: Colors.white,
             child: Column(
               children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width-20 ,
-                  child: Text(exerciseList[index].name,
-                      style: TextStyle(fontWeight: FontWeight.bold,
-              fontSize: 23,
 
-            )),
-                ),
                 Container(child:setWidget(index)),
                 Container(),
               ],
             ),
-          );
+          )
+          ]);
         }
     ));
     }
