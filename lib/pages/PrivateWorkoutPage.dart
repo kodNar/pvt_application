@@ -141,7 +141,7 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
   }
   }
   shareWorkout(){
-    String ref =Firestore.instance.collection("Workouts").document().documentID;
+    String ref = Firestore.instance.collection("Workouts").document().documentID;
     createNewExercises(ref);
     Firestore.instance.collection("Workouts").document(ref).setData({
       'Likes': 0,
