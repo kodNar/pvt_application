@@ -157,7 +157,7 @@ class _ExistingState extends State<ExistingWorkouts> {
                                   MaterialPageRoute(
                                       builder: (context) => PublicWorkoutPage(
                                           selectedSessions[index].getExercises(),
-                                          selectedSessions[index].name)));
+                                          selectedSessions[index].name,selectedSessions[index])));
                             },
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -220,14 +220,16 @@ class _ExistingState extends State<ExistingWorkouts> {
     await Firestore.instance.collection("Workouts").getDocuments();
     for (var doc in workoutsCollection.documents) {
       List<Exercise> exercisesList = await getExercises(doc.documentID);
+      String ref = doc.documentID;
       String name = doc.data['Name'];
       int likes = (doc.data['Likes']);
       String location = doc.data['Location'];
       String user = doc.data['User'];
       DateTime date = (doc.data['Published'] as Timestamp).toDate();
       WorkoutSession w =
-      WorkoutSession(name, user, location, date, null, null, exercisesList);
+      WorkoutSession(name, user, location, date, null, null, exercisesList,null);
       w.setLikes(likes);
+      w.reference = ref;
       sessions.add(w);
       selectedSessions.add(w);
       //sessions = selectedSessions;

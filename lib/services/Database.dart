@@ -14,6 +14,11 @@ class DatabaseService {
 
   final String uid;
   static List<WorkoutSession> _worksession = [];
+
+  static set worksession(WorkoutSession value) {
+    _worksession.add(value);
+  }
+
   DatabaseService({this.uid});
   bool changedWorkout = false;
 
@@ -109,8 +114,11 @@ class DatabaseService {
               //list equipments
               equipments,
               //List exercises
-              exerList);
+              exerList,
+                //is shared?
+                doc.data['Shared']);
           _worksession.add(w);
+
         }catch(e){
           print(e.toString());
 
@@ -141,17 +149,17 @@ class DatabaseService {
     return exercises;
   }
 
-
   void createNewExercises(List<Exercise> list, OutdoorGym gym, String name) {
     String referennce = userCollection.document(uid).collection("workoutCollection").document().documentID;
     userCollection.document(uid).collection("workoutCollection").document(referennce).setData({'Location': gym.name, 'Name': name,
-      'Date': DateTime.now()
+      'Date': DateTime.now(),'Shared': false,
     });
     for(int i = 0; i< list.length; i++){
+
       userCollection
-          .document(uid).collection('workoutCollection').document(referennce).collection("Exercises").add(({'Sets':list[i].sets , 'Reps':list[i].reps,'Name':list[i].name}));
+          .document(uid).collection('workoutCollection').document(referennce).collection("Exercises").add(({'Sets':list[i].sets , 'Reps':list[i].reps,'Name':list[i].name,}));
     }
-    changedWorkout = true;
+    _worksession.add(WorkoutSession(name,null,gym.name,DateTime.now(),null,null,list,false));
   }
 
 

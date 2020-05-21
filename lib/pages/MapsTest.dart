@@ -137,7 +137,7 @@ class MapSampleState extends State<MapSample> {
       });
     });
     populateOutdoorGymList();
-    // checkIfSignedIn();
+    checkIfSignedIn();
   }
 
   /// Loads the outdoorgyms from the database and populates the outdoor gym list.

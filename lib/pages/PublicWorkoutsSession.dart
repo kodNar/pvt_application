@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/OutdoorGym.dart';
+import 'package:flutterapp/WorkoutSession.dart';
 import 'package:flutterapp/pages/EquipmentOrExercise.dart';
 import 'package:flutterapp/pages/WorkoutGymList.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
@@ -18,9 +19,10 @@ import 'StartWorkout.dart';
 class PublicWorkoutPage extends StatefulWidget {
   String _name ="";
   List <Exercise> ex = [];
-  PublicWorkoutPage(this.ex, this._name);
+  PublicWorkoutPage(this.ex, this._name,this.session);
+  WorkoutSession session;
   @override
-  _PublicWorkoutState createState() => _PublicWorkoutState(ex,_name);
+  _PublicWorkoutState createState() => _PublicWorkoutState(ex,_name,session);
 }
 
 class _PublicWorkoutState extends State<PublicWorkoutPage> {
@@ -28,11 +30,13 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
   List<Exercise> exerciseList;
   OutdoorGym outdoorGym;
   String _name;
+  WorkoutSession session;
 
 
-  _PublicWorkoutState(List<Exercise> ex, String name) {
+  _PublicWorkoutState(List<Exercise> ex, String name,WorkoutSession w) {
     this._name = name;
     this.exerciseList = ex;
+    this.session =w;
   }
   @override
   Widget build(BuildContext context) {
@@ -173,6 +177,7 @@ class PostState extends State<Post>{
               iconSize: 50,
               onPressed: () {
                 _pressed();
+                //
               },
             ),
           )

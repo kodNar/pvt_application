@@ -23,6 +23,7 @@ class PrivateWorkoutPage extends StatefulWidget {
   List <Exercise> ex = [];
   WorkoutSession session;
 
+
   PrivateWorkoutPage(this.ex, this._name, this.session);
   @override
   _PrivateWorkoutState createState() => _PrivateWorkoutState(ex,_name, session);
@@ -35,6 +36,7 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
   String _name;
   FirebaseUser _user;
   WorkoutSession session;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   _PrivateWorkoutState(List<Exercise> ex, String name, WorkoutSession s) {
     this._name = name;
@@ -47,6 +49,7 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
       appBar: BaseAppBar(
         title: _name,
       ),
+      key:_scaffoldKey,
       body: Center(
         child: Container(
           decoration: BoxDecoration(
@@ -57,9 +60,9 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
     Color.fromARGB(255, 132, 50, 155),
     Color.fromARGB(255, 132, 50, 155),
     Color.fromARGB(255, 144, 55, 169),
-    Color.fromARGB(255, 184, 75, 214),
     Color.fromARGB(255, 157, 97, 173),
     Color.fromARGB(255, 198, 93, 200),
+      Color.fromARGB(255, 184, 75, 214),
     ]),),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -81,7 +84,11 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
           icon: const Icon(Icons.share),
           label: const Text('Share'),
           onPressed: () {
-            shareWorkout();
+            if(!session.shared) {
+              _showDialog();
+            }else{
+              _showDialogAlreadyShared();
+            }
           },
         ),
       Spacer(),
@@ -93,7 +100,8 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
             borderRadius: BorderRadius.circular(25.0),
         ),
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) =>  StartWorkout(exerciseList,_name,)));
+            Navigator.push(context, MaterialPageRoute(
+                builder: (context) => StartWorkout(exerciseList, _name,)));
         },
         color: Colors.blue,
       ),),Spacer(),
@@ -175,16 +183,80 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
   }
   }
   shareWorkout(){
+    session.shared = true;
     String ref = Firestore.instance.collection("Workouts").document().documentID;
     createNewExercises(ref);
+    Firestore.instance.collection("Workouts").document(ref).setData({'Shared':true});
     Firestore.instance.collection("Workouts").document(ref).setData({
       'Likes': 0,
       'Location': session.location,
       'Name': session.name,
       'Published': DateTime.now(),
-      'User':_user.displayName
+      'User':_user.displayName,
+      'Reference': ref,
     });
-    print("workoutShared");
+    final snackBar = SnackBar(
+      content: Text(
+        "Your workout has been shared, it can be seen at discover workouts",
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      duration: Duration(seconds: 5),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Share"),
+          content: new Text("Are you sure you want to share your workout?"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: new Text("Share"),
+              onPressed: () {
+                shareWorkout();
+                Navigator.of(context).pop();
+              },
+
+            ),
+            FlatButton(
+              child: new Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )],
+        );
+      },
+    );
+  }
+  
+  void _showDialogAlreadyShared() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Share"),
+          content: new Text("Your workout is already shared"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: new Text("Ok!"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 

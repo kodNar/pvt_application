@@ -71,7 +71,7 @@ class _StartWorkoutState extends State<StartWorkout> {
         backgroundColor: Colors.blue,
         label: const Text('Complete Workout'),
         onPressed: () {
-          _showRoshSpawnDialog();
+          _showAlertFinsihedWorkout();
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -138,12 +138,12 @@ class _StartWorkoutState extends State<StartWorkout> {
     );
   }
 
-  void _showRoshSpawnDialog() {
+  void _showAlertFinsihedWorkout() {
     showDialog(
         context: context,
         builder: (BuildContext context) =>  CupertinoAlertDialog(
           title: Text('Success!'),
-          content: alertContent(),
+          content: _alertContent(),
           actions: <Widget>[
             FlatButton(
               child: Text('Hurra!'),
@@ -157,13 +157,39 @@ class _StartWorkoutState extends State<StartWorkout> {
         )
     );
   }
-  Widget alertContent(){
+  Widget _alertContent(){
     return Container(child: Row(children: <Widget>[
       Image.asset('assets/images/borat.Gif'),
-
     ],),);
   }
+  void _showDialogShare() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Share"),
+          content: new Text("Are you sure you want to share your workout?"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: new Text("Share"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
 
+            ),
+            FlatButton(
+              child: new Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )],
+        );
+      },
+    );
+  }
 }
 class CheckBox{
   bool isCheck;
@@ -194,4 +220,6 @@ class ShoppingItemList extends StatefulWidget {
   ShoppingItemState createState() {
     return new ShoppingItemState(product);
   }
+  
+  
 }

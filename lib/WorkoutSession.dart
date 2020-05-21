@@ -12,8 +12,10 @@ class WorkoutSession{
   List <Equipment> _equipment =[];
   OutdoorGym _outdoorGym;
   List <Exercise> _exercises;
+  bool _shared = false;
+  String _reference ="";
 
-  WorkoutSession(String name,String user, String location,DateTime dateTime, OutdoorGym outdoorGym, List <Equipment> equipments,List <Exercise> exercise){
+  WorkoutSession(String name,String user, String location,DateTime dateTime, OutdoorGym outdoorGym, List <Equipment> equipments,List <Exercise> exercise,bool shared){
     _user = user;
     _location = location;
     _name = name;
@@ -21,6 +23,21 @@ class WorkoutSession{
     _outdoorGym = outdoorGym;
     _equipment = equipments;
     _exercises = exercise;
+    _shared = shared;
+  }
+
+
+  bool get shared => _shared;
+
+
+  String get reference => _reference;
+
+  set reference(String value) {
+    _reference = value;
+  }
+
+  set shared(bool value) {
+    _shared = value;
   }
 
   String get location => _location;

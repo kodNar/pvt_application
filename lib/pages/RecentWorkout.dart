@@ -121,4 +121,5 @@ class _RecentState extends State<RecentWorkouts> {
       _loaded =true;
     });
   }
+
 }
