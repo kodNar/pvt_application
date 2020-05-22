@@ -35,7 +35,7 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(
-                              builder: (context) => ExistingWorkouts()));
+                              builder: (context) => WorkoutLog()));
                     },
                     child: Container(
                       width: 350,
@@ -51,12 +51,10 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
                           begin: Alignment.bottomCenter,
                           end: Alignment.topCenter,
                           colors: <Color>[
-
                             Color(0xFF84329b),
                             Color(0xFF9438ae),
                             Color(0xFFa53fc1),
                             Color(0xFFae52c7),
-
                             //   Color(0xFFB388FF),
                           ],
                         ),
@@ -75,7 +73,7 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(
-                              builder: (context) => RecentWorkouts()));
+                              builder: (context) => ExistingWorkouts()));
                     },
                     child: Container(
                       width: 350,
