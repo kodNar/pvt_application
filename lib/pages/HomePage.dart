@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                   Color(0xFF84329b),
                   Color(0xFF84329b),
                   Color(0xFF9438ae),
-                  Color(0xFFa53fc1),
+                  // Color(0xFFa53fc1),
                   Color(0xFFae52c7),
 
                 ]),
@@ -172,6 +172,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+                  /*
                   CheckboxListTile(
                     title: Text(
                       "Remember login",
@@ -180,9 +181,10 @@ class _HomePageState extends State<HomePage> {
                     activeColor: Colors.green,
                     value: true,
                     onChanged: (newValue) {},
-                    controlAffinity: ListTileControlAffinity
-                        .leading, //  <-- leading Checkbox
+                    controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
                   ),
+
+                   */
                   Container(
                     padding: EdgeInsets.all(8),
                     child: Container(
@@ -311,7 +313,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               */
-
+/*
                   Container(
                     child: GestureDetector(
                       onTap: () {
@@ -330,6 +332,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
+
+ */
+
                 ],
               ),
             ),

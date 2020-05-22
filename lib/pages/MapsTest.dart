@@ -5,6 +5,7 @@ import 'package:flutterapp/Library.dart';
 import 'package:flutterapp/models/user.dart';
 import 'package:flutterapp/pages/AboutUs.dart';
 import 'package:flutterapp/pages/FAQ.dart';
+import 'package:flutterapp/pages/Profile.dart';
 import 'package:flutterapp/pages/ReportPage.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:geolocator/geolocator.dart';
@@ -396,9 +397,12 @@ class MapSampleState extends State<MapSample> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.verified_user),
+              leading: Icon(Icons.person),
               title: Text('Profile'),
-              onTap: () => {},
+              onTap: () {
+              Navigator.push(context,
+              MaterialPageRoute(builder: (context) => Profile()));
+              },
             ),
             ListTile(
               leading: Icon(Icons.directions_run),
@@ -409,7 +413,7 @@ class MapSampleState extends State<MapSample> {
               }
             ),
             ListTile(
-                leading: Icon(Icons.verified_user),
+                leading: Icon(Icons.library_books),
                 title: Text('Library'),
                 onTap: () {
                   Navigator.push(context,
@@ -421,7 +425,7 @@ class MapSampleState extends State<MapSample> {
               onTap: () => {},
             ),
             ListTile(
-              leading: Icon(Icons.border_color),
+              leading: Icon(Icons.supervised_user_circle),
               title: Text('About us'),
               onTap: () {
                 Navigator.push(
