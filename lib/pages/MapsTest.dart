@@ -374,96 +374,103 @@ class MapSampleState extends State<MapSample> {
   }
 
   Widget _navDrawer() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: Text(
-              '',
-              style: TextStyle(color: Colors.white, fontSize: 25),
+    return Container(
+      width: 180,
+      child: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            Container(
+              height: 150,
+              child: DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Color(0xFF84329b),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/Stockholm_endast_logga_vit.png'),
+                    ),
+                  ),
+                ),
+              ),
             ),
-            decoration: BoxDecoration(
-                color: Colors.purple,
-                image: DecorationImage(
-                    image: AssetImage(
-                        'assets/images/Stockholm_endast_logga_vit.png'))),
-          ),
-          ListTile(
-            leading: Icon(Icons.verified_user),
-            title: Text('Profile'),
-            onTap: () => {},
-          ),
-          ListTile(
-            leading: Icon(Icons.directions_run),
-            title: Text('Workout Logs'),
-            onTap: () {
-              Navigator.push(context,
-              MaterialPageRoute(builder: (context) => WorkoutPortal()));
-            }
-          ),
-          ListTile(
+            ListTile(
               leading: Icon(Icons.verified_user),
-              title: Text('Library'),
+              title: Text('Profile'),
+              onTap: () => {},
+            ),
+            ListTile(
+              leading: Icon(Icons.directions_run),
+              title: Text('Workout Logs'),
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Library(map)));
-              }),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () => {},
-          ),
-          ListTile(
-            leading: Icon(Icons.border_color),
-            title: Text('About us'),
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AboutUs()));
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.question_answer),
-            title: Text('FAQ'),
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => FAQ()));
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.report_problem),
-            title: Text('Report Issue'),
-            onTap: () {
-              Navigator.push(
-                context, MaterialPageRoute(builder: (context) => ReportPage()));
-            },
-          ),
-          _loggedIn
-              ? ListTile(
-                  leading: Icon(Icons.exit_to_app),
-                  title: Text('Logout'),
-                  onTap: () {
-                    setState(() {
-                      FirebaseAuth.instance.signOut();
-                      _loggedIn = false;
-                    });
-                  },
-                )
-              : Center(
-                  child: ListTile(
-                  leading: Icon(Icons.exit_to_app),
-                  title: Text('Login'),
-                  onTap: () {
-                    if (_loggedIn) {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MapSample()));
-                    } else {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
-                    }
-                  },
-                ))
-        ],
+                MaterialPageRoute(builder: (context) => WorkoutPortal()));
+              }
+            ),
+            ListTile(
+                leading: Icon(Icons.verified_user),
+                title: Text('Library'),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Library(map)));
+                }),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () => {},
+            ),
+            ListTile(
+              leading: Icon(Icons.border_color),
+              title: Text('About us'),
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => AboutUs()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.question_answer),
+              title: Text('FAQ'),
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => FAQ()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.report_problem),
+              title: Text('Report Issue'),
+              onTap: () {
+                Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => ReportPage()));
+              },
+            ),
+            _loggedIn
+                ? ListTile(
+                    leading: Icon(Icons.exit_to_app),
+                    title: Text('Logout'),
+                    onTap: () {
+                      setState(() {
+                        FirebaseAuth.instance.signOut();
+                        _loggedIn = false;
+                      });
+                    },
+                  )
+                : Center(
+                    child: ListTile(
+                    leading: Icon(Icons.exit_to_app),
+                    title: Text('Login'),
+                    onTap: () {
+                      if (_loggedIn) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => MapSample()));
+                      } else {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => HomePage()));
+                      }
+                    },
+                  ))
+          ],
+        ),
       ),
     );
   }
