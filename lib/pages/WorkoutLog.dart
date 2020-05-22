@@ -65,6 +65,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
   FirebaseUser user;
   String _name = "";
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final ScrollController _scrollController = ScrollController();
 
 
 
@@ -182,46 +183,50 @@ class _WorkoutLogState extends State<WorkoutLog> {
                 onSaved: (input) => _name = input,
               ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: exerciseList.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  padding: EdgeInsets.only(left: 10,right: 10),
-                  child: Card(
-                    child: ExpansionTile(
-                      title: Text('${exerciseList[index].getName()}'),
-                      children: <Widget>[
-                        TextFormField(
+            Scrollbar(
+              controller: _scrollController,
+              child: ListView.builder(
+                controller: _scrollController,
+                shrinkWrap: true,
+                itemCount: exerciseList.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    padding: EdgeInsets.only(left: 10,right: 10),
+                    child: Card(
+                      child: ExpansionTile(
+                        title: Text('${exerciseList[index].getName()}'),
+                        children: <Widget>[
+                          TextFormField(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Sets',
+                              ),
+                              keyboardType: TextInputType.number,
+                              validator: (input) => SetFieldValidator.validate(input),
+                              onSaved: (input) {
+                                exerciseList[index].setSets(int.tryParse(input));
+                              }),
+                          TextFormField(
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              hintText: 'Sets',
+                              hintText: 'Reps',
                             ),
                             keyboardType: TextInputType.number,
-                            validator: (input) => SetFieldValidator.validate(input),
+                            validator: (input) => RepFieldValidator.validate(input),
                             onSaved: (input) {
-                              exerciseList[index].setSets(int.tryParse(input));
-                            }),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Reps',
+                              exerciseList[index].setReps(int.tryParse(input));
+                            },
                           ),
-                          keyboardType: TextInputType.number,
-                          validator: (input) => RepFieldValidator.validate(input),
-                          onSaved: (input) {
-                            exerciseList[index].setReps(int.tryParse(input));
-                          },
+                        ],
+                        trailing: Icon(
+                          Icons.add,
+                          color: Colors.green,
                         ),
-                      ],
-                      trailing: Icon(
-                        Icons.add,
-                        color: Colors.green,
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ],
         ),
