@@ -92,7 +92,11 @@ class _WorkoutLogState extends State<WorkoutLog> {
 
       floatingActionButton: FloatingActionButton.extended(
         elevation: 4.0,
-        backgroundColor: Color(0xFF42A5F5),
+        backgroundColor:  Color(0XFF6a329b),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+          side: BorderSide(color: Colors.white, width: 1.5),
+        ),
         icon: const Icon(Icons.add),
         label: const Text('Add exercise/equipment'),
         onPressed: () {
@@ -101,7 +105,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
+        color: Color(0xFFededed),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,67 +151,73 @@ class _WorkoutLogState extends State<WorkoutLog> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.transparent),
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
+            Container(
+              padding: EdgeInsets.only(left: 15,right: 15, bottom: 15),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                  ),
+                  prefixIcon: Icon(Icons.text_fields),
+                  hintText: "Name of the workout",
+                  filled: true,
+                  fillColor: Colors.white,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.transparent),
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                style: TextStyle(
+                  color: Colors.black,
                 ),
-                prefixIcon: Icon(Icons.text_fields),
-                hintText: "Name of the workout",
-                filled: true,
-                fillColor: Colors.white,
+                cursorColor: Colors.white,
+                // ignore: missing_return
+                validator: (input) {
+                  if (input.isEmpty) {
+                    //Check if auth sign or something
+                    return 'Please provide a name for the workout';
+                  }
+                },
+                onSaved: (input) => _name = input,
               ),
-              style: TextStyle(
-                color: Colors.black,
-              ),
-              cursorColor: Colors.white,
-              // ignore: missing_return
-              validator: (input) {
-                if (input.isEmpty) {
-                  //Check if auth sign or something
-                  return 'Please provide a name for the workout';
-                }
-              },
-              onSaved: (input) => _name = input,
             ),
             ListView.builder(
               shrinkWrap: true,
               itemCount: exerciseList.length,
               itemBuilder: (context, index) {
-                return Card(
-                  child: ExpansionTile(
-                    title: Text('${exerciseList[index].getName()}'),
-                    children: <Widget>[
-                      TextFormField(
+                return Container(
+                  padding: EdgeInsets.only(left: 10,right: 10),
+                  child: Card(
+                    child: ExpansionTile(
+                      title: Text('${exerciseList[index].getName()}'),
+                      children: <Widget>[
+                        TextFormField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Sets',
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (input) => SetFieldValidator.validate(input),
+                            onSaved: (input) {
+                              exerciseList[index].setSets(int.tryParse(input));
+                            }),
+                        TextFormField(
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            hintText: 'Sets',
+                            hintText: 'Reps',
                           ),
                           keyboardType: TextInputType.number,
-                          validator: (input) => SetFieldValidator.validate(input),
+                          validator: (input) => RepFieldValidator.validate(input),
                           onSaved: (input) {
-                            exerciseList[index].setSets(int.tryParse(input));
-                          }),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Reps',
+                            exerciseList[index].setReps(int.tryParse(input));
+                          },
                         ),
-                        keyboardType: TextInputType.number,
-                        validator: (input) => RepFieldValidator.validate(input),
-                        onSaved: (input) {
-                          exerciseList[index].setReps(int.tryParse(input));
-                        },
+                      ],
+                      trailing: Icon(
+                        Icons.add,
+                        color: Colors.green,
                       ),
-                    ],
-                    trailing: Icon(
-                      Icons.add,
-                      color: Colors.green,
                     ),
                   ),
                 );
@@ -217,13 +227,19 @@ class _WorkoutLogState extends State<WorkoutLog> {
         ),
       );
     } else {
-      return Text('No exercise chosen');
+      return Text('No exercise chosen',
+      style: TextStyle(
+          fontSize: 18,
+        color: Colors.white,
+      ),
+      );
     }
   }
 
   Widget gymReturn() {
     if (gymChosen) {
       return Container(
+        alignment: Alignment.topCenter,
             padding: EdgeInsets.all(20),
             child: Text(
               'At the gym: ${outdoorGym.name}',

@@ -90,30 +90,53 @@ class MapSampleState extends State<MapSample> {
                       _controller.complete(controller);
                     },
                   ),
-
                   Container(
-                      alignment: Alignment.bottomLeft,
+                      alignment: Alignment.topCenter,
                       padding: EdgeInsets.all(10),
-                      child: _cancelButton
-                          ? ClipOval(
-                              child: Material(
-                                color: Colors.red, // button color
-                                child: InkWell(
-                                  splashColor: Colors.white, // inkwell color
-                                  child: SizedBox(
-                                      width: 56,
-                                      height: 56,
-                                      child: Icon(Icons.cancel)),
-                                  onTap: () {
+                      child: Column(
+                        children: <Widget>[
+                          _cancelButton
+                              ? FlatButton(
+                                  color: Color(0xFF84329b),
+                                  onPressed: () {
                                     setState(() {
                                       polyline.clear();
                                       _cancelButton = !_cancelButton;
                                     });
                                   },
-                                ),
+                                  child: Container(
+                                    child: Text(
+                                      'Cancel route',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Center(),
+                          /*
+                          _cancelButton ? ClipOval(
+                            child: Material(
+                              color: Colors.red, // button color
+                              child: InkWell(
+                                splashColor: Colors.white, // inkwell color
+                                child: SizedBox(
+                                    width: 35,
+                                    height: 35,
+                                    child: Icon(Icons.cancel)),
+                                onTap: () {
+                                  setState(() {
+                                    polyline.clear();
+                                    _cancelButton = !_cancelButton;
+                                  });
+                                },
                               ),
-                            )
-                          : Center()),
+                            ),
+                          ) : Center(),
+                          */
+                        ],
+                      )),
                 ])
               : Center(
                   child: Text('Loading...'),
@@ -273,7 +296,7 @@ class MapSampleState extends State<MapSample> {
                                 padding: EdgeInsets.all(10),
                                 child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Flexible(
                                         fit: FlexFit.tight,
@@ -284,11 +307,13 @@ class MapSampleState extends State<MapSample> {
                                           },
                                           child: RichText(
                                             overflow: TextOverflow.ellipsis,
-                                            strutStyle: StrutStyle(fontSize: 16.0),
+                                            strutStyle:
+                                                StrutStyle(fontSize: 16.0),
                                             text: TextSpan(
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontWeight: FontWeight.bold),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                                 text: value.name),
                                           ),
                                         ),
@@ -297,7 +322,8 @@ class MapSampleState extends State<MapSample> {
                                         flex: 3,
                                         child: RichText(
                                           overflow: TextOverflow.ellipsis,
-                                          strutStyle: StrutStyle(fontSize: 16.0),
+                                          strutStyle:
+                                              StrutStyle(fontSize: 16.0),
                                           text: TextSpan(
                                               style: TextStyle(
                                                   color: Colors.white,
@@ -309,23 +335,24 @@ class MapSampleState extends State<MapSample> {
                                         flex: 5,
                                         child: SizedBox(
                                             child: RaisedButton.icon(
-                                              icon: Icon(
-                                                Icons.play_arrow,
-                                              ),
-                                              color: Colors.white,
-                                              label: Text('Show route'),
-                                              onPressed: () {
-                                                setState(() {
-                                                  route = !route;
-                                                  _cancelButton = true;
-                                                });
-                                                getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
-                                                _goToGym(value);
-                                              },
-                                            )),
+                                          icon: Icon(
+                                            Icons.play_arrow,
+                                          ),
+                                          color: Colors.white,
+                                          label: Text('Show route'),
+                                          onPressed: () {
+                                            setState(() {
+                                              route = !route;
+                                              _cancelButton = true;
+                                            });
+                                            getSomePoints(LatLng(
+                                                value.geo.latitude,
+                                                value.geo.longitude));
+                                            _goToGym(value);
+                                          },
+                                        )),
                                       )
-                                    ])
-                            ),
+                                    ])),
                             Divider(
                               color: Colors.white,
                               height: 2,
@@ -390,7 +417,8 @@ class MapSampleState extends State<MapSample> {
                 child: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/Stockholm_endast_logga_vit.png'),
+                      image: AssetImage(
+                          'assets/images/Stockholm_endast_logga_vit.png'),
                     ),
                   ),
                 ),
@@ -400,18 +428,17 @@ class MapSampleState extends State<MapSample> {
               leading: Icon(Icons.person),
               title: Text('Profile'),
               onTap: () {
-              Navigator.push(context,
-              MaterialPageRoute(builder: (context) => Profile()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Profile()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.directions_run),
-              title: Text('Workout Logs'),
-              onTap: () {
-                Navigator.push(context,
-                MaterialPageRoute(builder: (context) => WorkoutPortal()));
-              }
-            ),
+                leading: Icon(Icons.directions_run),
+                title: Text('Workout Logs'),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => WorkoutPortal()));
+                }),
             ListTile(
                 leading: Icon(Icons.library_books),
                 title: Text('Library'),
@@ -428,8 +455,8 @@ class MapSampleState extends State<MapSample> {
               leading: Icon(Icons.supervised_user_circle),
               title: Text('About us'),
               onTap: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => AboutUs()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AboutUs()));
               },
             ),
             ListTile(
@@ -444,8 +471,8 @@ class MapSampleState extends State<MapSample> {
               leading: Icon(Icons.report_problem),
               title: Text('Report Issue'),
               onTap: () {
-                Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => ReportPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ReportPage()));
               },
             ),
             _loggedIn
@@ -461,18 +488,23 @@ class MapSampleState extends State<MapSample> {
                   )
                 : Center(
                     child: ListTile(
-                    leading: Icon(Icons.exit_to_app),
-                    title: Text('Login'),
-                    onTap: () {
-                      if (_loggedIn) {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => MapSample()));
-                      } else {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => HomePage()));
-                      }
-                    },
-                  ))
+                      leading: Icon(Icons.exit_to_app),
+                      title: Text('Login'),
+                      onTap: () {
+                        if (_loggedIn) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MapSample()));
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
+                        }
+                      },
+                    ),
+                  ),
           ],
         ),
       ),

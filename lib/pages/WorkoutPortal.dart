@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/ExistingWorkouts.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
 import 'package:flutterapp/pages/RecentWorkout.dart';
 import 'package:flutterapp/pages/WorkoutLog.dart';
+import 'package:flutterapp/services/Database.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 
 class WorkoutPortal extends StatefulWidget {
@@ -12,6 +14,7 @@ class WorkoutPortal extends StatefulWidget {
 }
 
 class _WorkoutPortalState extends State<WorkoutPortal> {
+  String _nickname;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,12 +27,34 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
             padding: EdgeInsets.all(15),
             child: Column(mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  FutureBuilder(
+                      future: printNickname(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return  Text(
+                            'Currently signed in as: $_nickname',
+                            style: TextStyle(
+                              fontFamily: 'Agency',
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text("${snapshot.error}",style: Theme.of(context).textTheme.headline);
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      }),
+                  /*
                   Text('Currently signed as:',
                     style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                     ),
                   ),
+
+                   */
                   SizedBox(height: 30),
                   InkWell(
                     onTap: () {
@@ -200,5 +225,11 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
                 ]),
           ),
         ));
+  }
+  Future<String> printNickname() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    String nickNameFromDB = await DatabaseService(uid: user.uid).getNickname();
+    _nickname = nickNameFromDB;
+    return nickNameFromDB;
   }
 }
