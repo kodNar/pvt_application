@@ -48,20 +48,28 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 132, 50, 155),
         extendBodyBehindAppBar: true,
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
                 colors: [
-                  Color.fromARGB(255, 132, 50, 155),
-                  Color.fromARGB(255, 132, 50, 155),
-                  Color.fromARGB(255, 144, 55, 169),
-                  Color.fromARGB(255, 184, 75, 214),
-                  Color.fromARGB(255, 157, 97, 173),
-                  Color.fromARGB(255, 198, 93, 227),
+                  /*
+                  Color(0xFF84329b),
+                  Color(0xFF882aa3),
+                  Color(0xFF8d22ab),
+                  Color(0xFF911ab3),
+                  Color(0xFF9612bb),
+                  Color(0xFF9a0bc2),
+                  Color(0xFF9f03ca),
+                   */
+                  Color(0xFF84329b),
+                  Color(0xFF84329b),
+                  Color(0xFF9438ae),
+                  Color(0xFFa53fc1),
+                  Color(0xFFae52c7),
+
                 ]),
           ),
           child: SingleChildScrollView(

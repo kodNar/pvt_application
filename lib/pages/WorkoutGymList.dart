@@ -31,7 +31,7 @@ void initState() {
     return Scaffold(
       backgroundColor: Color(0xFF84329b),
       appBar: AppBar(
-        backgroundColor:  Color.fromARGB(255, 132, 50, 155),
+        backgroundColor:  Color(0xFF84329b),
         title: Container(
           child: Center(
               child: FittedBox(fit:BoxFit.fitWidth,
