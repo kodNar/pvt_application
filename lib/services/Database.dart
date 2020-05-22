@@ -162,13 +162,27 @@ class DatabaseService {
     _worksession.add(WorkoutSession(name,null,gym.name,DateTime.now(),null,null,list,false));
   }
 
-
+ /// Returns a users nickname
   Future<String> getNickname() async {
     var nickname =
     await Firestore.instance.collection('users').document(uid).get();
     String unickName = nickname.data['nickName'];
     return unickName;
   }
+  /// Returns a users data
+  Future <List<String>> getUserData() async {
+    var document = await Firestore.instance.collection('users').document(uid).get();
+    String unickName = document.data['nickName'];
+    String email = document.data['email'];
+    String userid = uid;
+    List<String> dataList = new List<String>();
+    dataList.add(unickName);
+    dataList.add(email);
+    dataList.add(userid);
+    return dataList;
+  }
+
+
 
   /// Returnerar en stream för utegymmen
   Stream<QuerySnapshot> get OutdoorGyms {

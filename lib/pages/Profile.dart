@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/services/Database.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 
 class Profile extends StatefulWidget {
@@ -7,6 +9,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  String _nickname, _email;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -50,26 +53,39 @@ class _ProfileState extends State<Profile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: Text('Nickname: Einar',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: Text('Email: EinarEdberg@gmail.com',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                    FutureBuilder(
+                        future: getUserdata(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return  Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Nickname: $_nickname',
+                                  style: TextStyle(
+                                    fontFamily: 'Agency',
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  'Email: $_email',
+                                  style: TextStyle(
+                                    fontFamily: 'Agency',
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text("${snapshot.error}",style: Theme.of(context).textTheme.headline);
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        }),
                     Container(
                       child: Text('Password: ********',
                         style: TextStyle(
@@ -121,4 +137,20 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+  Future<String> printNickname() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    String nickNameFromDB = await DatabaseService(uid: user.uid).getNickname();
+    _nickname = nickNameFromDB;
+    return nickNameFromDB;
+  }
+
+  Future<List<String>> getUserdata() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    List<String> userDataList = await DatabaseService(uid: user.uid).getUserData();
+    _nickname = userDataList[0];
+    _email = userDataList[1];
+    return userDataList;
+  }
+
+
 }
