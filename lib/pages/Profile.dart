@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/services/Database.dart';
@@ -217,7 +218,9 @@ class _ProfileState extends State<Profile> {
                 child: RaisedButton(
                   padding: EdgeInsets.all(15),
                   color: Colors.transparent,
-                  onPressed: () {},
+                  onPressed: () {
+                    changeEmailDialog();
+                  },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                     side: BorderSide(
@@ -237,7 +240,9 @@ class _ProfileState extends State<Profile> {
                 child: RaisedButton(
                   padding: EdgeInsets.all(15),
                   color: Colors.transparent,
-                  onPressed: () {},
+                  onPressed: () {
+                    changePasswordDialog();
+                  },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                     side: BorderSide(
@@ -290,11 +295,87 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  void changeEmailDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title:  Text("Current email: $_email"),
+          content:  TextField(
+            controller: textController,
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child:  Text("change"),
+              onPressed: () {
+                updateEmail(textController.text);
+                Navigator.of(context).pop();
+              },
+
+            ),
+            FlatButton(
+              child:  Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )],
+        );
+      },
+    );
+  }
+  void changePasswordDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title:  Text("Enter new password here"),
+          content:  TextField(
+            obscureText: true,
+            controller: textController,
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child:  Text("change"),
+              onPressed: () {
+                updatePassword(textController.text);
+                Navigator.of(context).pop();
+              },
+
+            ),
+            FlatButton(
+              child:  Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )],
+        );
+      },
+    );
+  }
+
+
 
   void updateNickname(String _nickname) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     DatabaseService(uid: user.uid)
         .updateNickname(_nickname);
+  }
+
+  void updateEmail(String _email) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    DatabaseService(uid: user.uid).updateEmail(_email);
+    user.updateEmail(_email);
+
+  }
+  void updatePassword(String _password) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    user.updatePassword(_password);
   }
 
 

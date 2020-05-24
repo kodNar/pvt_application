@@ -20,14 +20,15 @@ class DatabaseService {
   }
 
   DatabaseService({this.uid});
+
   bool changedWorkout = false;
 
   //a reference to a collection in our firestore database.
   final CollectionReference userCollection =
-  Firestore.instance.collection('users'); //Creates/references a collection
+      Firestore.instance.collection('users'); //Creates/references a collection
 
   final CollectionReference outdoorGymsCollection =
-  Firestore.instance.collection('OutdoorGyms');
+      Firestore.instance.collection('OutdoorGyms');
 
   Future updateUserData(String userID, String email, String nickName) async {
     userCollection
@@ -68,7 +69,7 @@ class DatabaseService {
     List<Exercise> exercises = [];
     Equipment equipment;
     var temp =
-    (await Firestore.instance.collection('Equipment').document(ref).get());
+        (await Firestore.instance.collection('Equipment').document(ref).get());
     var exerTemp = await Firestore.instance
         .collection('Equipment')
         .document(ref)
@@ -85,15 +86,15 @@ class DatabaseService {
   }
 
   Future<List<WorkoutSession>> getUserWorkoutSessions() async {
-      if(_worksession.length == 0 || changedWorkout){
+    if (_worksession.length == 0 || changedWorkout) {
       QuerySnapshot collectionReference = await Firestore.instance
           .collection('users')
           .document(uid)
           .collection("workoutCollection")
           .getDocuments();
       for (var doc in collectionReference.documents) {
-
-        List<Exercise> exerList = await getExercisesWorkoutSession(doc.documentID);
+        List<Exercise> exerList =
+            await getExercisesWorkoutSession(doc.documentID);
         try {
           List<Equipment> equipments = [];
           for (String ref in await _referencesToUsersWorkoutsSessions(doc)) {
@@ -115,71 +116,101 @@ class DatabaseService {
               equipments,
               //List exercises
               exerList,
-                //is shared?
-                doc.data['Shared']);
+              //is shared?
+              doc.data['Shared']);
           _worksession.add(w);
-
-        }catch(e){
+        } catch (e) {
           print(e.toString());
-
+        }
       }
     }
-      }
-      changedWorkout = false;
+    changedWorkout = false;
     return _worksession;
   }
 
-  Future <List<Exercise>>getExercisesWorkoutSession(var ref)async{
-    List <Exercise> exercises = [];
+  Future<List<Exercise>> getExercisesWorkoutSession(var ref) async {
+    List<Exercise> exercises = [];
     QuerySnapshot collectionReference = await Firestore.instance
         .collection('users')
         .document(uid)
-        .collection("workoutCollection").document(ref.toString()).collection("Exercises").getDocuments();
+        .collection("workoutCollection")
+        .document(ref.toString())
+        .collection("Exercises")
+        .getDocuments();
 
-    for(var doc in collectionReference.documents){
+    for (var doc in collectionReference.documents) {
       try {
         Exercise e = (Exercise(doc.data['Name'], null));
-        e.setReps(doc.data['Reps'],);
+        e.setReps(
+          doc.data['Reps'],
+        );
         e.setSets(doc.data['Sets']);
         exercises.add(e);
-      }catch(e){
-      print("Error message"+e.toString());
+      } catch (e) {
+        print("Error message" + e.toString());
       }
     }
     return exercises;
   }
 
   void createNewExercises(List<Exercise> list, OutdoorGym gym, String name) {
-    String referennce = userCollection.document(uid).collection("workoutCollection").document().documentID;
-    userCollection.document(uid).collection("workoutCollection").document(referennce).setData({'Location': gym.name, 'Name': name,
-      'Date': DateTime.now(),'Shared': false,
+    String referennce = userCollection
+        .document(uid)
+        .collection("workoutCollection")
+        .document()
+        .documentID;
+    userCollection
+        .document(uid)
+        .collection("workoutCollection")
+        .document(referennce)
+        .setData({
+      'Location': gym.name,
+      'Name': name,
+      'Date': DateTime.now(),
+      'Shared': false,
     });
-    for(int i = 0; i< list.length; i++){
-
+    for (int i = 0; i < list.length; i++) {
       userCollection
-          .document(uid).collection('workoutCollection').document(referennce).collection("Exercises").add(({'Sets':list[i].sets , 'Reps':list[i].reps,'Name':list[i].name,}));
+          .document(uid)
+          .collection('workoutCollection')
+          .document(referennce)
+          .collection("Exercises")
+          .add(({
+            'Sets': list[i].sets,
+            'Reps': list[i].reps,
+            'Name': list[i].name,
+          }));
     }
-    _worksession.add(WorkoutSession(name,null,gym.name,DateTime.now(),null,null,list,false));
+    _worksession.add(WorkoutSession(
+        name, null, gym.name, DateTime.now(), null, null, list, false));
   }
 
   /// Updates a users nickname
-void updateNickname(String newNickname) async{
-   await Firestore.instance.collection('users').document(uid).updateData({
-   'nickName':  newNickname,
-   }
-  );
+  void updateNickname(String newNickname) async {
+    await Firestore.instance.collection('users').document(uid).updateData({
+      'nickName': newNickname,
+    });
+  }
 
-}
- /// Returns a users nickname
+  /// Updates a users email
+  void updateEmail(String _email) async {
+    await Firestore.instance.collection('users').document(uid).updateData({
+      'email': _email,
+    });
+  }
+
+  /// Returns a users nickname
   Future<String> getNickname() async {
     var nickname =
-    await Firestore.instance.collection('users').document(uid).get();
+        await Firestore.instance.collection('users').document(uid).get();
     String unickName = nickname.data['nickName'];
     return unickName;
   }
+
   /// Returns a users data
-  Future <List<String>> getUserData() async {
-    var document = await Firestore.instance.collection('users').document(uid).get();
+  Future<List<String>> getUserData() async {
+    var document =
+        await Firestore.instance.collection('users').document(uid).get();
     String unickName = document.data['nickName'];
     String email = document.data['email'];
     String userid = uid;
@@ -189,8 +220,6 @@ void updateNickname(String newNickname) async{
     dataList.add(userid);
     return dataList;
   }
-
-
 
   /// Returnerar en stream för utegymmen
   Stream<QuerySnapshot> get OutdoorGyms {
