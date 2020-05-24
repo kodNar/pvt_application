@@ -10,6 +10,13 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String _nickname, _email;
+  final textController = TextEditingController();
+
+  @override
+  void dispose(){
+    textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +196,7 @@ class _ProfileState extends State<Profile> {
                   padding: EdgeInsets.all(15),
                   color: Colors.transparent,
                   onPressed: () {
-
+                    changeNicknameDialog();
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -250,6 +257,47 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
+  void changeNicknameDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title:  Text("Current nickname: $_nickname"),
+          content:  TextField(
+            controller: textController,
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child:  Text("change"),
+              onPressed: () {
+                updateNickname(textController.text);
+                Navigator.of(context).pop();
+              },
+
+            ),
+            FlatButton(
+              child:  Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )],
+        );
+      },
+    );
+  }
+
+
+  void updateNickname(String _nickname) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    DatabaseService(uid: user.uid)
+        .updateNickname(_nickname);
+  }
+
+
 
   Future<String> printNickname() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();

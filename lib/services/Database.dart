@@ -162,6 +162,14 @@ class DatabaseService {
     _worksession.add(WorkoutSession(name,null,gym.name,DateTime.now(),null,null,list,false));
   }
 
+  /// Updates a users nickname
+void updateNickname(String newNickname) async{
+   await Firestore.instance.collection('users').document(uid).updateData({
+   'nickName':  newNickname,
+   }
+  );
+
+}
  /// Returns a users nickname
   Future<String> getNickname() async {
     var nickname =
