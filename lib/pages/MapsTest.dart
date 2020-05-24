@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutterapp/Library.dart';
+import 'package:flutterapp/pages/Library.dart';
 import 'package:flutterapp/models/user.dart';
 import 'package:flutterapp/pages/AboutUs.dart';
 import 'package:flutterapp/pages/FAQ.dart';

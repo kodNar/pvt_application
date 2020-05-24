@@ -46,15 +46,6 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
                           return CircularProgressIndicator();
                         }
                       }),
-                  /*
-                  Text('Currently signed as:',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                    ),
-                  ),
-
-                   */
                   SizedBox(height: 30),
                   InkWell(
                     onTap: () {
