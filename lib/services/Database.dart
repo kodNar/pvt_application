@@ -11,10 +11,9 @@ class DatabaseService {
   /*
   Links user with a newly created document by UID(UserID)
    */
-
   final String uid;
   static List<WorkoutSession> _worksession = [];
-
+  static List<WorkoutSession> _favsession =[];
   static set worksession(WorkoutSession value) {
     _worksession.add(value);
   }
@@ -153,6 +152,42 @@ class DatabaseService {
     return exercises;
   }
 
+  Future<List<WorkoutSession>> getFavoritedWorkouts()async {
+    if (_worksession.length == 0 || changedWorkout) {
+    List<WorkoutSession> sessions = [];
+    QuerySnapshot querySnapshot = await userCollection
+        .document(uid).collection("FavoritWorkouts").getDocuments();
+    for (var doc in querySnapshot.documents) {
+      String ref = doc.data['Reference'];
+      var document = await Firestore.instance.collection('Workouts').document(ref).get();
+      List<Exercise> exerList =  await getExercisesWorkoutSession(ref);
+        WorkoutSession w = WorkoutSession(
+          //name
+            document.data['Name'],
+            //User
+            null,
+            //location
+            document.data["Location"],
+            //time
+            (document.data['Date'] as Timestamp).toDate(),
+            //gym
+            null,
+            //list equipments
+            null,
+            //List exercises
+            exerList,
+            //is shared?
+            document.data['Shared']);
+        _favsession.add(w);
+    }
+    }
+    changedWorkout = false;
+    return _worksession;
+  }
+  addToFavorit(WorkoutSession session) async{
+    userCollection.document(uid).collection('Favorits').add({
+      'Reference': session.reference});
+  }
   void createNewExercises(List<Exercise> list, OutdoorGym gym, String name) {
     String referennce = userCollection
         .document(uid)

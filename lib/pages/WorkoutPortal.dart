@@ -48,7 +48,9 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
                         }
                       }),
                   SizedBox(height: 30),
-                  InkWell(
+                  Flexible(
+                      flex: 4,
+                      child: InkWell(
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(
@@ -84,9 +86,11 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
                             fontSize: 30,
                           )),
                     ),
-                  ),
+                  )),
                   SizedBox(height: 30),
-                  InkWell(
+                  Flexible(
+                      flex: 4,
+                      child: InkWell(
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(
@@ -149,9 +153,10 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
                             fontSize: 30,
                           )),
                     ),
-                  ),
+                  )),
                   SizedBox(height: 30),
-                  InkWell(
+                  Flexible(
+                      flex: 4,child:InkWell(
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(
@@ -213,7 +218,46 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
                             fontSize: 30,
                           )),
                     ),
-                  ),
+                  )),
+                  SizedBox(height: 30),
+                  Flexible(
+                      flex: 4,child: InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) => null));
+                    },
+                    child: Container(
+                      width: 350,
+                      height: 150,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 2,
+                        ),
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: <Color>[
+                            Color(0xFF84329b),
+                            Color(0xFF9438ae),
+                            Color(0xFFa53fc1),
+                            Color(0xFFae52c7),
+                            //   Color(0xFFB388FF),
+                          ],
+                        ),
+                      ),
+                      child: Text('Favorit Workouts',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 30,
+                          )),
+                    ),
+                  )),
                 ]),
           ),
         ));
