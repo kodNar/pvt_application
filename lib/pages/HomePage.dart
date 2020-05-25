@@ -313,7 +313,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               */
-/*
+
                   Container(
                     child: GestureDetector(
                       onTap: () {
@@ -332,8 +332,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-
- */
 
                 ],
               ),
