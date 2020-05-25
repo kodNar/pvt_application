@@ -134,9 +134,9 @@ void initState() {
     );
   }
   void searchFilter(String query) {
+    query = query[0].toUpperCase() + query.substring(1);
     List<String> tempSearchList = List<String>();
     tempSearchList.addAll(allGymNames);
-    print('Tempsearch list: $tempSearchList'.length);
     if(query.isNotEmpty) {
       List<String> tempListData = List<String>();
       tempSearchList.forEach((item) {

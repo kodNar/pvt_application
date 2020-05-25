@@ -12,9 +12,6 @@ import 'package:flutterapp/services/Database.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
-
-
-
 import 'MapsTest.dart';
 
 class StartWorkout extends StatefulWidget {

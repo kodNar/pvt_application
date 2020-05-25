@@ -284,14 +284,17 @@ class _ExistingState extends State<ExistingWorkouts> {
 
   void selectedList(String query) {
     selectedSessions.clear();
+    ///Om queryn innehåller något gör detta
     if (query.isNotEmpty) {
+      print(query);
       for (var s in sessions) {
-        if (s.getGym().contains(query)) {
+        if (s.getGym().toString().contains(query)) {
           setState(() {
             selectedSessions.add(s);
           });
         }
       }
+      ///Om queryn är tom gör detta
     } else {
       setState(() {
         selectedSessions.clear();
