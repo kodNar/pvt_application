@@ -4,6 +4,7 @@ import 'package:flutterapp/EquipmentExercisePair.dart';
 import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/pages/EquipmentOrExercise.dart';
+import 'package:flutterapp/pages/ReportPage.dart';
 import 'package:flutterapp/pages/WorkoutGymList.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:flutterapp/services/Database.dart';
@@ -115,7 +116,9 @@ class _WorkoutLogState extends State<WorkoutLog> {
               icon: Icon(Icons.delete),
               color: Colors.red,
               iconSize: 40,
-              onPressed: (){},
+              onPressed: (){
+                removeWorkout();
+              },
               // TODO: Fixa så man kan Ta bort exercises eller hela workout:en //Einar
             ),
             IconButton(
@@ -128,12 +131,6 @@ class _WorkoutLogState extends State<WorkoutLog> {
         ),
       ),
     );
-  }
-
-  void workoutEditMode(){
-    if(editingMode){
-
-    }
   }
 
   @override
@@ -286,6 +283,33 @@ class _WorkoutLogState extends State<WorkoutLog> {
   }
 
 
+  void removeWorkout() {
+    setState(() {
+      print(exerciseList.length);
+      if(exerciseList.length < 1){
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+             return AlertDialog(
+              title:  Text("ERROR: No exercises in the workout"),
+              actions: <Widget>[
+                // usually buttons at the bottom of the dialog
+                FlatButton(
+                  child:  Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+               ],
+            );
+          },
+        );
+      }else{
+        exerciseList.removeLast();
+      }
+    });
+  }
 
   void saveWorkout() {
     final formState = _formKey.currentState;
