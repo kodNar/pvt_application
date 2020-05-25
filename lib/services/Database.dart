@@ -184,12 +184,10 @@ class DatabaseService {
     changedWorkout = false;
     return _worksession;
   }
-
   addToFavorit(WorkoutSession session) async{
     userCollection.document(uid).collection('Favorits').add({
       'Reference': session.reference});
   }
-
   void createNewExercises(List<Exercise> list, OutdoorGym gym, String name) {
     String referennce = userCollection
         .document(uid)
