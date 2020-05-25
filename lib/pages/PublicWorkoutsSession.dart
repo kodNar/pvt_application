@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/Exercise.dart';
@@ -134,35 +135,56 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
         }
     );
   }
-  }
   Widget bottomAppBar() {
     return  BottomAppBar(
 
-      child: Row(
-        children: <Widget>[
-          Flexible(child: Post(),),
-          Spacer(),
-          Spacer(),
-          Flexible(child:Favorit(),),
+        child: Row(
+          children: <Widget>[
+            Flexible(child: Post(session),),
+            Spacer(),
+            Spacer(),
+            Flexible(child:Favorit(),),
 
-      ],)
+          ],)
     );
   }
 
+}
+
+
 
 class Post extends StatefulWidget{
+  WorkoutSession session;
+  Post(WorkoutSession s) {
+    session = s;
+  }
   @override
-  State<StatefulWidget> createState() => new PostState();
+  State<StatefulWidget> createState() => new PostState(session);
+  }
+class PostState extends State<Post>{
+  WorkoutSession s;
+  bool liked =false;
+  PostState(WorkoutSession session){
+    s = session;
   }
 
-class PostState extends State<Post>{
-  bool liked =false;
-
   _pressed() {
-  setState(() {
-    liked = !liked;
-  });
-
+    if (!liked) {
+      Firestore.instance.collection('Workouts')
+          .document(s.reference)
+          .updateData({
+        'Likes': s.likes + 1});
+      s.setLikes(s.likes+1);
+    } else {
+      Firestore.instance.collection('Workouts')
+          .document(s.reference)
+          .updateData({
+        'Likes': s.likes - 1});
+      s.setLikes(s.likes - 1);
+    }
+    setState(() {
+      liked = !liked;
+    });
   }
   @override
   Widget build(BuildContext context) {

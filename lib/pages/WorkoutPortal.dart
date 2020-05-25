@@ -16,6 +16,7 @@ class WorkoutPortal extends StatefulWidget {
 class _WorkoutPortalState extends State<WorkoutPortal> {
   String _nickname;
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xFF84329b),
