@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutterapp/Library.dart';
+import 'package:flutterapp/pages/Library.dart';
 import 'package:flutterapp/models/user.dart';
 import 'package:flutterapp/pages/AboutUs.dart';
 import 'package:flutterapp/pages/FAQ.dart';
+import 'package:flutterapp/pages/Profile.dart';
 import 'package:flutterapp/pages/ReportPage.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:geolocator/geolocator.dart';
@@ -90,52 +91,52 @@ class MapSampleState extends State<MapSample> {
                     },
                   ),
                   Container(
-                    alignment: Alignment.bottomCenter,
-                    child: RaisedButton.icon(
-                      color: Color.fromARGB(255, 132, 50, 155),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => WorkoutPortal()));
-                      },
-                      icon: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                      label: Text(
-                        'Start workout',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                      alignment: Alignment.bottomLeft,
+                      alignment: Alignment.topCenter,
                       padding: EdgeInsets.all(10),
-                      child: _cancelButton
-                          ? ClipOval(
-                              child: Material(
-                                color: Colors.red, // button color
-                                child: InkWell(
-                                  splashColor: Colors.white, // inkwell color
-                                  child: SizedBox(
-                                      width: 56,
-                                      height: 56,
-                                      child: Icon(Icons.cancel)),
-                                  onTap: () {
+                      child: Column(
+                        children: <Widget>[
+                          _cancelButton
+                              ? FlatButton(
+                                  color: Color(0xFF84329b),
+                                  onPressed: () {
                                     setState(() {
                                       polyline.clear();
                                       _cancelButton = !_cancelButton;
                                     });
                                   },
-                                ),
+                                  child: Container(
+                                    child: Text(
+                                      'Cancel route',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Center(),
+                          /*
+                          _cancelButton ? ClipOval(
+                            child: Material(
+                              color: Colors.red, // button color
+                              child: InkWell(
+                                splashColor: Colors.white, // inkwell color
+                                child: SizedBox(
+                                    width: 35,
+                                    height: 35,
+                                    child: Icon(Icons.cancel)),
+                                onTap: () {
+                                  setState(() {
+                                    polyline.clear();
+                                    _cancelButton = !_cancelButton;
+                                  });
+                                },
                               ),
-                            )
-                          : Center()),
+                            ),
+                          ) : Center(),
+                          */
+                        ],
+                      )),
                 ])
               : Center(
                   child: Text('Loading...'),
@@ -160,7 +161,7 @@ class MapSampleState extends State<MapSample> {
       });
     });
     populateOutdoorGymList();
-    // checkIfSignedIn();
+    checkIfSignedIn();
   }
 
   /// Loads the outdoorgyms from the database and populates the outdoor gym list.
@@ -295,7 +296,7 @@ class MapSampleState extends State<MapSample> {
                                 padding: EdgeInsets.all(10),
                                 child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Flexible(
                                         fit: FlexFit.tight,
@@ -306,11 +307,13 @@ class MapSampleState extends State<MapSample> {
                                           },
                                           child: RichText(
                                             overflow: TextOverflow.ellipsis,
-                                            strutStyle: StrutStyle(fontSize: 16.0),
+                                            strutStyle:
+                                                StrutStyle(fontSize: 16.0),
                                             text: TextSpan(
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontWeight: FontWeight.bold),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                                 text: value.name),
                                           ),
                                         ),
@@ -319,7 +322,8 @@ class MapSampleState extends State<MapSample> {
                                         flex: 3,
                                         child: RichText(
                                           overflow: TextOverflow.ellipsis,
-                                          strutStyle: StrutStyle(fontSize: 16.0),
+                                          strutStyle:
+                                              StrutStyle(fontSize: 16.0),
                                           text: TextSpan(
                                               style: TextStyle(
                                                   color: Colors.white,
@@ -331,23 +335,24 @@ class MapSampleState extends State<MapSample> {
                                         flex: 5,
                                         child: SizedBox(
                                             child: RaisedButton.icon(
-                                              icon: Icon(
-                                                Icons.play_arrow,
-                                              ),
-                                              color: Colors.white,
-                                              label: Text('Show route'),
-                                              onPressed: () {
-                                                setState(() {
-                                                  route = !route;
-                                                  _cancelButton = true;
-                                                });
-                                                getSomePoints( LatLng(value.geo.latitude,value.geo.longitude));
-                                                _goToGym(value);
-                                              },
-                                            )),
+                                          icon: Icon(
+                                            Icons.play_arrow,
+                                          ),
+                                          color: Colors.white,
+                                          label: Text('Show route'),
+                                          onPressed: () {
+                                            setState(() {
+                                              route = !route;
+                                              _cancelButton = true;
+                                            });
+                                            getSomePoints(LatLng(
+                                                value.geo.latitude,
+                                                value.geo.longitude));
+                                            _goToGym(value);
+                                          },
+                                        )),
                                       )
-                                    ])
-                            ),
+                                    ])),
                             Divider(
                               color: Colors.white,
                               height: 2,
@@ -397,88 +402,111 @@ class MapSampleState extends State<MapSample> {
   }
 
   Widget _navDrawer() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: Text(
-              '',
-              style: TextStyle(color: Colors.white, fontSize: 25),
+    return Container(
+      width: 225,
+      child: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            Container(
+              height: 150,
+              child: DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Color(0xFF84329b),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                          'assets/images/Stockholm_endast_logga_vit.png'),
+                    ),
+                  ),
+                ),
+              ),
             ),
-            decoration: BoxDecoration(
-                color: Colors.purple,
-                image: DecorationImage(
-                    image: AssetImage(
-                        'assets/images/Stockholm_endast_logga_vit.png'))),
-          ),
-          ListTile(
-            leading: Icon(Icons.verified_user),
-            title: Text('Profile'),
-            onTap: () => {},
-          ),
-          ListTile(
-              leading: Icon(Icons.verified_user),
-              title: Text('Library'),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Profile'),
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Library(map)));
-              }),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () => {},
-          ),
-          ListTile(
-            leading: Icon(Icons.border_color),
-            title: Text('About us'),
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AboutUs()));
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.question_answer),
-            title: Text('FAQ'),
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => FAQ()));
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.report_problem),
-            title: Text('Report Issue'),
-            onTap: () {
-              Navigator.push(
-                context, MaterialPageRoute(builder: (context) => ReportPage()));
-            },
-          ),
-          _loggedIn
-              ? ListTile(
-                  leading: Icon(Icons.exit_to_app),
-                  title: Text('Logout'),
-                  onTap: () {
-                    setState(() {
-                      FirebaseAuth.instance.signOut();
-                      _loggedIn = false;
-                    });
-                  },
-                )
-              : Center(
-                  child: ListTile(
-                  leading: Icon(Icons.exit_to_app),
-                  title: Text('Login'),
-                  onTap: () {
-                    if (_loggedIn) {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MapSample()));
-                    } else {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
-                    }
-                  },
-                ))
-        ],
+                    MaterialPageRoute(builder: (context) => Profile()));
+              },
+            ),
+            ListTile(
+                leading: Icon(Icons.directions_run),
+                title: Text('Workout Logs'),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => WorkoutPortal()));
+                }),
+            ListTile(
+                leading: Icon(Icons.library_books),
+                title: Text('Library'),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Library(map)));
+                }),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () => {},
+            ),
+            ListTile(
+              leading: Icon(Icons.supervised_user_circle),
+              title: Text('About us'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AboutUs()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.question_answer),
+              title: Text('FAQ'),
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => FAQ()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.report_problem),
+              title: Text('Report Issue'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ReportPage()));
+              },
+            ),
+            _loggedIn
+                ? ListTile(
+                    leading: Icon(Icons.exit_to_app),
+                    title: Text('Logout'),
+                    onTap: () {
+                      setState(() {
+                        FirebaseAuth.instance.signOut();
+                        _loggedIn = false;
+                      });
+                    },
+                  )
+                : Center(
+                    child: ListTile(
+                      leading: Icon(Icons.exit_to_app),
+                      title: Text('Login'),
+                      onTap: () {
+                        if (_loggedIn) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MapSample()));
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
+                        }
+                      },
+                    ),
+                  ),
+          ],
+        ),
       ),
     );
   }

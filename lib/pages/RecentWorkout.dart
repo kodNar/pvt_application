@@ -17,6 +17,7 @@ class RecentWorkouts extends StatefulWidget {
 
 class _RecentState extends State<RecentWorkouts> {
   bool _loaded = false;
+  List <WorkoutSession> selectedSessions = [];
 
   @override
   Widget build(BuildContext context) {
@@ -25,44 +26,76 @@ class _RecentState extends State<RecentWorkouts> {
         appBar: BaseAppBar(
           title: "Recent Workouts",
         ),
-        body: Center(child: Container(child: _listView())));
+        body: Column(
+    children: <Widget>[_loaded
+    ? Container(child: _listView())
+        : Center(child: Text("Loading..."))
+    ],
+    ));
   }
 
   Widget _listView() {
-    return FutureBuilder<List<WorkoutSession>>(
-        future: _getList(),
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? Container(
-                  child: ListView.builder(
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                            height: 50,
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.all(5),
-                            color:
-                                Color.fromARGB(255, 200 + index * 30, 50, 155),
-                            child: InkWell(
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => PrivateWorkoutPage(snapshot.data[index].getExercises(),snapshot.data[index].name,snapshot.data[index])));
-                                },
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text(snapshot.data[index].name),
-                                      ),
-                                      Container(
-                                          child: Text(" Location: " +
-                                              snapshot.data[index].location)),
-                                      Container(child: Text("Likes "))
-                                    ])));
-                      }))
-              : Center(
-                  child: CircularProgressIndicator(),
-                );
-        });
+    return Container(
+        child: Expanded(
+            child: ListView.builder(
+                itemCount: selectedSessions.length,
+                itemBuilder: (context, index) {
+                  return Column(children: <Widget>[
+                    Container(
+                        height: 70,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(5),
+                        color: Color(0xFF5D226D),
+
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PrivateWorkoutPage(
+                                          selectedSessions[index].getExercises(),
+                                          selectedSessions[index].name,selectedSessions[index])));
+                            },
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                      padding: EdgeInsets.all(5),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              Icon(Icons.perm_identity,color: Colors.white,),
+                                              //Text(sessions[index].name),
+                                              Text(selectedSessions[index].name, style: TextStyle(color: Colors.white),),
+                                            ],
+                                          ),
+                                          Text(selectedSessions[index]
+                                              .getDateTime()
+                                              .toString(), style: TextStyle(color: Colors.white)),
+                                        ],
+                                      )),
+                                  Container(
+                                    padding: EdgeInsets.all(5),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
+                                          children: <Widget>[
+                                            Icon(Icons.gps_fixed,color: Colors.white,),
+                                            Text("Location", style: TextStyle(color: Colors.white)),
+                                          ],
+                                        ),
+                                        Text(selectedSessions[index].location, style: TextStyle(color: Colors.white)),
+                                      ],
+                                    ),
+                                  ),
+                                ]))),
+                    Divider(
+                      height:7,
+                      color: Color.fromARGB(255, 132, 50, 155),
+                    ),
+                  ],);
+                })));
   }
 
   Future<List<WorkoutSession>> _getSessions() async {
@@ -71,12 +104,22 @@ class _RecentState extends State<RecentWorkouts> {
     await DatabaseService(uid: user.uid).getUserWorkoutSessions();
     return workouts;
   }
+  @override
+  void initState() {
+    super.initState();
+    getList();
+  }
 
-  Future<List<WorkoutSession>> _getList() async {
+
+  getList() async {
     List<WorkoutSession> old = await _getSessions();
     old.sort((a, b) {
       return -b.getDateTime().compareTo(a.getDateTime());
     });
-    return old;
+    selectedSessions =old;
+    setState(() {
+      _loaded =true;
+    });
   }
+
 }

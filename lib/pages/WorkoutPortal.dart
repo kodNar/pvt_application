@@ -1,125 +1,226 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/ExistingWorkouts.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
 import 'package:flutterapp/pages/RecentWorkout.dart';
 import 'package:flutterapp/pages/WorkoutLog.dart';
+import 'package:flutterapp/services/Database.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
+
 class WorkoutPortal extends StatefulWidget {
   @override
   _WorkoutPortalState createState() => _WorkoutPortalState();
 }
 
 class _WorkoutPortalState extends State<WorkoutPortal> {
+  String _nickname;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 132, 50, 155),
+        backgroundColor: Color(0xFF84329b),
         appBar: BaseAppBar(
           title: 'Workouts',
         ),
         body: Center(
           child: Container(
-            padding: EdgeInsets.all(40),
-            child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => WorkoutLog()));
-                },
-                child: Container(
-                  width: 350,
-                  height: 135,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 2,
-                    ),
-                    gradient: LinearGradient(
-                      colors: <Color>[
-                        Color(0xFF0D47A1),
-                        Color(0xFF1976D2),
-                        Color(0xFF42A5F5),
-                      ],
-                    ),
-                  ),
-                  child: Text('+ Log new workout',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                      )),
-                ),
-              ),
-              SizedBox(height: 30),
-              InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ExistingWorkouts()));
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  width: 350,
-                  height: 135,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    gradient: LinearGradient(
-                      begin: Alignment.center,
-                      colors: <Color>[
-                        Color(0xFFF57C00),
-                        Color(0xFFFF9800),
-                        Color(0xFFFFA726),
-                      ],
-                    ),
-                  ),
-                  child: Text('+ Discover workouts',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                      )),
-                ),
-              ),
-              SizedBox(height: 30),
-              InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => RecentWorkouts()));
-                },
-                child: Container(
-                  width: 350,
-                  height: 135,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    gradient: LinearGradient(
-                      colors: <Color>[
-                        Color(0xFF388E3C),
-                        Color(0xFF4CAF50),
-                        Color(0xFF81C784),
-                      ],
+            padding: EdgeInsets.all(15),
+            child: Column(mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  FutureBuilder(
+                      future: printNickname(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return  Text(
+                            'Currently signed in as: $_nickname',
+                            style: TextStyle(
+                              fontFamily: 'Agency',
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text("${snapshot.error}",style: Theme.of(context).textTheme.headline);
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      }),
+                  SizedBox(height: 30),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) => WorkoutLog()));
+                    },
+                    child: Container(
+                      width: 350,
+                      height: 150,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 2,
+                        ),
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: <Color>[
+                            Color(0xFF84329b),
+                            Color(0xFF9438ae),
+                            Color(0xFFa53fc1),
+                            Color(0xFFae52c7),
+                            //   Color(0xFFB388FF),
+                          ],
+                        ),
+                      ),
+                      child: Text('+ Log new workout',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 30,
+                          )),
                     ),
                   ),
-                  child: Text('My workouts',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                      )),
-                ),
-              ),
-            ]),
+                  SizedBox(height: 30),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) => ExistingWorkouts()));
+                    },
+                    child: Container(
+                      width: 350,
+                      height: 150,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 2.5,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        gradient: LinearGradient(
+
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+
+                          colors: <Color>[
+                            Color(0xFF84329b),
+                            Color(0xFF84329b),
+                            Color(0xFF9438ae),
+                            Color(0xFFa53fc1),
+                            Color(0xFFae52c7),
+                            /*
+                            SNYGGA men fel tema..?
+                            Color(0xFF6200EA),
+                            Color(0xFF651FFF),
+                            Color(0xFF7C4DFF),
+                            Color(0xFFB388FF),
+
+                             */
+
+                            /*
+                        Color(0xFF5E35B1),
+                        Color(0xFF673AB7),
+                        Color(0xFF7E57C2),
+                        Color(0xFF9575CD),
+
+                         */
+                            /*
+                        Color(0xFF6A1B9A),
+                        Color(0xFF7B1FA2),
+                        Color(0xFF8E24AA),
+                        Color(0xFF9C27B0),
+                        Color(0xFFAB47BC),
+                        Color(0xFFBA68C8),
+                        */
+
+                          ],
+                        ),
+                      ),
+                      child: Text('Discover workouts',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 30,
+                          )),
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) => RecentWorkouts()));
+                    },
+                    child: Container(
+                      width: 350,
+                      height: 150,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 2.5,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+
+                          colors: <Color>[
+                            Color(0xFF84329b),
+                            Color(0xFF84329b),
+                            Color(0xFF9438ae),
+                            Color(0xFFa53fc1),
+                            Color(0xFFae52c7),
+
+                            /*
+                            Color(0xFF6200EA),
+                            Color(0xFF651FFF),
+                            Color(0xFF7C4DFF),
+                            Color(0xFFB388FF),
+
+                             */
+
+                            /*
+                        Color(0xFF5E35B1),
+                        Color(0xFF673AB7),
+                        Color(0xFF7E57C2),
+                        Color(0xFF9575CD),
+
+                         */
+                            /*
+                        Color(0xFF6A1B9A),
+                        Color(0xFF7B1FA2),
+                        Color(0xFF8E24AA),
+                        Color(0xFF9C27B0),
+                        Color(0xFFAB47BC),
+                        Color(0xFFBA68C8),
+                        */
+
+                          ],
+                        ),
+                      ),
+                      child: Text('My workouts',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 30,
+                          )),
+                    ),
+                  ),
+                ]),
           ),
         ));
+  }
+  Future<String> printNickname() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    String nickNameFromDB = await DatabaseService(uid: user.uid).getNickname();
+    _nickname = nickNameFromDB;
+    return nickNameFromDB;
   }
 }

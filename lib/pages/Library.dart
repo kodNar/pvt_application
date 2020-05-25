@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/Exercise.dart';
 
-import 'OutdoorGym.dart';
+import '../OutdoorGym.dart';
 
 class Library extends StatelessWidget {
   Map _map = Map<String, List<OutdoorGym>>();

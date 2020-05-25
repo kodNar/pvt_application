@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/OutdoorGym.dart';
+import 'package:flutterapp/WorkoutSession.dart';
 import 'package:flutterapp/pages/EquipmentOrExercise.dart';
 import 'package:flutterapp/pages/WorkoutGymList.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
@@ -18,9 +19,10 @@ import 'StartWorkout.dart';
 class PublicWorkoutPage extends StatefulWidget {
   String _name ="";
   List <Exercise> ex = [];
-  PublicWorkoutPage(this.ex, this._name);
+  PublicWorkoutPage(this.ex, this._name,this.session);
+  WorkoutSession session;
   @override
-  _PublicWorkoutState createState() => _PublicWorkoutState(ex,_name);
+  _PublicWorkoutState createState() => _PublicWorkoutState(ex,_name,session);
 }
 
 class _PublicWorkoutState extends State<PublicWorkoutPage> {
@@ -28,11 +30,13 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
   List<Exercise> exerciseList;
   OutdoorGym outdoorGym;
   String _name;
+  WorkoutSession session;
 
 
-  _PublicWorkoutState(List<Exercise> ex, String name) {
+  _PublicWorkoutState(List<Exercise> ex, String name,WorkoutSession w) {
     this._name = name;
     this.exerciseList = ex;
+    this.session =w;
   }
   @override
   Widget build(BuildContext context) {
@@ -41,7 +45,18 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
         title: _name,
       ),
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
-      body: Center(
+      body: Center(child:Container(decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [
+                Color.fromARGB(255, 132, 50, 155),
+                Color.fromARGB(255, 132, 50, 155),
+                Color.fromARGB(255, 144, 55, 169),
+                Color.fromARGB(255, 184, 75, 214),
+                Color.fromARGB(255, 157, 97, 173),
+                Color.fromARGB(255, 198, 93, 200),
+              ])),
         child: Form(
           child: Column(
             children: <Widget>[
@@ -51,7 +66,7 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
             ],
           ),
         ),
-      ),
+      )),
       floatingActionButton: FloatingActionButton.extended(
         elevation: 4.0,
         backgroundColor: Colors.blue,
@@ -74,22 +89,27 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
         itemCount: exerciseList.length,
         shrinkWrap: true,
         itemBuilder: (context, index){
-          return Card(
-            color: Colors.purple,
-            child: Column(
+          return Column(
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width-20 ,
+                  width: MediaQuery.of(context).size.width,
                   child: Text(exerciseList[index].name,
                       style: TextStyle(fontWeight: FontWeight.bold,
-                        fontSize: 23,
+                        fontSize: 23,color: Colors.white,
+
                       )),
                 ),
-                Container(child:setWidget(index)),
+                Card(
+                  color: Colors.white,
+                  child: Column(
+                    children: <Widget>[
 
-              ],
-            ),
-          );
+                      Container(child:setWidget(index)),
+                      Container(),
+                    ],
+                  ),
+                )
+              ]);
         }
     ));
   }
@@ -100,16 +120,20 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
         shrinkWrap: true,
         itemBuilder: (context, index){
           return Row(children: <Widget>[
+
             Container(child: Text((index+1).toString()+".",
               style: TextStyle(fontWeight: FontWeight.bold,
                 fontSize: 20,
+
               ),
+
             )),
             Container(child: Text("               Reps:  ")),
             Container(child: Text(exerciseList[i].reps.toString()),),
           ],);
         }
     );
+  }
   }
   Widget bottomAppBar() {
     return  BottomAppBar(
@@ -125,7 +149,7 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
     );
   }
 
-}
+
 class Post extends StatefulWidget{
   @override
   State<StatefulWidget> createState() => new PostState();
@@ -153,6 +177,7 @@ class PostState extends State<Post>{
               iconSize: 50,
               onPressed: () {
                 _pressed();
+                //
               },
             ),
           )
