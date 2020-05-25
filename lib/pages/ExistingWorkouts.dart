@@ -175,7 +175,7 @@ class _ExistingState extends State<ExistingWorkouts> {
                                           ),
                                           Text(selectedSessions[index]
                                               .getDateTime()
-                                              .toString(), style: TextStyle(color: Colors.white)),
+                                              .toString().substring(0,10), style: TextStyle(color: Colors.white)),
                                         ],
                                       )),
                                   Container(
