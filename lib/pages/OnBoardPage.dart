@@ -44,40 +44,34 @@ class OnBoardPage extends StatelessWidget {
 
             ],
           ),
-          Container(
-            padding: EdgeInsets.only(top: 35),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(left: 15),
-
-                          child: Text(
-                            '2. See popular hours in order to plan your visit!\n',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Text(
-                            '1. Select a gym of your choice.\n'
-                                '2. View the selected gym.\n'
-                                '3. In the gyms menu, click "popular hours".',
-                          ),
-
-                        ),
-                      ],
-                    ),
-
-                  ],
-                )
-              ],
+          Text(
+            '\n\n2. See popular hours in order to plan your visit!\n',
+            style:
+            TextStyle(
+              fontWeight: FontWeight.bold,
             ),
+          ),
+          Row(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(left: 45),
+              child: Text(
+                '1. Select a gym of your choice.\n'
+                    '2. View the selected gym.\n'
+                    '3. In the gyms menu, click "popular hours".',
+              ),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 15),
+                height: 75,
+                width: 75,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/onBoardPic2.jpg'),
+                    )
+                ),
+              ),
+            ],
           ),
           Text(
             '\n\n3. Log your workout!\n',

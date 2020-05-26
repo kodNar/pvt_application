@@ -13,6 +13,7 @@ class LibraryEx extends StatelessWidget {
     this._map = map;
   }
 
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
@@ -20,7 +21,7 @@ class LibraryEx extends StatelessWidget {
         backgroundColor: Color.fromARGB(255, 132, 50, 155),
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text("Hej"),
+        title: Text("Library"),
       ),
       body: Builder(builder: (context) {
         return Stack(children: [
@@ -135,6 +136,8 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   List<Exercise> exercises = [];
+  int _selectedIndex = 0;
+  String title = 'Equipment';
 
   Future _data;
 
@@ -152,6 +155,17 @@ class _ListPageState extends State<ListPage> {
     }
     print(exercises.length);
     return exercises;
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      if (_selectedIndex != 0) {
+        title = 'Exercises';
+      } else {
+        title = 'Equipment';
+      }
+    });
   }
 
   @override
