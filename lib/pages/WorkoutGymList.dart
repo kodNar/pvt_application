@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
+import 'package:flutterapp/pages/ReportPage.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
@@ -136,8 +137,8 @@ void initState() {
   void searchFilter(String query) {
     List<String> tempSearchList = List<String>();
     tempSearchList.addAll(allGymNames);
-    print('Tempsearch list: $tempSearchList'.length);
     if(query.isNotEmpty) {
+      query = query[0].toUpperCase() + query.substring(1);
       List<String> tempListData = List<String>();
       tempSearchList.forEach((item) {
         if(item.contains(query)) {

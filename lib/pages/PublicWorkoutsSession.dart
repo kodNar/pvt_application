@@ -1,14 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/WorkoutSession.dart';
-import 'package:flutterapp/pages/EquipmentOrExercise.dart';
-import 'package:flutterapp/pages/WorkoutGymList.dart';
-import 'package:flutterapp/pages/WorkoutPortal.dart';
 import 'package:flutterapp/services/Database.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
-import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
@@ -31,6 +27,8 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
   OutdoorGym outdoorGym;
   String _name;
   WorkoutSession session;
+
+  FirebaseUser user;
 
 
   _PublicWorkoutState(List<Exercise> ex, String name,WorkoutSession w) {
@@ -80,6 +78,7 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
   }
   @override
   void initState() {
+    getUser();
     super.initState();
   }
 
@@ -134,84 +133,32 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
         }
     );
   }
-  }
   Widget bottomAppBar() {
     return  BottomAppBar(
 
-      child: Row(
-        children: <Widget>[
-          Flexible(child: Post(),),
-          Spacer(),
-          Spacer(),
-          Flexible(child:Favorit(),),
+        child: Row(
+          children: <Widget>[
+            Flexible(child: _LikeButton(),),
+            Spacer(),
+            Spacer(),
+            Flexible(child:_FavoritButton(),),
 
-      ],)
+          ],)
     );
   }
-
-
-class Post extends StatefulWidget{
-  @override
-  State<StatefulWidget> createState() => new PostState();
-  }
-
-class PostState extends State<Post>{
   bool liked =false;
-
-  _pressed() {
-  setState(() {
-    liked = !liked;
-  });
-
-  }
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      child:Column(
-        children: <Widget>[
-          ListTile(
-            leading: IconButton(
-              icon:Icon(liked ? Icons.favorite: Icons.favorite_border),
-              color: liked? Colors.red: Colors.black26,
-              iconSize: 50,
-              onPressed: () {
-                _pressed();
-                //
-              },
-            ),
-          )
-        ],
-      )
-    );
-  }
-}
-class Favorit extends StatefulWidget{
-  @override
-  State<StatefulWidget> createState() => new FavoritState();
-}
-
-class FavoritState extends State<Favorit>{
-  bool favorit =false;
-
-  _pressed() {
-    setState(() {
-      favorit = !favorit;
-    });
-  }
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
+  Widget _LikeButton(){
     return Container(
         child:Column(
           children: <Widget>[
             ListTile(
               leading: IconButton(
-                icon:Icon(favorit ? Icons.star: Icons.star_border),
-                color: favorit? Colors.amber: Colors.black26,
+                icon:Icon(liked ? Icons.favorite: Icons.favorite_border),
+                color: liked? Colors.red: Colors.black26,
                 iconSize: 50,
                 onPressed: () {
                   _pressed();
+                  //
                 },
               ),
             )
@@ -219,5 +166,51 @@ class FavoritState extends State<Favorit>{
         )
     );
   }
-}
+  _pressed() {
+    if (!liked) {
+      Firestore.instance.collection('Workouts')
+          .document(session.reference)
+          .updateData({
+        'Likes': session.likes + 1});
+      session.setLikes(session.likes+1);
+    } else {
+      Firestore.instance.collection('Workouts')
+          .document(session.reference)
+          .updateData({
+        'Likes': session.likes - 1});
+      session.setLikes(session.likes - 1);
+    }
+    setState(() {
+      liked = !liked;
+    });
+  }
+  bool _favorit = false;
+  Widget _FavoritButton(){
+    return Container(
+        child:Column(
+          children: <Widget>[
+            ListTile(
+              leading: IconButton(
+                icon:Icon(_favorit ? Icons.star: Icons.star_border),
+                color: _favorit? Colors.amber: Colors.black26,
+                iconSize: 50,
+                onPressed: () {
+                  _pressedFav();
+                },
+              ),
+            )
+          ],
+        )
+    );
+  }
+  _pressedFav() {
+    DatabaseService(uid:user.uid).addToFavorit(session);
+    setState(() {
+      _favorit = !_favorit;
+    });
 
+  }
+  getUser()async{
+    user  = await  FirebaseAuth.instance.currentUser();
+  }
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/Exercise.dart';
+import 'package:path/path.dart';
 
 import '../OutdoorGym.dart';
 
@@ -11,6 +12,8 @@ class Library extends StatelessWidget {
   Library( Map map) {
     this._map = map;
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +37,7 @@ class Library extends StatelessWidget {
                     side: BorderSide(color: Colors.black),
                   ),
                   onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(_map.keys.elementAt(index), _map.values.elementAt(index))));
                   },
                   color: Color.fromARGB(255, 132, 50, 155),
                   child: Align(
@@ -52,6 +56,46 @@ class Library extends StatelessWidget {
                           ]))),
             );
           }),
+    );
+  }
+}
+class DetailPage extends StatefulWidget {
+  String post;
+  List<OutdoorGym> list;
+
+  DetailPage (String post, List<OutdoorGym> list) {
+    this.post = post;
+    this.list = list;
+  }
+  @override
+  _DetailPageState createState() => _DetailPageState(post, list);
+}
+
+class _DetailPageState extends State<DetailPage> {
+  String post;
+  List<OutdoorGym> list;
+
+  _DetailPageState (String post, List<OutdoorGym> list) {
+    this.post = post;
+    this.list = list;
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.post),
+      ),
+      body: Container(
+        child:ListView.builder(
+            itemCount: list.length,
+            itemBuilder: (context,index) {
+              return Container(child: Card(
+                child: ListTile(
+                  title: Text(list[index].name),
+                ),
+              ));
+            }),
+      ),
     );
   }
 }

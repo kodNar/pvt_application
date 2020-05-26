@@ -19,6 +19,8 @@ class WorkoutLog extends StatefulWidget {
   _WorkoutLogState createState() => _WorkoutLogState();
 }
 
+
+
 class SetFieldValidator {
   static String validate(String input) {
     if (input.length > 0) {
@@ -67,7 +69,8 @@ class _WorkoutLogState extends State<WorkoutLog> {
   String _name = "";
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final ScrollController _scrollController = ScrollController();
-
+  List<TextEditingController> _controllersSet = List();
+  List<TextEditingController> _controllersRep = List();
 
 
 
@@ -132,10 +135,12 @@ class _WorkoutLogState extends State<WorkoutLog> {
       ),
     );
   }
-
+/// InitState
   @override
   void initState() {
     super.initState();
+    _controllersSet = List();
+    _controllersRep = List();
     getUsers();
   }
 
@@ -183,17 +188,23 @@ class _WorkoutLogState extends State<WorkoutLog> {
             Scrollbar(
               controller: _scrollController,
               child: ListView.builder(
+
                 controller: _scrollController,
                 shrinkWrap: true,
                 itemCount: exerciseList.length,
                 itemBuilder: (context, index) {
+                  _controllersSet.add(TextEditingController());
+                  _controllersRep.add(TextEditingController());
                   return Container(
                     padding: EdgeInsets.only(left: 10,right: 10),
                     child: Card(
                       child: ExpansionTile(
+
                         title: Text('${exerciseList[index].getName()}'),
                         children: <Widget>[
                           TextFormField(
+
+                            controller: _controllersSet[index],
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 hintText: 'Sets',
@@ -204,6 +215,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
                                 exerciseList[index].setSets(int.tryParse(input));
                               }),
                           TextFormField(
+                            controller: _controllersRep[index],
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'Reps',
@@ -294,7 +306,6 @@ class _WorkoutLogState extends State<WorkoutLog> {
              return AlertDialog(
               title:  Text("ERROR: No exercises in the workout"),
               actions: <Widget>[
-                // usually buttons at the bottom of the dialog
                 FlatButton(
                   child:  Text("OK"),
                   onPressed: () {

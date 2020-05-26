@@ -19,6 +19,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:geoflutterfire/geoflutterfire.dart';
 import '../Equipment.dart';
+import '../LibraryEx.dart';
 import 'HomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -444,8 +445,9 @@ class MapSampleState extends State<MapSample> {
                 title: Text('Library'),
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Library(map)));
+                      MaterialPageRoute(builder: (context) => LibraryEx(map)));
                 }),
+
             ListTile(
               leading: Icon(Icons.settings),
               title: Text('Settings'),

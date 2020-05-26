@@ -55,15 +55,6 @@ class _HomePageState extends State<HomePage> {
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 colors: [
-                  /*
-                  Color(0xFF84329b),
-                  Color(0xFF882aa3),
-                  Color(0xFF8d22ab),
-                  Color(0xFF911ab3),
-                  Color(0xFF9612bb),
-                  Color(0xFF9a0bc2),
-                  Color(0xFF9f03ca),
-                   */
                   Color(0xFF84329b),
                   Color(0xFF84329b),
                   Color(0xFF9438ae),
@@ -313,7 +304,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               */
-/*
+
                   Container(
                     child: GestureDetector(
                       onTap: () {
@@ -332,8 +323,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-
- */
 
                 ],
               ),

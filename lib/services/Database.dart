@@ -11,10 +11,9 @@ class DatabaseService {
   /*
   Links user with a newly created document by UID(UserID)
    */
-
   final String uid;
   static List<WorkoutSession> _worksession = [];
-
+  static List<WorkoutSession> _favsession =[];
   static set worksession(WorkoutSession value) {
     _worksession.add(value);
   }
@@ -153,6 +152,70 @@ class DatabaseService {
     return exercises;
   }
 
+  Future<List<Exercise>> getExercisesWorkoutSessionFavorit(var ref) async {
+    List<Exercise> exercises = [];
+    QuerySnapshot collectionReference = await Firestore.instance
+        .collection('Workouts')
+        .document(ref).collection("Exercises").getDocuments();
+
+    for (var doc in collectionReference.documents) {
+      try {
+        Exercise e = (Exercise(doc.data['Name'], null));
+        e.setReps(
+          doc.data['Reps'],
+        );
+        e.setSets(doc.data['Sets']);
+        exercises.add(e);
+      } catch (e) {
+        print("Error message" + e.toString());
+      }
+    }
+    return exercises;
+  }
+
+
+
+
+  Future<List<WorkoutSession>> getFavoritedWorkouts()async {
+    if (_favsession.length == 0 ) {
+    List<WorkoutSession> sessions = [];
+    QuerySnapshot querySnapshot = await userCollection
+        .document(uid).collection("Favorits").getDocuments();
+   try{
+    for (var doc in querySnapshot.documents) {
+      String ref = doc.data['Reference'];
+      var document = await Firestore.instance.collection('Workouts').document(ref).get();
+      List<Exercise> exerList = await getExercisesWorkoutSessionFavorit(document.documentID);
+      print(exerList.length);
+        WorkoutSession w = WorkoutSession(
+          //name
+            document.data['Name'],
+            //User
+            null,
+            //location
+            document.data["Location"],
+            //time
+            (document.data['Published'] as Timestamp).toDate(),
+            //gym
+            null,
+            //list equipments
+            null,
+            //List exercises
+            exerList,
+            //is shared?
+            document.data['Shared']);
+        _favsession.add(w);
+
+    }}catch(e){
+     print(e);
+   }
+    }
+    return _favsession;
+  }
+  addToFavorit(WorkoutSession session) async{
+    userCollection.document(uid).collection('Favorits').add({
+      'Reference': session.reference});
+  }
   void createNewExercises(List<Exercise> list, OutdoorGym gym, String name) {
     String referennce = userCollection
         .document(uid)
