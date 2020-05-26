@@ -7,6 +7,7 @@ import 'package:flutterapp/pages/RecentWorkout.dart';
 import 'package:flutterapp/pages/WorkoutLog.dart';
 import 'package:flutterapp/services/Database.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
+import 'package:flutterapp/pages/FavoritWorkouts.dart';
 
 class WorkoutPortal extends StatefulWidget {
   @override
@@ -225,7 +226,7 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(
-                              builder: (context) => null));
+                              builder: (context) => FavoritWorkouts()));
                     },
                     child: Container(
                       width: 350,
