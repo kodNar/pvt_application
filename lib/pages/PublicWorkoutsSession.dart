@@ -78,6 +78,7 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
   }
   @override
   void initState() {
+    liked = session.liked;
     getUser();
     super.initState();
   }
@@ -166,19 +167,24 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
         )
     );
   }
+
+
   _pressed() {
     if (!liked) {
       Firestore.instance.collection('Workouts')
           .document(session.reference)
           .updateData({
         'Likes': session.likes + 1});
+      DatabaseService(uid: user.uid).likeExercise(session);
       session.setLikes(session.likes+1);
+      session.liked = true;
     } else {
       Firestore.instance.collection('Workouts')
           .document(session.reference)
           .updateData({
         'Likes': session.likes - 1});
       session.setLikes(session.likes - 1);
+      session.liked = false;
     }
     setState(() {
       liked = !liked;
@@ -204,7 +210,12 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
     );
   }
   _pressedFav() {
-    DatabaseService(uid:user.uid).addToFavorit(session);
+    if(_favorit){
+      DatabaseService(uid:user.uid).removeFavorit(session.reference, session);
+    }else{
+      DatabaseService(uid:user.uid).addToFavorit(session);
+    }
+ 
     setState(() {
       _favorit = !_favorit;
     });

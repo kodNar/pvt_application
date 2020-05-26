@@ -14,6 +14,7 @@ class WorkoutSession{
   List <Exercise> _exercises;
   bool _shared = false;
   String _reference ="";
+  bool _liked =false;
 
   WorkoutSession(String name,String user, String location,DateTime dateTime, OutdoorGym outdoorGym, List <Equipment> equipments,List <Exercise> exercise,bool shared){
     _user = user;
@@ -26,6 +27,12 @@ class WorkoutSession{
     _shared = shared;
   }
 
+
+  bool get liked => _liked;
+
+  set liked(bool value) {
+    _liked = value;
+  }
 
   bool get shared => _shared;
 
