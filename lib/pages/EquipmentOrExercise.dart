@@ -42,12 +42,6 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
     return equipmentList;
   }
 
-  static List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 1: List of exercises',
-    ),
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
