@@ -2,101 +2,144 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/pages/EquipmentSelection.dart';
 import 'package:flutterapp/OutdoorGym.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'AboutGym.dart';
-
 
 class GenericGymPage extends StatefulWidget {
   OutdoorGym outdoorGym;
   List<String> _equipmentRef = [];
 
-  GenericGymPage(OutdoorGym outdoorGym,List <String> eq) {
+  GenericGymPage(OutdoorGym outdoorGym, List<String> eq) {
     this.outdoorGym = outdoorGym;
     this._equipmentRef = eq;
   }
+
   @override
-  State <GenericGymPage> createState() => GenericState(outdoorGym,_equipmentRef);
+  State<GenericGymPage> createState() =>
+      GenericState(outdoorGym, _equipmentRef);
+}
+
+class GenericState extends State<GenericGymPage> {
+  String _name;
+  List<String> _equipmentRef = [];
+  List<Equipment> _equipment = [];
+  OutdoorGym _outdoorGym;
+  String _picURL;
+
+  GenericState(OutdoorGym outdoorGym, List<String> eq) {
+    this._name = outdoorGym.name;
+    this._equipmentRef = eq;
+    this._outdoorGym = outdoorGym;
   }
 
-  class GenericState extends State< GenericGymPage> {
-    String _name;
-    List<String> _equipmentRef = [];
-    List<Equipment> _equipment = [];
-    OutdoorGym _outdoorGym;
-
-    GenericState(OutdoorGym outdoorGym,List <String> eq) {
-      this._name = outdoorGym.name;
-      this._equipmentRef = eq;
-      this._outdoorGym = outdoorGym;
+  Future<String> getPicture() async {
+    QuerySnapshot outdoorGymCollection =
+        await Firestore.instance.collection("OutdoorGyms").getDocuments();
+    for (var doc in outdoorGymCollection.documents) {
+      if (doc.data['Name'] == _name && doc.data['PictureURL'] != null) {
+        _picURL = doc.data['PictureURL'];
+      }
     }
+    return _picURL;
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
       appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 132, 50, 155),
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text(_name),
-          ),
+        backgroundColor: Color.fromARGB(255, 132, 50, 155),
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(_name),
+      ),
       body: Builder(builder: (context) {
         return Stack(children: [
           Container(
-            child: Column(children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 20),
-                width: MediaQuery.of(context).size.width ,
-                height: MediaQuery.of(context).size.height * 0.5,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/OutdoorGymPicture.png'),
-                      fit: BoxFit.fill),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  child: FutureBuilder(
+                    future: getPicture(),
+                    builder: (context, snapshot) {
+                      return snapshot.hasData
+                          ? Container(
+                              child: Container(
+//                            padding: EdgeInsets.only(top: 20),
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.3,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(_picURL),
+                                      fit: BoxFit.fitWidth),
+                                ),
+                              ),
+                            )
+                          : Container(
+                              child: Container(
+                                padding: EdgeInsets.only(top: 20),
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.5,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/OutdoorGymPicture.png'),
+                                      fit: BoxFit.fill),
+                                ),
+                              ),
+                            );
+                    },
+                  ),
                 ),
-              ),
-              Container(child:Padding(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                    children: <Widget>[
+                Container(
+                  child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Column(children: <Widget>[
                       Container(
                         padding: EdgeInsets.all(5),
                         color: Colors.transparent,
                         width: MediaQuery.of(context).size.width,
                         height: 60,
                         child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(color: Colors.white, width: 1.5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            side: BorderSide(color: Colors.white, width: 1.5),
+                          ),
+                          color: Colors.transparent,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EquipmentSelection(_name, _equipment)));
+                          },
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Image.asset(
+                                  'assets/images/Traning.png',
+                                  height: 40.0,
+                                  width: 40.0,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 65.0),
+                                  child: new Text(
+                                    "Equipment",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
                             ),
-                            color: Colors.transparent,
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => EquipmentSelection(_name, _equipment)));
-                            },
-
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Image.asset(
-                                      'assets/images/Traning.png',
-                                      height: 40.0,
-                                      width: 40.0,
-                                    ),
-                                    Padding(
-                                        padding: EdgeInsets.only(left: 65.0),
-                                        child: new Text(
-                                          "Equipment",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold),
-
-                                       ))
-                                  ],
-                                ))),
+                          ),
+                        ),
                       ),
-
                       Container(
                         padding: EdgeInsets.all(5),
                         color: Colors.transparent,
@@ -109,7 +152,6 @@ class GenericGymPage extends StatefulWidget {
                             ),
                             color: Colors.transparent,
                             onPressed: () {},
-
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Row(
@@ -121,14 +163,15 @@ class GenericGymPage extends StatefulWidget {
                                     width: 40.0,
                                   ),
                                   Padding(
-                                      padding: EdgeInsets.only(left: 65.0),
-                                      child: new Text(
-                                        "Busy hours",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.bold),
-                                      ))
+                                    padding: EdgeInsets.only(left: 65.0),
+                                    child: new Text(
+                                      "Busy hours",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
                                 ],
                               ),
                             )),
@@ -145,10 +188,11 @@ class GenericGymPage extends StatefulWidget {
                             ),
                             color: Colors.transparent,
                             onPressed: () {
-                              Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => AboutGym(_name)));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AboutGym(_name)));
                             },
-
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Row(
@@ -163,7 +207,6 @@ class GenericGymPage extends StatefulWidget {
                                   Padding(
                                       padding: EdgeInsets.only(left: 90.0),
                                       child: new Text(
-
                                         "About",
                                         style: TextStyle(
                                             color: Colors.white,
@@ -175,29 +218,30 @@ class GenericGymPage extends StatefulWidget {
                             ),
                           )),
                     ]),
-
-              ),
-                    ),
-              Container(
+                  ),
+                ),
+                Container(
                   child: Text(
                     "Contact us / report",
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-
+                      color: Colors.white,
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                  )),
-
-            ]),
+                  ),
+                ),
+              ],
+            ),
           ),
         ]);
       }),
     );
   }
-    _populateEquipment() async{
-     _equipment.addAll(await _outdoorGym.getEquipmentFromDB());
-    }
+
+  _populateEquipment() async {
+    _equipment.addAll(await _outdoorGym.getEquipmentFromDB());
+  }
+
   @override
   void initState() {
     super.initState();

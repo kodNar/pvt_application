@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Stockholm',
-                        fontStyle: FontStyle.italic,
+                        fontStyle: FontStyle.normal,
                         fontSize: 35),
                   ),
                   Container(

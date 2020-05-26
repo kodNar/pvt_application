@@ -9,7 +9,7 @@ class AboutUs extends StatelessWidget {
     QuerySnapshot docs = await fireStore.collection("Documents").getDocuments();
     String about;
     for (var doc in docs.documents) {
-      about = doc.data['AboutUs'];
+      about = (doc.data['AboutUs'] as String).replaceAll("\\n", "\n");
     }
     return about;
   }
