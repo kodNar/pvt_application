@@ -12,9 +12,10 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   String _nickname, _email;
   final textController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
-  void dispose(){
+  void dispose() {
     textController.dispose();
     super.dispose();
   }
@@ -269,27 +270,35 @@ class _ProfileState extends State<Profile> {
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
-        return AlertDialog(
-          title:  Text("Current nickname: $_nickname"),
-          content:  TextField(
-            controller: textController,
-          ),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            FlatButton(
-              child:  Text("change"),
-              onPressed: () {
-                updateNickname(textController.text);
-                Navigator.of(context).pop();
-              },
-
+        return Form(
+          key: _formKey,
+          child: AlertDialog(
+            title: Text("Current nickname: $_nickname"),
+            content: TextFormField(
+              validator: (input) => NicknameValidator.validate(input),
+              controller: textController,
             ),
-            FlatButton(
-              child:  Text("Cancel"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )],
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              FlatButton(
+                child: Text("change"),
+                onPressed: () {
+                  final formState = _formKey.currentState;
+                  if (formState.validate()) {
+                    formState.save();
+                    updateNickname(textController.text);
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+              FlatButton(
+                child: Text("Cancel"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
         );
       },
     );
@@ -302,30 +311,31 @@ class _ProfileState extends State<Profile> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title:  Text("Current email: $_email"),
-          content:  TextField(
+          title: Text("Current email: $_email"),
+          content: TextField(
             controller: textController,
           ),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             FlatButton(
-              child:  Text("change"),
+              child: Text("change"),
               onPressed: () {
                 updateEmail(textController.text);
                 Navigator.of(context).pop();
               },
-
             ),
             FlatButton(
-              child:  Text("Cancel"),
+              child: Text("Cancel"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            )],
+            )
+          ],
         );
       },
     );
   }
+
   void changePasswordDialog() {
     // flutter defined function
     showDialog(
@@ -333,52 +343,47 @@ class _ProfileState extends State<Profile> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title:  Text("Enter new password here"),
-          content:  TextField(
+          title: Text("Enter new password here"),
+          content: TextField(
             obscureText: true,
             controller: textController,
           ),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             FlatButton(
-              child:  Text("change"),
+              child: Text("change"),
               onPressed: () {
                 updatePassword(textController.text);
                 Navigator.of(context).pop();
               },
-
             ),
             FlatButton(
-              child:  Text("Cancel"),
+              child: Text("Cancel"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            )],
+            )
+          ],
         );
       },
     );
   }
 
-
-
   void updateNickname(String _nickname) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    DatabaseService(uid: user.uid)
-        .updateNickname(_nickname);
+    DatabaseService(uid: user.uid).updateNickname(_nickname);
   }
 
   void updateEmail(String _email) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     DatabaseService(uid: user.uid).updateEmail(_email);
     user.updateEmail(_email);
-
   }
+
   void updatePassword(String _password) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     user.updatePassword(_password);
   }
-
-
 
   Future<String> printNickname() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
@@ -394,5 +399,37 @@ class _ProfileState extends State<Profile> {
     _nickname = userDataList[0];
     _email = userDataList[1];
     return userDataList;
+  }
+}
+
+class NicknameValidator {
+  static String validate(String input) {
+    if (input.isEmpty) {
+      return 'Your nickname cant be empty';
+    }
+    if (input.length > 15) {
+      return 'Your nickname is to long <15';
+    }
+    if (input.contains(" ")) {
+      return 'No spaces allowed in the nickname';
+    }
+    ///Null does not mean the name will become null.
+    return null;
+
+  }
+}
+
+class EmailFieldValidator {
+  static String validate(String input) {
+    return input.isEmpty ? 'Please provide an Email' : null;
+  }
+}
+
+class PasswordFieldValidator {
+  static String validate(String input) {
+    if (input.length > 0 && input.length < 6) {
+      return 'The password needs to be at least 6 characters';
+    }
+    return input.isEmpty ? 'Please provide a password' : null;
   }
 }
