@@ -14,6 +14,7 @@ class DatabaseService {
   final String uid;
   static List<WorkoutSession> _worksession = [];
   static List<WorkoutSession> _favsession =[];
+  static List<String> _likedRef =[];
   static set worksession(WorkoutSession value) {
     _worksession.add(value);
   }
@@ -22,13 +23,33 @@ class DatabaseService {
 
   bool changedWorkout = false;
 
-  //a reference to a collection in our firestore database.
+
+  Future <List<String>> getLikedRef()async {
+    if(_likedRef.length == 0){
+     var doc = await  userCollection.document(uid).get();
+     _likedRef = doc.data["Liked"].cast<String>() as List<String>;
+    }
+    return _likedRef;
+  }
   final CollectionReference userCollection =
       Firestore.instance.collection('users'); //Creates/references a collection
 
   final CollectionReference outdoorGymsCollection =
       Firestore.instance.collection('OutdoorGyms');
 
+
+
+
+
+  likeExercise(WorkoutSession s){
+    userCollection.document(uid).updateData({
+        'Liked': FieldValue.arrayUnion(([s.reference]))});
+  }
+
+  removeFavorit(String ref,WorkoutSession value){
+    userCollection.document(uid).collection("Favorits").document(ref).delete();
+    _favsession.remove(value);
+  }
   Future updateUserData(String userID, String email, String nickName) async {
     userCollection
         .document(uid)
@@ -204,6 +225,7 @@ class DatabaseService {
             exerList,
             //is shared?
             document.data['Shared']);
+        w.reference = document.documentID;
         _favsession.add(w);
 
     }}catch(e){
@@ -213,7 +235,7 @@ class DatabaseService {
     return _favsession;
   }
   addToFavorit(WorkoutSession session) async{
-    userCollection.document(uid).collection('Favorits').add({
+    userCollection.document(uid).collection('Favorits').document(session.reference).setData({
       'Reference': session.reference});
   }
   void createNewExercises(List<Exercise> list, OutdoorGym gym, String name) {

@@ -148,7 +148,7 @@ class _FavoritState extends State<FavoritWorkouts> {
   _getSessions() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     selectedSessions = await DatabaseService(uid: user.uid).getFavoritedWorkouts();
-    sessions =selectedSessions;
+    sessions = selectedSessions;
   }
 
   void searchFilter(String query) {
