@@ -198,7 +198,7 @@ class _ExistingState extends State<ExistingWorkouts> {
                                       child: Column(
                                         children: <Widget>[
                                           Icon(
-                                            Icons.thumb_up,
+                                            Icons.favorite,
                                             color: Colors.white,
                                           ),
                                           //Text(sessions[index].likes.toString()),
