@@ -152,15 +152,41 @@ class DatabaseService {
     return exercises;
   }
 
+  Future<List<Exercise>> getExercisesWorkoutSessionFavorit(var ref) async {
+    List<Exercise> exercises = [];
+    QuerySnapshot collectionReference = await Firestore.instance
+        .collection('Workouts')
+        .document(ref).collection("Exercises").getDocuments();
+
+    for (var doc in collectionReference.documents) {
+      try {
+        Exercise e = (Exercise(doc.data['Name'], null));
+        e.setReps(
+          doc.data['Reps'],
+        );
+        e.setSets(doc.data['Sets']);
+        exercises.add(e);
+      } catch (e) {
+        print("Error message" + e.toString());
+      }
+    }
+    return exercises;
+  }
+
+
+
+
   Future<List<WorkoutSession>> getFavoritedWorkouts()async {
-    if (_worksession.length == 0 || changedWorkout) {
+    if (_favsession.length == 0 ) {
     List<WorkoutSession> sessions = [];
     QuerySnapshot querySnapshot = await userCollection
-        .document(uid).collection("FavoritWorkouts").getDocuments();
+        .document(uid).collection("Favorits").getDocuments();
+   try{
     for (var doc in querySnapshot.documents) {
       String ref = doc.data['Reference'];
       var document = await Firestore.instance.collection('Workouts').document(ref).get();
-      List<Exercise> exerList =  await getExercisesWorkoutSession(ref);
+      List<Exercise> exerList = await getExercisesWorkoutSessionFavorit(document.documentID);
+      print(exerList.length);
         WorkoutSession w = WorkoutSession(
           //name
             document.data['Name'],
@@ -169,7 +195,7 @@ class DatabaseService {
             //location
             document.data["Location"],
             //time
-            (document.data['Date'] as Timestamp).toDate(),
+            (document.data['Published'] as Timestamp).toDate(),
             //gym
             null,
             //list equipments
@@ -179,10 +205,12 @@ class DatabaseService {
             //is shared?
             document.data['Shared']);
         _favsession.add(w);
+
+    }}catch(e){
+     print(e);
+   }
     }
-    }
-    changedWorkout = false;
-    return _worksession;
+    return _favsession;
   }
   addToFavorit(WorkoutSession session) async{
     userCollection.document(uid).collection('Favorits').add({

@@ -6,7 +6,7 @@ import 'package:flutterapp/WorkoutSession.dart';
 import 'package:flutterapp/pages/PublicWorkoutsSession.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 import 'package:flutterapp/services/Database.dart';
-import '../Exercise.dart';
+import 'FavoritWorkoutPage.dart';
 
 class FavoritWorkouts extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class FavoritWorkouts extends StatefulWidget {
 
 class _FavoritState extends State<FavoritWorkouts> {
   @override
-  final List<WorkoutSession> sessions = [];
+  List<WorkoutSession> sessions = [];
   List<WorkoutSession> selectedSessions = [];
   List<String> allGymNames = List<String>();
   List<String> queriedGymNames = List<String>();
@@ -26,7 +26,7 @@ class _FavoritState extends State<FavoritWorkouts> {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 132, 50, 155),
         appBar: BaseAppBar(
-          title: "Discover Workouts",
+          title: "Favorit workouts",
         ),
         body: Column(
           children: <Widget>[
@@ -71,7 +71,6 @@ class _FavoritState extends State<FavoritWorkouts> {
     return Container(
         child: Expanded(
             child: ListView.builder(
-              //itemCount: sessions.length,
                 itemCount: selectedSessions.length,
                 itemBuilder: (context, index) {
                   return Column(children: <Widget>[
@@ -86,7 +85,7 @@ class _FavoritState extends State<FavoritWorkouts> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => PublicWorkoutPage(
+                                      builder: (context) => FavoritWorkoutPage(
                                           selectedSessions[index].getExercises(),
                                           selectedSessions[index].name,selectedSessions[index])));
                             },
@@ -148,45 +147,8 @@ class _FavoritState extends State<FavoritWorkouts> {
 
   _getSessions() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    QuerySnapshot workoutsCollection =
-    await Firestore.instance.collection("Workouts").getDocuments();
-    for (var doc in workoutsCollection.documents) {
-      List<Exercise> exercisesList = await getExercises(doc.documentID);
-      String ref = doc.documentID;
-      String name = doc.data['Name'];
-      int likes = (doc.data['Likes']);
-      String location = doc.data['Location'];
-      String user = doc.data['User'];
-      DateTime date = (doc.data['Published'] as Timestamp).toDate();
-      WorkoutSession w =
-      WorkoutSession(name, user, location, date, null, null, exercisesList,null);
-      w.setLikes(likes);
-      w.reference = ref;
-      sessions.add(w);
-      selectedSessions.add(w);
-    }
-  }
-
-  getExercises(var ref) async {
-    List<Exercise> exercises = [];
-    try {
-      QuerySnapshot collectionReferenceExercise = await Firestore.instance
-          .collection('Workouts')
-          .document(ref)
-          .collection("Exercises")
-          .getDocuments();
-      for (var temp in collectionReferenceExercise.documents) {
-        Exercise e = (Exercise(temp.data['Name'], null));
-        e.setReps(
-          temp.data['Reps'],
-        );
-        e.setSets(temp.data['Sets']);
-        exercises.add(e);
-      }
-    } catch (e) {
-      print("Error message" + e.toString());
-    }
-    return exercises;
+    selectedSessions = await DatabaseService(uid: user.uid).getFavoritedWorkouts();
+    sessions =selectedSessions;
   }
 
   void searchFilter(String query) {
@@ -229,19 +191,6 @@ class _FavoritState extends State<FavoritWorkouts> {
         selectedSessions.addAll(sessions);
       });
     }
-  }
-
-  sortListVoted() {
-    print("sort voted");
-    selectedSessions.sort((a, b) {
-      return b.likes.compareTo(a.likes);
-    });
-  }
-
-  sortListRecent() {
-    selectedSessions.sort((a, b) {
-      return b.getDateTime().compareTo(a.getDateTime());
-    });
   }
 
   @override
