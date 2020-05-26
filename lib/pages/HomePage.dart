@@ -119,6 +119,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                             style: TextStyle(
                               color: Colors.black,
+                              fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.bold,
                             ),
                             cursorColor: Colors.white,
                             // ignore: missing_return
@@ -150,6 +152,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                             style: TextStyle(
                               color: Colors.black,
+                              fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.bold,
                             ),
                             cursorColor: Colors.white,
                             // ignore: missing_return
@@ -193,6 +197,7 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(
                             fontSize: 22,
                             color: Colors.white,
+
                           ),
                         ),
                       ),
@@ -238,6 +243,7 @@ class _HomePageState extends State<HomePage> {
                         'Create account',
                         style: TextStyle(
                           fontSize: 15,
+                          fontFamily: 'OpenSans',
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -258,6 +264,7 @@ class _HomePageState extends State<HomePage> {
                         'Forgot password?',
                         style: TextStyle(
                           fontSize: 15,
+                          fontFamily: 'OpenSans',
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -317,6 +324,7 @@ class _HomePageState extends State<HomePage> {
                         'Testknappar',
                         style: TextStyle(
                           fontSize: 15,
+                          fontFamily: 'OpenSans',
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
