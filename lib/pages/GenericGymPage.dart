@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/pages/EquipmentSelection.dart';
 import 'package:flutterapp/OutdoorGym.dart';
+import 'package:flutterapp/pages/PopularHours.dart';
 
 
 class GenericGymPage extends StatefulWidget {
@@ -82,7 +83,7 @@ class GenericGymPage extends StatefulWidget {
                                     ),
                                     Padding(
                                         padding: EdgeInsets.only(left: 65.0),
-                                        child: new Text(
+                                        child: Text(
                                           "Equipment",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
@@ -106,7 +107,9 @@ class GenericGymPage extends StatefulWidget {
                               side: BorderSide(color: Colors.white, width: 1.5),
                             ),
                             color: Colors.transparent,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => PopularHours(_name)));
+                            },
 
                             child: Align(
                               alignment: Alignment.centerLeft,
@@ -120,7 +123,7 @@ class GenericGymPage extends StatefulWidget {
                                   ),
                                   Padding(
                                       padding: EdgeInsets.only(left: 65.0),
-                                      child: new Text(
+                                      child: Text(
                                         "Busy hours",
                                         style: TextStyle(
                                             color: Colors.white,

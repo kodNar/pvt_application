@@ -18,7 +18,6 @@ void main(){
   test('empty email returns error string', (){
     var result = EmailFieldValidator.validate('');
     expect(result, 'Please provide an Email');
-
   });
 
   /// If you give an email that does not exist in the database return "null"
