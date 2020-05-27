@@ -92,7 +92,7 @@ class PopularHoursChart extends StatelessWidget {
   PopularHoursChart(this.seriesList, {this.animate});
 
   factory PopularHoursChart.withSampleData() {
-    return new PopularHoursChart(
+    return PopularHoursChart(
       _createSimulatedData(),
       animate: false,
     );
