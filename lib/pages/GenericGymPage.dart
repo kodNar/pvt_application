@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/pages/EquipmentSelection.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/pages/PopularHours.dart';
-
+import 'package:flutterapp/pages/AboutGym.dart';
 import 'ReportPage.dart';
 
 class GenericGymPage extends StatefulWidget {
@@ -25,12 +26,25 @@ class GenericState extends State<GenericGymPage> {
   List<String> _equipmentRef = [];
   List<Equipment> _equipment = [];
   OutdoorGym _outdoorGym;
-
+  String picURL;
   GenericState(OutdoorGym outdoorGym, List<String> eq) {
     this._name = outdoorGym.name;
     this._equipmentRef = eq;
     this._outdoorGym = outdoorGym;
   }
+
+  Future<String> getPicURL() async {
+    QuerySnapshot outdoorGymCollection =
+    await Firestore.instance.collection("OutdoorGyms").getDocuments();
+    for (var doc in outdoorGymCollection.documents) {
+      if (doc.data['Name'] == _name && doc.data['PictureURL'] != null) {
+
+        picURL = doc.data['PictureURL'];
+      }
+    }
+    return picURL;
+  }
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,15 +59,37 @@ class GenericState extends State<GenericGymPage> {
         return Stack(children: [
           Container(
             child: Column(children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 20),
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.5,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/OutdoorGymPicture.png'),
-                      fit: BoxFit.fill),
-                ),
+              Container(child: FutureBuilder(
+                future: getPicURL(),
+                builder: (context, snapshot) {
+                  return snapshot.hasData
+                      ? Container(
+                    child: Container(
+//                            padding: EdgeInsets.only(top: 20),
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(picURL),
+                            fit: BoxFit.fitWidth),
+                      ),
+                    ),
+                  )
+                      : Container(
+                    child: Container(
+                      padding: EdgeInsets.only(top: 20),
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(
+                                'assets/images/OutdoorGymPicture.png'),
+                            fit: BoxFit.fill),
+                      ),
+                    ),
+                  );
+                },
+              ),
               ),
               Container(
                 child: Padding(
@@ -152,8 +188,8 @@ class GenericState extends State<GenericGymPage> {
                           ),
                           color: Colors.transparent,
                           onPressed: () {
-                            /*Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => AboutGymsPage()));*/
+                            Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => AboutGym(_name)));
                           },
                           child: Align(
                             alignment: Alignment.centerLeft,
@@ -174,7 +210,8 @@ class GenericState extends State<GenericGymPage> {
                                           color: Colors.white,
                                           fontSize: 20.0,
                                           fontWeight: FontWeight.bold),
-                                    ))
+                                    ),
+                                ),
                               ],
                             ),
                           ),
