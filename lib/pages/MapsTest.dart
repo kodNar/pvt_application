@@ -108,6 +108,7 @@ class MapSampleState extends State<MapSample> {
                                     child: Text(
                                       'Cancel route',
                                       style: TextStyle(
+                                        fontFamily: 'OpenSans',
                                         color: Colors.white,
                                         fontSize: 20,
                                       ),
