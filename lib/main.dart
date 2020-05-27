@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/SplashScreenPage.dart';
-import 'pages/HomePage.dart';
 import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: themeColor, fontFamily: 'Stockholm'
+        primarySwatch: themeColor, fontFamily: 'OpenSans'
       ),
       home: SplashScreenPage(),
     );
