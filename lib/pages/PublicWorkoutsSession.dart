@@ -186,6 +186,7 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
         'Likes': session.likes - 1});
       session.setLikes(session.likes - 1);
       session.liked = false;
+      DatabaseService(uid: user.uid).removeLiked(session.reference, session);
     }
     setState(() {
       liked = !liked;

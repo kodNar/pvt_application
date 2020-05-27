@@ -71,22 +71,13 @@ class DatabaseService {
   }
 
   removeFavorit(String ref,WorkoutSession value) async {
-    DocumentSnapshot documentSnapshot = await userCollection.document(uid).get();
-    List<Object> objectList = await documentSnapshot.data['Favorits'];
-    int i = 0;
-    objectList.forEach((e) async =>
-    {
-      i = await removeSpecefic(e.toString(), value, i)
-    });
-    }
-
-  Future <int> removeSpecefic(var e,WorkoutSession s,int i) async {
-    if (e.compareTo(s.reference) == 0){
-    await userCollection.document(uid).updateData({"Favorits":{'$i':null}});
-    }
-    return i+1;
-    }
-
+    DocumentReference documentSnapshot =  userCollection.document(uid);
+    documentSnapshot.updateData({"Favorits":FieldValue.arrayRemove([ref])});
+  }
+  removeLiked(String ref,WorkoutSession value) async {
+    DocumentReference documentSnapshot =  userCollection.document(uid);
+    documentSnapshot.updateData({"Liked":FieldValue.arrayRemove([ref])});
+  }
 
   Future updateUserData(String userID, String email, String nickName) async {
     userCollection
