@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
-import 'package:flutterapp/pages/WorkoutPortal.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -18,6 +17,8 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: Text(
               title,
               style: TextStyle(
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold,
                 color: Colors.white,
                 fontSize: 30,
               )

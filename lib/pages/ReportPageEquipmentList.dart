@@ -18,7 +18,7 @@ class _ReportPageEquipmentListState extends State<ReportPageEquipmentList> {
   OutdoorGym outdoorGym;
   List<Equipment> equipmentList = [];
   String title = 'Equipment';
-  int _selectedIndex = 0;
+
 
   _ReportPageEquipmentListState(OutdoorGym outdoorGym) {
     this.outdoorGym = outdoorGym;
@@ -38,50 +38,20 @@ class _ReportPageEquipmentListState extends State<ReportPageEquipmentList> {
     return equipmentList;
   }
 
-  static List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 1: List of exercises',
-    ),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (_selectedIndex != 0) {
-        title = 'Exercises';
-      } else {
-        title = 'Equipment';
-
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppBar(
         title: '$title',
+
       ),
       backgroundColor: Color(0xFF84329b),
       body: Center(
         child: equipmentListview(),
-        //child: _widgetOptions.elementAt(_selectedIndex),
+
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category),
-            title: Text('Equipment'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.directions_run),
-            title: Text('Exercises'),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFF84329b),
-        onTap: _onItemTapped,
-      ),
+
+
     );
   }
   Widget equipmentListview() {
@@ -99,8 +69,12 @@ class _ReportPageEquipmentListState extends State<ReportPageEquipmentList> {
                     onTap: () {
                     Navigator.pop(context, equipmentList[index]);
                     },
-                    title: Text('${equipmentList[index].getName()}'),
+                    title: Text('${equipmentList[index].getName()}',
+                      style: TextStyle(
+                      fontFamily: 'OpenSans'
+                ),
                   ),
+                ),
                 );
               },
             );
