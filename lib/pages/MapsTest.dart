@@ -54,10 +54,12 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
-      title: Text("Stockholm Outdoor Gyms", style: TextStyle(
-        fontFamily: 'OpenSans',
-        fontWeight: FontWeight.bold,
-      ),
+      title: Text(
+        "Stockholm Outdoor Gyms",
+        style: TextStyle(
+          fontFamily: 'OpenSans',
+          fontWeight: FontWeight.bold,
+        ),
       ),
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
     );
@@ -310,9 +312,10 @@ class MapSampleState extends State<MapSample> {
                                                 StrutStyle(fontSize: 16.0),
                                             text: TextSpan(
                                                 style: TextStyle(
-                                                    color: Colors.white,
+                                                  color: Colors.white,
                                                   fontFamily: 'OpenSans',
-                                                  fontWeight: FontWeight.bold,),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                                 text: value.name),
                                           ),
                                         ),
@@ -325,9 +328,10 @@ class MapSampleState extends State<MapSample> {
                                               StrutStyle(fontSize: 16.0),
                                           text: TextSpan(
                                               style: TextStyle(
-                                                  color: Colors.white,
+                                                color: Colors.white,
                                                 fontFamily: 'OpenSans',
-                                                fontWeight: FontWeight.bold,),
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                               text: key.toString() + "m"),
                                         ),
                                       ),
@@ -339,10 +343,12 @@ class MapSampleState extends State<MapSample> {
                                             Icons.play_arrow,
                                           ),
                                           color: Colors.white,
-                                          label: Text('Show route', style: TextStyle(
-                                            fontFamily: 'OpenSans',
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                          label: Text(
+                                            'Show route',
+                                            style: TextStyle(
+                                              fontFamily: 'OpenSans',
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                           onPressed: () {
                                             setState(() {
@@ -430,10 +436,12 @@ class MapSampleState extends State<MapSample> {
             ),
             ListTile(
               leading: Icon(Icons.person),
-              title: Text('Profile', style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.bold,
-              ),
+              title: Text(
+                'Profile',
+                style: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               onTap: () {
                 Navigator.push(context,
@@ -442,10 +450,12 @@ class MapSampleState extends State<MapSample> {
             ),
             ListTile(
                 leading: Icon(Icons.directions_run),
-                title: Text('Workout Logs', style: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontWeight: FontWeight.bold,
-                ),
+                title: Text(
+                  'Workout Logs',
+                  style: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 onTap: () {
                   Navigator.push(context,
@@ -453,40 +463,51 @@ class MapSampleState extends State<MapSample> {
                 }),
             ListTile(
                 leading: Icon(Icons.library_books),
-                title: Text('Library', style: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontWeight: FontWeight.bold,
-                ),),
+                title: Text(
+                  'Library',
+                  style: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LibraryEx(map)));
                 }),
             ListTile(
               leading: Icon(Icons.play_circle_outline),
-              title: Text('App Tutorial', style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.bold,
-              ),),
+              title: Text(
+                'App Tutorial',
+                style: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.push(context,
-                MaterialPageRoute(builder: (context) => OnBoardPage()));
+                    MaterialPageRoute(builder: (context) => OnBoardPage()));
               },
             ),
-
             ListTile(
               leading: Icon(Icons.settings),
-              title: Text('Settings', style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.bold,
-              ),),
+              title: Text(
+                'Settings',
+                style: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () => {},
             ),
             ListTile(
               leading: Icon(Icons.supervised_user_circle),
-              title: Text('About us', style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.bold,
-              ),),
+              title: Text(
+                'About us',
+                style: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => AboutUs()));
@@ -494,10 +515,13 @@ class MapSampleState extends State<MapSample> {
             ),
             ListTile(
               leading: Icon(Icons.question_answer),
-              title: Text('FAQ', style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.bold,
-              ),),
+              title: Text(
+                'FAQ',
+                style: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => FAQ()));
@@ -505,10 +529,13 @@ class MapSampleState extends State<MapSample> {
             ),
             ListTile(
               leading: Icon(Icons.report_problem),
-              title: Text('Report Issue', style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.bold,
-              ),),
+              title: Text(
+                'Report Issue',
+                style: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ReportPage()));
@@ -517,10 +544,13 @@ class MapSampleState extends State<MapSample> {
             _loggedIn
                 ? ListTile(
                     leading: Icon(Icons.exit_to_app),
-                    title: Text('Logout', style: TextStyle(
-                      fontFamily: 'OpenSans',
-                      fontWeight: FontWeight.bold,
-                    ),),
+                    title: Text(
+                      'Logout',
+                      style: TextStyle(
+                        fontFamily: 'OpenSans',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     onTap: () {
                       setState(() {
                         FirebaseAuth.instance.signOut();
@@ -531,10 +561,13 @@ class MapSampleState extends State<MapSample> {
                 : Center(
                     child: ListTile(
                       leading: Icon(Icons.exit_to_app),
-                      title: Text('Login', style: TextStyle(
-                        fontFamily: 'OpenSans',
-                        fontWeight: FontWeight.bold,
-                      ),),
+                      title: Text(
+                        'Login',
+                        style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       onTap: () {
                         if (_loggedIn) {
                           Navigator.push(
