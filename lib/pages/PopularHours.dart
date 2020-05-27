@@ -132,7 +132,7 @@ class PopularHoursChart extends StatelessWidget {
     ];
 
     return [
-      new charts.Series<HourAndUsers, String>(
+       charts.Series<HourAndUsers, String>(
         id: 'popularHours',
         fillColorFn: (__, popularHours) => charts.MaterialPalette.white,
         domainFn: (HourAndUsers popularHours, _) => popularHours.timeOfDay,
