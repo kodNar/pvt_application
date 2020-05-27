@@ -23,14 +23,12 @@ String equipment = 'Not Specified';
 OutdoorGym outdoorGym;
 enum SingingCharacter { error, suggestion }
 
-
 class ReportPage extends StatefulWidget {
   @override
   _ReportPageState createState() => _ReportPageState();
 }
 
 class _ReportPageState extends State<ReportPage> {
-
   final List<OutdoorGym> allOutdoorGym = MapSampleState.allOutdoorGym;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -44,53 +42,58 @@ class _ReportPageState extends State<ReportPage> {
     myController.dispose();
     super.dispose();
   }
-  void disableButton(){
-    if (description == "" || outdoorGym == null){
+
+  void disableButton() {
+    if (description == "" || outdoorGym == null) {
       buttonDisabled = true;
-    }
-    else{
+    } else {
       buttonDisabled = false;
     }
   }
 
   SingingCharacter _radioChoice = SingingCharacter.error;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
       appBar: AppBar(
-          title: const Text('Report / Contact'),
+          title: const Text(
+            'Report / Contact',
+            style: TextStyle(
+              fontFamily: 'OpenSans',
+            ),
+          ),
           actions: <Widget>[
-        // action button
-        IconButton(
-          icon: Icon(Icons.home),
-          onPressed: () {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => MapSample()));
-          },
-        ),
-      ]),
+            // action button
+            IconButton(
+              icon: Icon(Icons.home),
+              onPressed: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => MapSample()));
+              },
+            ),
+          ]),
       body: SingleChildScrollView(
         child: Column(
-
             key: _formKey,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(left: 75),
+                  padding: EdgeInsets.only(left: 75),
                   child: Column(
                     children: <Widget>[
                       ListTile(
-                        title: const Text('Error Report',style: TextStyle(
-                          color: Colors.white,
-                        ),
+                        title: const Text(
+                          'Error Report',
+                          style: TextStyle(
+                            fontFamily: 'OpenSans',
+                            color: Colors.white,
+                          ),
                         ),
                         leading: Radio(
                           activeColor: Colors.white,
                           focusColor: Colors.white,
-
                           value: SingingCharacter.error,
                           groupValue: _radioChoice,
                           onChanged: (SingingCharacter value) {
@@ -101,9 +104,12 @@ class _ReportPageState extends State<ReportPage> {
                         ),
                       ),
                       ListTile(
-                        title: const Text('Suggestion',style: TextStyle(
-                          color: Colors.white,
-                        ),
+                        title: const Text(
+                          'Suggestion',
+                          style: TextStyle(
+                            fontFamily: 'OpenSans',
+                            color: Colors.white,
+                          ),
                         ),
                         leading: Radio(
                           activeColor: Colors.white,
@@ -118,8 +124,7 @@ class _ReportPageState extends State<ReportPage> {
                         ),
                       ),
                     ],
-                  )
-              ),
+                  )),
               Container(
                 child: gymReturn(),
               ),
@@ -128,38 +133,45 @@ class _ReportPageState extends State<ReportPage> {
               ),
               Container(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      ButtonTheme(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        buttonColor: Colors.orange,
-                        child: RaisedButton(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Text('Take a Picture'),
-                              Icon(Icons.camera_alt),
-                            ],
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  ButtonTheme(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    buttonColor: Colors.orange,
+                    child: RaisedButton(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(
+                            'Take a Picture  ',
+                            style: TextStyle(
+                              fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          onPressed: () {
-                            main2(context);
-                          },
-                        ),
+                          Icon(Icons.camera_alt),
+                        ],
                       ),
-                      Container(
-                        //sök här
-                        width: 200,
-                        height: 200,
-                        child: Image.file(File(picPath)),
-                      ),
-                    ],
-                  )),
+                      onPressed: () {
+                        main2(context);
+                      },
+                    ),
+                  ),
+                  Container(
+                    //sök här
+                    width: 200,
+                    height: 200,
+                    child: Image.file(File(picPath)),
+                  ),
+                ],
+              )),
               Container(
                 child: Text(
                   'Open Comments',
                   style: TextStyle(
+                    fontFamily: 'OpenSans',
                     color: Colors.white,
                     fontSize: 18,
                   ),
@@ -185,10 +197,10 @@ class _ReportPageState extends State<ReportPage> {
                     fillColor: Colors.white,
                   ),
                   style: TextStyle(
+                    fontFamily: 'OpenSans',
                     color: Colors.black,
                   ),
                   cursorColor: Colors.black38,
-
                 ),
               ),
               Container(
@@ -199,17 +211,17 @@ class _ReportPageState extends State<ReportPage> {
                   minWidth: 200,
                   height: 50,
                   shape: RoundedRectangleBorder(
-
                     borderRadius: BorderRadius.circular(20.0),
                     side: BorderSide(color: Colors.white, width: 1.5),
                   ),
-
                   child: RaisedButton(
-
                     color: Colors.transparent,
-                    child: Text('Send',
+                    child: Text(
+                      'Send',
                       textAlign: TextAlign.center,
                       style: TextStyle(
+                        fontFamily: 'OpenSans',
+                        fontWeight: FontWeight.bold,
                         color: Colors.white,
                         fontSize: 30,
                       ),
@@ -217,20 +229,18 @@ class _ReportPageState extends State<ReportPage> {
                     onPressed: () {
                       description = myController.text;
                       disableButton();
-                      if(!buttonDisabled) {
-
+                      if (!buttonDisabled) {
                         main(_radioChoice);
                         thankYouMessage();
-
-                      }else{
+                      } else {
                         Fluttertoast.showToast(
-                            msg: "Please select a gym and provide a short description",
+                            msg:
+                                "Please select a gym and provide a short description",
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.CENTER,
                             backgroundColor: Colors.red,
                             textColor: Colors.white,
-                            fontSize: 16.0
-                        );
+                            fontSize: 16.0);
                       }
                     },
                   ),
@@ -285,8 +295,10 @@ class _ReportPageState extends State<ReportPage> {
               _pushContextChooseGym(context);
             },
             child: Text(
-              'Choose gym',
+              'Choose Gym',
               style: TextStyle(
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold,
                 fontSize: 25.0,
                 color: Colors.white,
               ),
@@ -343,6 +355,8 @@ class _ReportPageState extends State<ReportPage> {
             child: Text(
               'Choose Equipment',
               style: TextStyle(
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold,
                 fontSize: 25.0,
                 color: Colors.white,
               ),
@@ -369,24 +383,18 @@ class _ReportPageState extends State<ReportPage> {
     equipment = result.getName();
   }
 
-  void thankYouMessage(){
-
+  void thankYouMessage() {
     Fluttertoast.showToast(
         msg: "Thank you for your input! We will look into the matter ASAP",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         backgroundColor: Colors.lightGreen,
         textColor: Colors.white,
-        fontSize: 16.0
-
-    );
+        fontSize: 16.0);
+    picPath = 'assets/images/bok.png';
+    Navigator.pop(context);
   }
-
 }
-
-
-
-
 
 //////////////////////////////////// CAMERA ////////////////////////////////////
 
@@ -405,9 +413,6 @@ Future<void> main2(context) async {
       context,
       MaterialPageRoute(
           builder: (context) => TakePictureScreen(camera: firstCamera)));
-
-
-
 }
 
 // A screen that allows users to take a picture using a given camera.
@@ -510,37 +515,44 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 ///////////////////////////////////EMAIL///////////////////////////////////////////
 
 main(SingingCharacter _radioChoice) async {
-
   gymChosen = false;
   eqChosen = false;
   String userName = 'apikey';
   String passWord =
       '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';
   final smtpServer =
-  SmtpServer('smtp.sendgrid.net', username: userName, password: passWord);
+      SmtpServer('smtp.sendgrid.net', username: userName, password: passWord);
 
   Message message = new Message();
 
-  if(picPath != 'assets/images/bok.png') {
+  if (picPath != 'assets/images/bok.png') {
     message = Message()
-
-
       ..from = Address('report.stockholmgym@gmail.com', 'PvTG15')
       ..recipients.add('report.stockholmgym@gmail.com')
-      ..subject = 'Outdoor Gym' + _radioChoice.toString() +  '${DateTime.now()}'
-      ..text = ('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
-          equipment + '\n' + '\n' + description)
+      ..subject = 'Outdoor Gym' + _radioChoice.toString() + '${DateTime.now()}'
+      ..text = ('Gym: ' +
+          outdoorGym.name +
+          '\n' +
+          'Equipment: ' +
+          equipment +
+          '\n' +
+          '\n' +
+          description)
       ..attachments.add(new FileAttachment(File('$picPath')));
-  }else{
+  } else {
     message = Message()
       ..from = Address('report.stockholmgym@gmail.com', 'PvTG15')
       ..recipients.add('report.stockholmgym@gmail.com')
-      ..subject = 'Outdoor Gym' + _radioChoice.toString() +  '${DateTime.now()}'
-      ..text = ('Gym: ' + outdoorGym.name + '\n' + 'Equipment: ' +
-          equipment + '\n' + '\n' + description);
-
+      ..subject = 'Outdoor Gym' + _radioChoice.toString() + '${DateTime.now()}'
+      ..text = ('Gym: ' +
+          outdoorGym.name +
+          '\n' +
+          'Equipment: ' +
+          equipment +
+          '\n' +
+          '\n' +
+          description);
   }
-
 
   try {
     final sendReport = await send(message, smtpServer);
