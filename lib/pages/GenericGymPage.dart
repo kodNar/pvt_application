@@ -4,6 +4,8 @@ import 'package:flutterapp/pages/EquipmentSelection.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:flutterapp/pages/PopularHours.dart';
 
+import 'ReportPage.dart';
+
 class GenericGymPage extends StatefulWidget {
   OutdoorGym outdoorGym;
   List<String> _equipmentRef = [];
@@ -181,14 +183,22 @@ class GenericState extends State<GenericGymPage> {
                 ),
               ),
               Container(
-                  child: Text(
-                "Contact us / report",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              )),
+                  child: GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ReportPage()));
+                },
+                    child: Text(
+                      "Contact us / report",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                  )
+              ),
             ]),
           ),
         ]);
