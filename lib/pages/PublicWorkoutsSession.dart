@@ -79,6 +79,7 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
   @override
   void initState() {
     liked = session.liked;
+    _favorit = session.fav;
     getUser();
     super.initState();
   }
@@ -185,6 +186,7 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
         'Likes': session.likes - 1});
       session.setLikes(session.likes - 1);
       session.liked = false;
+      DatabaseService(uid: user.uid).removeLiked(session.reference, session);
     }
     setState(() {
       liked = !liked;
@@ -210,16 +212,26 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
     );
   }
   _pressedFav() {
-    if(_favorit){
-      DatabaseService(uid:user.uid).removeFavorit(session.reference, session);
-    }else{
-      DatabaseService(uid:user.uid).addToFavorit(session);
+    if (!_favorit) {
+      Firestore.instance.collection('Workouts')
+          .document(session.reference)
+          .updateData({
+        'Favorites': session.favoris + 1});
+      DatabaseService(uid: user.uid).favExercise(session);
+      session.favoris = (session.favoris+1);
+      session.fav = true;
+    } else {
+      Firestore.instance.collection('Workouts')
+          .document(session.reference)
+          .updateData({
+        'Favorites': session.favoris - 1});
+      session.favoris =(session.favoris - 1);
+      session.fav = false;
+      DatabaseService(uid: user.uid).removeFavorit(session.reference, session);
     }
- 
     setState(() {
       _favorit = !_favorit;
     });
-
   }
   getUser()async{
     user  = await  FirebaseAuth.instance.currentUser();

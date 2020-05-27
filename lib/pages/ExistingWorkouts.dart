@@ -220,6 +220,7 @@ class _ExistingState extends State<ExistingWorkouts> {
     QuerySnapshot workoutsCollection =
     await Firestore.instance.collection("Workouts").getDocuments();
     List<String> likedRef =(await DatabaseService(uid:_user.uid).getLikedRef());
+    List<String> favRef =(await DatabaseService(uid:_user.uid).getFavRef());
     for (var doc in workoutsCollection.documents) {
       List<Exercise> exercisesList = await getExercises(doc.documentID);
       String ref = doc.documentID;
@@ -235,6 +236,9 @@ class _ExistingState extends State<ExistingWorkouts> {
       sessions.add(w);
       if(likedRef.contains(ref)){
         w.liked =true;
+      }
+      if(favRef.contains(ref)){
+        w.fav =true;
       }
       selectedSessions.add(w);
       //sessions = selectedSessions;
