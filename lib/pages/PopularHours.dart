@@ -47,17 +47,27 @@ class _PopularHoursState extends State<PopularHours> {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.all(10),
             child: Text(
               'Popular hours: $dayOfWeek',
               style: TextStyle(
-                fontSize: 25,
+                fontSize: 22,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
           Container(
+            child: Text(
+              'During these hours most of the users log their workout',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(5),
             width: 525,
             height: 200,
             child: PopularHoursChart.withSampleData(),
@@ -82,7 +92,7 @@ class PopularHoursChart extends StatelessWidget {
   PopularHoursChart(this.seriesList, {this.animate});
 
   factory PopularHoursChart.withSampleData() {
-    return new PopularHoursChart(
+    return PopularHoursChart(
       _createSimulatedData(),
       animate: false,
     );
@@ -91,8 +101,22 @@ class PopularHoursChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return charts.BarChart(
+      /// Used from https://google.github.io/charts/flutter/example/axes/custom_font_size_and_color.html
+
       seriesList,
       animate: animate,
+      domainAxis: charts.OrdinalAxisSpec(
+          renderSpec: charts.SmallTickRendererSpec(
+              labelStyle: charts.TextStyleSpec(
+                  fontSize: 18, color: charts.MaterialPalette.white),
+              lineStyle:
+                  charts.LineStyleSpec(color: charts.MaterialPalette.white))),
+      primaryMeasureAxis: charts.NumericAxisSpec(
+          renderSpec: charts.GridlineRendererSpec(
+              labelStyle: charts.TextStyleSpec(
+                  fontSize: 18, color: charts.MaterialPalette.white),
+              lineStyle:
+                  charts.LineStyleSpec(color: charts.MaterialPalette.white))),
     );
   }
 
@@ -103,19 +127,19 @@ class PopularHoursChart extends StatelessWidget {
       HourAndUsers('04:00', random.nextInt(5)),
       HourAndUsers('08:00', random.nextInt(2) + 5),
       HourAndUsers('12:00', random.nextInt(3) + 8),
-      HourAndUsers('16:00', random.nextInt(4) + 10),
-      HourAndUsers('20:00', random.nextInt(5) + 10),
+      HourAndUsers('16:00', random.nextInt(4) + 9),
+      HourAndUsers('20:00', random.nextInt(4) + 9),
     ];
 
     return [
-      charts.Series<HourAndUsers, String>(
+       charts.Series<HourAndUsers, String>(
         id: 'popularHours',
-        outsideLabelStyleAccessorFn: (__, popularHours) => charts.TextStyleSpec(color: charts.Color.black),
-        domainFn: (HourAndUsers popularHours, _) => popularHours.timeOfDay,
-        measureFn: (HourAndUsers popularHours, _) => popularHours.amountOfPeople,
         fillColorFn: (__, popularHours) => charts.MaterialPalette.white,
+        domainFn: (HourAndUsers popularHours, _) => popularHours.timeOfDay,
+        measureFn: (HourAndUsers popularHours, _) =>
+            popularHours.amountOfPeople,
         data: simulatedData,
-      )
+      ),
     ];
   }
 }

@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutterapp/pages/Library.dart';
+import 'package:flutterapp/models/user.dart';
 import 'package:flutterapp/pages/AboutUs.dart';
 import 'package:flutterapp/pages/FAQ.dart';
+import 'package:flutterapp/pages/OnBoardPage.dart';
 import 'package:flutterapp/pages/Profile.dart';
 import 'package:flutterapp/pages/ReportPage.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
@@ -11,7 +14,12 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:google_map_polyline/google_map_polyline.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:geoflutterfire/geoflutterfire.dart';
+import '../Equipment.dart';
 import '../LibraryEx.dart';
 import 'HomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -53,13 +61,7 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
-      title: Text(
-        "Stockholm Outdoor Gyms",
-        style: TextStyle(
-          fontFamily: 'OpenSans',
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+      title: Text("Stockholm outdoor gyms"),
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
     );
     return new Scaffold(
@@ -108,7 +110,6 @@ class MapSampleState extends State<MapSample> {
                                     child: Text(
                                       'Cancel route',
                                       style: TextStyle(
-                                        fontFamily: 'OpenSans',
                                         color: Colors.white,
                                         fontSize: 20,
                                       ),
@@ -242,6 +243,16 @@ class MapSampleState extends State<MapSample> {
     return await rootBundle.loadString('assets/files/OutdoorGyms.txt');
   }
 
+  Future<void> _moveCameraToSelf() async {
+    currentLocation = await Geolocator().getCurrentPosition();
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        bearing: 0,
+        target: LatLng(currentLocation.latitude, currentLocation.longitude),
+        tilt: 0,
+        zoom: 17)));
+  }
+
   getSomePoints(var goal) async {
     polyline.clear();
     //currentLocation = await Geolocator().getCurrentPosition();
@@ -303,7 +314,6 @@ class MapSampleState extends State<MapSample> {
                                             text: TextSpan(
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontFamily: 'OpenSans',
                                                     fontWeight:
                                                         FontWeight.bold),
                                                 text: value.name),
@@ -319,7 +329,6 @@ class MapSampleState extends State<MapSample> {
                                           text: TextSpan(
                                               style: TextStyle(
                                                   color: Colors.white,
-                                                  fontFamily: 'OpenSans',
                                                   fontWeight: FontWeight.bold),
                                               text: key.toString() + "m"),
                                         ),
@@ -332,12 +341,7 @@ class MapSampleState extends State<MapSample> {
                                             Icons.play_arrow,
                                           ),
                                           color: Colors.white,
-                                          label: Text(
-                                            'Show route',
-                                            style: TextStyle(
-                                                fontFamily: 'OpenSans',
-                                                fontWeight: FontWeight.bold),
-                                          ),
+                                          label: Text('Show route'),
                                           onPressed: () {
                                             setState(() {
                                               route = !route;
@@ -424,13 +428,7 @@ class MapSampleState extends State<MapSample> {
             ),
             ListTile(
               leading: Icon(Icons.person),
-              title: Text(
-                'Profile',
-                style: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              title: Text('Profile'),
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Profile()));
@@ -438,42 +436,35 @@ class MapSampleState extends State<MapSample> {
             ),
             ListTile(
                 leading: Icon(Icons.directions_run),
-                title: Text(
-                  'Workout Logs',
-                  style: TextStyle(
-                      fontFamily: 'OpenSans', fontWeight: FontWeight.bold),
-                ),
+                title: Text('Workout Logs'),
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => WorkoutPortal()));
                 }),
             ListTile(
                 leading: Icon(Icons.library_books),
-                title: Text(
-                  'Library',
-                  style: TextStyle(
-                      fontFamily: 'OpenSans', fontWeight: FontWeight.bold),
-                ),
+                title: Text('Library'),
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LibraryEx(map)));
                 }),
             ListTile(
+              leading: Icon(Icons.play_circle_outline),
+              title: Text('App Tutorial'),
+              onTap: () {
+                Navigator.push(context,
+                MaterialPageRoute(builder: (context) => OnBoardPage()));
+              },
+            ),
+
+            ListTile(
               leading: Icon(Icons.settings),
-              title: Text(
-                'Settings',
-                style: TextStyle(
-                    fontFamily: 'OpenSans', fontWeight: FontWeight.bold),
-              ),
+              title: Text('Settings'),
               onTap: () => {},
             ),
             ListTile(
               leading: Icon(Icons.supervised_user_circle),
-              title: Text(
-                'About us',
-                style: TextStyle(
-                    fontFamily: 'OpenSans', fontWeight: FontWeight.bold),
-              ),
+              title: Text('About us'),
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => AboutUs()));
@@ -481,11 +472,7 @@ class MapSampleState extends State<MapSample> {
             ),
             ListTile(
               leading: Icon(Icons.question_answer),
-              title: Text(
-                'FAQ',
-                style: TextStyle(
-                    fontFamily: 'OpenSans', fontWeight: FontWeight.bold),
-              ),
+              title: Text('FAQ'),
               onTap: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => FAQ()));
@@ -493,11 +480,7 @@ class MapSampleState extends State<MapSample> {
             ),
             ListTile(
               leading: Icon(Icons.report_problem),
-              title: Text(
-                'Report Issue',
-                style: TextStyle(
-                    fontFamily: 'OpenSans', fontWeight: FontWeight.bold),
-              ),
+              title: Text('Report Issue'),
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ReportPage()));
@@ -506,11 +489,7 @@ class MapSampleState extends State<MapSample> {
             _loggedIn
                 ? ListTile(
                     leading: Icon(Icons.exit_to_app),
-                    title: Text(
-                      'Logout',
-                      style: TextStyle(
-                          fontFamily: 'OpenSans', fontWeight: FontWeight.bold),
-                    ),
+                    title: Text('Logout'),
                     onTap: () {
                       setState(() {
                         FirebaseAuth.instance.signOut();
@@ -521,12 +500,7 @@ class MapSampleState extends State<MapSample> {
                 : Center(
                     child: ListTile(
                       leading: Icon(Icons.exit_to_app),
-                      title: Text(
-                        'Login',
-                        style: TextStyle(
-                            fontFamily: 'OpenSans',
-                            fontWeight: FontWeight.bold),
-                      ),
+                      title: Text('Login'),
                       onTap: () {
                         if (_loggedIn) {
                           Navigator.push(

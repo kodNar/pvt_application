@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/pages/EquipmentSelection.dart';
 import 'package:flutterapp/OutdoorGym.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'AboutGym.dart';
+import 'package:flutterapp/pages/PopularHours.dart';
 
 class GenericGymPage extends StatefulWidget {
   OutdoorGym outdoorGym;
@@ -24,23 +23,11 @@ class GenericState extends State<GenericGymPage> {
   List<String> _equipmentRef = [];
   List<Equipment> _equipment = [];
   OutdoorGym _outdoorGym;
-  String _picURL;
 
   GenericState(OutdoorGym outdoorGym, List<String> eq) {
     this._name = outdoorGym.name;
     this._equipmentRef = eq;
     this._outdoorGym = outdoorGym;
-  }
-
-  Future<String> getPicture() async {
-    QuerySnapshot outdoorGymCollection =
-        await Firestore.instance.collection("OutdoorGyms").getDocuments();
-    for (var doc in outdoorGymCollection.documents) {
-      if (doc.data['Name'] == _name && doc.data['PictureURL'] != null) {
-        _picURL = doc.data['PictureURL'];
-      }
-    }
-    return _picURL;
   }
 
   Widget build(BuildContext context) {
@@ -55,53 +42,27 @@ class GenericState extends State<GenericGymPage> {
       body: Builder(builder: (context) {
         return Stack(children: [
           Container(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  child: FutureBuilder(
-                    future: getPicture(),
-                    builder: (context, snapshot) {
-                      return snapshot.hasData
-                          ? Container(
-                              child: Container(
-//                            padding: EdgeInsets.only(top: 20),
-                                width: MediaQuery.of(context).size.width,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.3,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(_picURL),
-                                      fit: BoxFit.fitWidth),
-                                ),
-                              ),
-                            )
-                          : Container(
-                              child: Container(
-                                padding: EdgeInsets.only(top: 20),
-                                width: MediaQuery.of(context).size.width,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.5,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/OutdoorGymPicture.png'),
-                                      fit: BoxFit.fill),
-                                ),
-                              ),
-                            );
-                    },
-                  ),
+            child: Column(children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(top: 20),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.5,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/OutdoorGymPicture.png'),
+                      fit: BoxFit.fill),
                 ),
-                Container(
-                  child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Column(children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(5),
-                        color: Colors.transparent,
-                        width: MediaQuery.of(context).size.width,
-                        height: 60,
-                        child: RaisedButton(
+              ),
+              Container(
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      color: Colors.transparent,
+                      width: MediaQuery.of(context).size.width,
+                      height: 60,
+                      child: RaisedButton(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                             side: BorderSide(color: Colors.white, width: 1.5),
@@ -115,123 +76,120 @@ class GenericState extends State<GenericGymPage> {
                                         EquipmentSelection(_name, _equipment)));
                           },
                           child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Image.asset(
-                                  'assets/images/Traning.png',
-                                  height: 40.0,
-                                  width: 40.0,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 65.0),
-                                  child: new Text(
-                                    "Equipment",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(5),
-                        color: Colors.transparent,
-                        width: MediaQuery.of(context).size.width,
-                        height: 60,
-                        child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(color: Colors.white, width: 1.5),
-                            ),
-                            color: Colors.transparent,
-                            onPressed: () {},
-                            child: Align(
                               alignment: Alignment.centerLeft,
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Image.asset(
-                                    'assets/images/bok.png',
+                                    'assets/images/Traning.png',
                                     height: 40.0,
                                     width: 40.0,
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(left: 65.0),
-                                    child: new Text(
-                                      "Busy hours",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )),
-                      ),
-                      Container(
-                          padding: EdgeInsets.all(5),
-                          color: Colors.transparent,
-                          width: MediaQuery.of(context).size.width,
-                          height: 60,
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(color: Colors.white, width: 1.5),
-                            ),
-                            color: Colors.transparent,
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AboutGym(_name)));
-                            },
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Image.asset(
-                                    'assets/images/bok.png',
-                                    height: 40.0,
-                                    width: 40.0,
-                                  ),
-                                  Padding(
-                                      padding: EdgeInsets.only(left: 90.0),
-                                      child: new Text(
-                                        "About",
+                                      padding: EdgeInsets.only(left: 65.0),
+                                      child: Text(
+                                        "Equipment",
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.bold),
                                       ))
                                 ],
-                              ),
+                              ))),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      color: Colors.transparent,
+                      width: MediaQuery.of(context).size.width,
+                      height: 60,
+                      child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            side: BorderSide(color: Colors.white, width: 1.5),
+                          ),
+                          color: Colors.transparent,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PopularHours(_name)));
+                          },
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Image.asset(
+                                  'assets/images/bok.png',
+                                  height: 40.0,
+                                  width: 40.0,
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.only(left: 65.0),
+                                    child: Text(
+                                      "Popular hours",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold),
+                                    ))
+                              ],
                             ),
                           )),
-                    ]),
-                  ),
-                ),
-                Container(
-                  child: Text(
-                    "Contact us / report",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
                     ),
-                  ),
+                    Container(
+                        padding: EdgeInsets.all(5),
+                        color: Colors.transparent,
+                        width: MediaQuery.of(context).size.width,
+                        height: 60,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            side: BorderSide(color: Colors.white, width: 1.5),
+                          ),
+                          color: Colors.transparent,
+                          onPressed: () {
+                            /*Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => AboutGymsPage()));*/
+                          },
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Image.asset(
+                                  'assets/images/bok.png',
+                                  height: 40.0,
+                                  width: 40.0,
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.only(left: 90.0),
+                                    child: new Text(
+                                      "About",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold),
+                                    ))
+                              ],
+                            ),
+                          ),
+                        )),
+                  ]),
                 ),
-              ],
-            ),
+              ),
+              Container(
+                  child: Text(
+                "Contact us / report",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
+            ]),
           ),
         ]);
       }),
