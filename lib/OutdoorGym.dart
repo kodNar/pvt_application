@@ -66,5 +66,4 @@ class OutdoorGym{
   String toString() {
     return 'OutdoorGym{_name: $_name, _geo: $_geo}';
   }
-
 }

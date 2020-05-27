@@ -15,7 +15,8 @@ class WorkoutSession{
   bool _shared = false;
   String _reference ="";
   bool _liked =false;
-
+  bool _fav = false;
+  int _favoris = 0;
   WorkoutSession(String name,String user, String location,DateTime dateTime, OutdoorGym outdoorGym, List <Equipment> equipments,List <Exercise> exercise,bool shared){
     _user = user;
     _location = location;
@@ -28,10 +29,27 @@ class WorkoutSession{
   }
 
 
+  int get favoris => _favoris;
+
+
+  bool get fav => _fav;
+
+  set fav(bool value) {
+    _fav = value;
+  }
+
   bool get liked => _liked;
 
   set liked(bool value) {
     _liked = value;
+  }
+
+  void addFavorits(){
+    _favoris += 1;
+  }
+
+  set favoris(int value) {
+    _favoris = value;
   }
 
   bool get shared => _shared;

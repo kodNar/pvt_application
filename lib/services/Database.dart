@@ -15,6 +15,7 @@ class DatabaseService {
   static List<WorkoutSession> _worksession = [];
   static List<WorkoutSession> _favsession =[];
   static List<String> _likedRef =[];
+  static List<String> _favRef = [];
   static set worksession(WorkoutSession value) {
     _worksession.add(value);
   }
@@ -25,12 +26,30 @@ class DatabaseService {
 
 
   Future <List<String>> getLikedRef()async {
-    if(_likedRef.length == 0){
-     var doc = await  userCollection.document(uid).get();
-     _likedRef = doc.data["Liked"].cast<String>() as List<String>;
+    try {
+      if (_likedRef.length == 0) {
+        var doc = await userCollection.document(uid).get();
+        _likedRef = doc.data["Liked"].cast<String>() as List<String>;
+      }
+    }catch(e){
+      print(e);
     }
     return _likedRef;
   }
+
+  Future <List<String>> getFavRef()async {
+    try{
+    if(_favRef.length == 0){
+      var doc = await  userCollection.document(uid).get();
+      _favRef = doc.data["Liked"].cast<String>() as List<String>;
+    }
+    }catch(e){
+      print(e);
+    }
+    return _favRef;
+  }
+
+
   final CollectionReference userCollection =
       Firestore.instance.collection('users'); //Creates/references a collection
 
@@ -46,10 +65,29 @@ class DatabaseService {
         'Liked': FieldValue.arrayUnion(([s.reference]))});
   }
 
-  removeFavorit(String ref,WorkoutSession value){
-    userCollection.document(uid).collection("Favorits").document(ref).delete();
-    _favsession.remove(value);
+  favExercise(WorkoutSession s){
+    userCollection.document(uid).updateData({
+      'Favorits': FieldValue.arrayUnion(([s.reference]))});
   }
+
+  removeFavorit(String ref,WorkoutSession value) async {
+    DocumentSnapshot documentSnapshot = await userCollection.document(uid).get();
+    List<Object> objectList = await documentSnapshot.data['Favorits'];
+    int i = 0;
+    objectList.forEach((e) async =>
+    {
+      i = await removeSpecefic(e.toString(), value, i)
+    });
+    }
+
+  Future <int> removeSpecefic(var e,WorkoutSession s,int i) async {
+    if (e.compareTo(s.reference) == 0){
+    await userCollection.document(uid).updateData({"Favorits":{'$i':null}});
+    }
+    return i+1;
+    }
+
+
   Future updateUserData(String userID, String email, String nickName) async {
     userCollection
         .document(uid)
@@ -197,14 +235,13 @@ class DatabaseService {
 
 
 
-  Future<List<WorkoutSession>> getFavoritedWorkouts()async {
+  Future<List<WorkoutSession>> getFavoritedWorkouts() async {
     if (_favsession.length == 0 ) {
     List<WorkoutSession> sessions = [];
-    QuerySnapshot querySnapshot = await userCollection
-        .document(uid).collection("Favorits").getDocuments();
+    DocumentSnapshot documentSnapshot = await userCollection
+        .document(uid).get();
    try{
-    for (var doc in querySnapshot.documents) {
-      String ref = doc.data['Reference'];
+    for (String ref in documentSnapshot.data['Liked'].cast<String>() as List<String>) {
       var document = await Firestore.instance.collection('Workouts').document(ref).get();
       List<Exercise> exerList = await getExercisesWorkoutSessionFavorit(document.documentID);
       print(exerList.length);
@@ -234,10 +271,7 @@ class DatabaseService {
     }
     return _favsession;
   }
-  addToFavorit(WorkoutSession session) async{
-    userCollection.document(uid).collection('Favorits').document(session.reference).setData({
-      'Reference': session.reference});
-  }
+
   void createNewExercises(List<Exercise> list, OutdoorGym gym, String name) {
     String referennce = userCollection
         .document(uid)
