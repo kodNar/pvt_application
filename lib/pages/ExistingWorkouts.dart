@@ -22,6 +22,7 @@ class _ExistingState extends State<ExistingWorkouts> {
   List<String> queriedGymNames = List<String>();
   bool _loaded = false;
   String searchGym = "";
+  FirebaseUser _user;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -197,7 +198,7 @@ class _ExistingState extends State<ExistingWorkouts> {
                                       child: Column(
                                         children: <Widget>[
                                           Icon(
-                                            Icons.thumb_up,
+                                            Icons.favorite,
                                             color: Colors.white,
                                           ),
                                           //Text(sessions[index].likes.toString()),
@@ -218,6 +219,7 @@ class _ExistingState extends State<ExistingWorkouts> {
   _getSessions() async {
     QuerySnapshot workoutsCollection =
     await Firestore.instance.collection("Workouts").getDocuments();
+    List<String> likedRef =(await DatabaseService(uid:_user.uid).getLikedRef());
     for (var doc in workoutsCollection.documents) {
       List<Exercise> exercisesList = await getExercises(doc.documentID);
       String ref = doc.documentID;
@@ -231,6 +233,9 @@ class _ExistingState extends State<ExistingWorkouts> {
       w.setLikes(likes);
       w.reference = ref;
       sessions.add(w);
+      if(likedRef.contains(ref)){
+        w.liked =true;
+      }
       selectedSessions.add(w);
       //sessions = selectedSessions;
     }
@@ -323,9 +328,11 @@ class _ExistingState extends State<ExistingWorkouts> {
   }
 
   startMethod() async {
+    _user = await FirebaseAuth.instance.currentUser();
     await _getSessions();
     setState(() {
       _loaded = true;
     });
+
   }
 }

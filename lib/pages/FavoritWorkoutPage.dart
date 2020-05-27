@@ -13,9 +13,6 @@ import 'package:flutterapp/services/Database.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
-
-
-
 import 'MapsTest.dart';
 
 class FavoritWorkoutPage extends StatefulWidget {
@@ -180,8 +177,11 @@ class _FavoritWorkoutState extends State<FavoritWorkoutPage> {
     }
   }
   unFavorit(){
-  //create a unfavorit function
-    }
+    String ref =  session.reference;
+    DatabaseService(uid:_user.uid).removeFavorit(ref,session);
+    Navigator.of(context).pop();
+
+  }
 
   void _showDialog() {
     // flutter defined function
