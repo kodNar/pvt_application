@@ -29,7 +29,7 @@ class OnBoardPage extends StatelessWidget {
                     )),
               ),
               Container(
-                padding: EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(top: 55),
                 child: Column(
                   children: <Widget>[
                     Text('1. Find your next outdoor gym visit in the map!', style:
@@ -51,14 +51,14 @@ class OnBoardPage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+
           Row(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(left: 45),
+                padding: EdgeInsets.only(left: 50),
               child: Text(
                 '1. Select a gym of your choice.\n'
-                    '2. View the selected gym.\n'
-                    '3. In the gyms menu, click "popular hours".',
+                    '2. In the gyms menu,click on\n"Popular Hours".',
               ),
               ),
               Container(
@@ -105,7 +105,10 @@ class OnBoardPage extends StatelessWidget {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(left: 15),
-                child: Text('Share, like and be inspired in the app!'),
+                child: Text('4 Share, like and be inspired in the app!',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),),
               ),
               Container(
                 padding: EdgeInsets.only(left: 15),
@@ -125,7 +128,8 @@ class OnBoardPage extends StatelessWidget {
               "1. When you're about to Save your workout, you can share\n"
                   ' your workout with the option "Save and Share"\n'
                   '2. Your workout log is now posted on "Discover workout"\n'
-                  ' for others to view, like and collect.'
+                  ' for others to view, like and collect.\n'
+                  '\nThank you for sharing and inspiring others!'
             ),
           )
         ],

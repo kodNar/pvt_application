@@ -5,6 +5,7 @@ import 'package:flutterapp/pages/Library.dart';
 import 'package:flutterapp/models/user.dart';
 import 'package:flutterapp/pages/AboutUs.dart';
 import 'package:flutterapp/pages/FAQ.dart';
+import 'package:flutterapp/pages/OnBoardPage.dart';
 import 'package:flutterapp/pages/Profile.dart';
 import 'package:flutterapp/pages/ReportPage.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
@@ -447,6 +448,14 @@ class MapSampleState extends State<MapSample> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LibraryEx(map)));
                 }),
+            ListTile(
+              leading: Icon(Icons.play_circle_outline),
+              title: Text('App Tutorial'),
+              onTap: () {
+                Navigator.push(context,
+                MaterialPageRoute(builder: (context) => OnBoardPage()));
+              },
+            ),
 
             ListTile(
               leading: Icon(Icons.settings),
