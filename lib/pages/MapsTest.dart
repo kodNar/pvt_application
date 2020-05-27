@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutterapp/pages/Library.dart';
-import 'package:flutterapp/models/user.dart';
 import 'package:flutterapp/pages/AboutUs.dart';
 import 'package:flutterapp/pages/FAQ.dart';
 import 'package:flutterapp/pages/Profile.dart';
@@ -13,12 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:google_map_polyline/google_map_polyline.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:dio/dio.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:geoflutterfire/geoflutterfire.dart';
-import '../Equipment.dart';
 import '../LibraryEx.dart';
 import 'HomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -246,16 +239,6 @@ class MapSampleState extends State<MapSample> {
 
   Future<String> loadAsset() async {
     return await rootBundle.loadString('assets/files/OutdoorGyms.txt');
-  }
-
-  Future<void> _moveCameraToSelf() async {
-    currentLocation = await Geolocator().getCurrentPosition();
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        bearing: 0,
-        target: LatLng(currentLocation.latitude, currentLocation.longitude),
-        tilt: 0,
-        zoom: 17)));
   }
 
   getSomePoints(var goal) async {
