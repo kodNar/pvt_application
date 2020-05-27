@@ -19,7 +19,13 @@ class AboutUs extends StatelessWidget {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 132, 50, 155),
         appBar: AppBar(
-          title: Text('About us'),
+          title: Text(
+            'About Us',
+            style: TextStyle(
+              fontFamily: 'OpenSans',
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           centerTitle: true,
           backgroundColor: Color.fromARGB(255, 132, 50, 155),
         ),
@@ -32,9 +38,11 @@ class AboutUs extends StatelessWidget {
                 'Welcome!',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
               ),
             ),
             Container(
@@ -49,7 +57,6 @@ class AboutUs extends StatelessWidget {
                             color: Colors.white,
                             fontSize: 14,
                             fontFamily: 'OpenSans',
-                            fontStyle: FontStyle.normal,
                           ),
                           softWrap: true,
                           textAlign: TextAlign.center,
