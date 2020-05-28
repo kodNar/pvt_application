@@ -169,6 +169,7 @@ class DatabaseService {
               doc.data['Difficulty']);
           _worksession.add(w);
           w.setLikes(doc.data['Likes']);
+          w.favoris = (doc.data['Favorits']);
         } catch (e) {
           print(e.toString());
         }

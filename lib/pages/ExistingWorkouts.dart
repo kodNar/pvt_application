@@ -16,6 +16,7 @@ class ExistingWorkouts extends StatefulWidget {
 class _ExistingState extends State<ExistingWorkouts> {
   @override
   List<bool> _isSelected = [false, false];
+  List<bool> _isSelectedDiff = [false, false, false];
   final List<WorkoutSession> sessions = [];
   List<WorkoutSession> selectedSessions = [];
   List<String> allGymNames = List<String>();
@@ -38,6 +39,7 @@ class _ExistingState extends State<ExistingWorkouts> {
             //byt vad som visas
             // Container(child: _test()),
             Container(child: _searchField()),
+            _toggleSearchLevel(),
             _loaded
                 ? Container(child: _listView())
                 : Center(child: Text("Loading..."))
@@ -72,20 +74,6 @@ class _ExistingState extends State<ExistingWorkouts> {
           selectedList(value);
         },
         //onSaved: (input) => input = searchGym,
-      ),
-    );
-  }
-
-  Widget _topImage() {
-    return Container(
-      margin: EdgeInsets.only(top: 10),
-      width: 175,
-      height: 75,
-      decoration: BoxDecoration(
-        color: Color.fromARGB(255, 132, 50, 155),
-        image: DecorationImage(
-          image: AssetImage('assets/images/Stockholm_endast_logga_vit.png'),
-        ),
       ),
     );
   }
@@ -135,6 +123,77 @@ class _ExistingState extends State<ExistingWorkouts> {
         });
       },
     );
+  }
+
+  Widget _toggleSearchLevel() {
+    return ToggleButtons(
+      fillColor: Colors.white70,
+      children: <Widget>[
+        Container(
+          color: Colors.white54,
+          width: MediaQuery.of(context).size.width / 3 - 2,
+          child: Text(
+            "Beginner",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 15,
+            ),
+          ),
+          alignment: Alignment.center,
+        ),
+        Container(
+          color: Colors.white54,
+          width: MediaQuery.of(context).size.width / 3 - 1,
+          child: Text(
+            "Intermediat",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 15,
+            ),
+          ),
+          alignment: Alignment.center,
+        ),
+        Container(
+          color: Colors.white54,
+          width: MediaQuery.of(context).size.width / 3 - 1,
+          child: Text(
+            "Advanced",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 15,
+            ),
+          ),
+          alignment: Alignment.center,
+        ),
+      ],
+      isSelected: _isSelectedDiff,
+      onPressed: (int index) {
+        setState(() {
+          _isSelectedDiff[index] =!_isSelectedDiff[index];
+          filterOnDifficculty();
+        });
+      },
+    );
+  }
+
+  filterOnDifficculty(){
+    print(_isSelectedDiff.toString());
+
+    List <WorkoutSession> tempList = [];
+    List <int> filters = [];
+    int i = 0;
+    for(bool toggle in _isSelectedDiff){
+      if(toggle){
+        filters.add(i);
+      }
+      i++;
+    }
+    print(filters.toString());
+    for  (WorkoutSession session in sessions){
+      if(filters.contains(session.difficulty))
+        tempList.add(session);
+    }
+    selectedSessions = tempList;
   }
 
   Widget _listView() {
@@ -221,19 +280,6 @@ class _ExistingState extends State<ExistingWorkouts> {
                                         ],
                                       )),
 
-                                  Container(
-                                      padding: EdgeInsets.all(5),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.star,
-                                            color: Colors.white,
-                                          ),
-                                          Text(selectedSessions[index]
-                                              .favoris
-                                              .toString(), style: TextStyle(color: Colors.white)),
-                                        ],
-                                      )),
                                 ]))),
                     Divider(
                       height:7,
@@ -253,16 +299,18 @@ class _ExistingState extends State<ExistingWorkouts> {
       String ref = doc.documentID;
       String name = doc.data['Name'];
       int likes = (doc.data['Likes']);
-      int favs = (doc.data['Favorites']);
+      int favs = (doc.data['Favorits']);
       String location = doc.data['Location'];
       String user = doc.data['User'];
       DateTime date = (doc.data['Published'] as Timestamp).toDate();
       int difficulty  =doc.data['Difficulty'];
+
       WorkoutSession w =
       WorkoutSession(name, user, location, date, null, null, exercisesList,null, difficulty);
       w.setLikes(likes);
       w.favoris = favs;
       w.reference = ref;
+      w.difficulty = difficulty;
       sessions.add(w);
       if(likedRef.contains(ref)){
         w.liked =true;
@@ -300,7 +348,6 @@ class _ExistingState extends State<ExistingWorkouts> {
   void searchFilter(String query) {
     List<String> tempSearchList = List<String>();
     tempSearchList.addAll(allGymNames);
-    print('Tempsearch list: $tempSearchList'.length);
     if (query.isNotEmpty) {
       List<String> tempListData = List<String>();
       tempSearchList.forEach((item) {
@@ -325,7 +372,6 @@ class _ExistingState extends State<ExistingWorkouts> {
     selectedSessions.clear();
     ///Om queryn innehåller något gör detta
     if (query.isNotEmpty) {
-      print(query);
       for (var s in sessions) {
         if (s.getGym().toString().contains(query)) {
           setState(() {

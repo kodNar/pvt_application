@@ -18,6 +18,8 @@ class WorkoutSession{
   bool _fav = false;
   int _favoris = 0;
   int _difficulty;
+
+
   WorkoutSession(String name,String user, String location,DateTime dateTime, OutdoorGym outdoorGym, List <Equipment> equipments,List <Exercise> exercise,bool shared,int difficulty){
     _user = user;
     _location = location;
@@ -30,6 +32,12 @@ class WorkoutSession{
     _difficulty = difficulty;
   }
 
+
+  int get difficulty => _difficulty;
+
+  set difficulty(int value) {
+    _difficulty = value;
+  }
 
   int get favoris => _favoris;
 
