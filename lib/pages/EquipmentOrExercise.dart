@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/EquipmentExercisePair.dart';
@@ -21,8 +22,10 @@ class EquipmentOrExercise extends StatefulWidget {
 class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
   OutdoorGym outdoorGym;
   List<Equipment> equipmentList = [];
+  List<Exercise> exerciseList = [];
   String title = 'Equipment';
   int _selectedIndex = 0;
+  bool exercisePage = false;
 
   _EquipmentOrExerciseState(OutdoorGym outdoorGym) {
     this.outdoorGym = outdoorGym;
@@ -36,19 +39,36 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
   _populateEquipmentList() async {
     equipmentList.clear();
     equipmentList.addAll(await outdoorGym.getEquipmentFromDB());
-    for (Equipment equip in equipmentList) {
-      print(equip);
-    }
     return equipmentList;
   }
 
-  void _onItemTapped(int index) {
+  _populateExerciseList() async {
+    exerciseList.clear();
+    print(exerciseList.length);
+    var exercises = await Firestore.instance.collection('ExercisesNoEquip').getDocuments();
+
+    for (var doc in exercises.documents) {
+      Exercise e = Exercise(doc.data['Name'], doc.data['Desc']);
+      if (e != null) {
+        exerciseList.add(e);
+        print(e.getDesc());
+        print(e.getName());
+      }
+    }
+    print(exerciseList.length);
+    return exerciseList;
+  }
+
+  _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      if (_selectedIndex != 0) {
-        title = 'Exercises';
-      } else {
+      if (_selectedIndex == 0) {
         title = 'Equipment';
+        exercisePage = false;
+      } else {
+        title = 'Exercises';
+        exercisePage = true;
+        exerciseList.clear();
       }
     });
   }
@@ -83,9 +103,88 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
   }
 
   Widget equipmentListview() {
-    print('test #1');
+    if (exercisePage) {
+      return FutureBuilder(
+          future: _populateExerciseList(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: exerciseList.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: ListTile(
+                      title: Text('${exerciseList[index].getName()}'),
+                      onTap: (){
+                        Exercise exercise = Exercise(exerciseList[index].getName(), exerciseList[index].getDesc());
+                        EquipmentExercisePair equipmentExercisePair = EquipmentExercisePair(null, exercise);
+                        Navigator.pop(context, equipmentExercisePair);
+                      },
+                    ),
+                  );
+                },
+              );
+            } else {
+              return CircularProgressIndicator();
+            }
+          });
+    } else {
+      return FutureBuilder(
+          future: _populateEquipmentList(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: equipmentList.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: ExpansionTile(
+                      title: Text('${equipmentList[index].getName()}'),
+                      children: <Widget>[
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount:
+                                equipmentList[index].getExercises().length,
+                            itemBuilder: (context, index2) {
+                              return Card(
+                                child: ListTile(
+                                  title: Text(
+                                      '${equipmentList[index].getExercises()[index2].getName()}'),
+                                  onTap: () {
+                                    EquipmentExercisePair e =
+                                        EquipmentExercisePair(
+                                            equipmentList[index],
+                                            equipmentList[index]
+                                                .getExercises()[index2]);
+                                    Navigator.pop(context, e);
+                                  },
+                                ),
+                              );
+                            }),
+                        /*
+                      ListTile(onTap: () {
+                        print(equipmentList[index]);
+                        print(equipmentList[index].getExercises().length);
+                        for (Exercise exc in equipmentList[index].getExercises()){
+                          print(exc);
+                        }
+                      }),
+                       */
+                      ],
+                    ),
+                  );
+                },
+              );
+            } else {
+              return CircularProgressIndicator();
+            }
+          });
+    }
+  }
+
+  Widget exerciseListView() {
     return FutureBuilder(
-        future: _populateEquipmentList(),
+        future: _populateExerciseList(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
@@ -102,16 +201,19 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
                           itemBuilder: (context, index2) {
                             return Card(
                               child: ListTile(
-                                title: Text('${equipmentList[index].getExercises()[index2].getName()}'),
+                                title: Text(
+                                    '${equipmentList[index].getExercises()[index2].getName()}'),
                                 onTap: () {
-                                  EquipmentExercisePair e = EquipmentExercisePair(equipmentList[index],equipmentList[index].getExercises()[index2]);
-                                   Navigator.pop(context,e);
+                                  EquipmentExercisePair e =
+                                      EquipmentExercisePair(
+                                          equipmentList[index],
+                                          equipmentList[index]
+                                              .getExercises()[index2]);
+                                  Navigator.pop(context, e);
                                 },
                               ),
                             );
-                          }
-
-                      ),
+                          }),
                       /*
                       ListTile(onTap: () {
                         print(equipmentList[index]);
@@ -132,6 +234,3 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
         });
   }
 }
-
-
-

@@ -1,18 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/WorkoutSession.dart';
-import 'package:flutterapp/pages/PublicWorkoutsSession.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 import 'package:flutterapp/services/Database.dart';
 import 'FavoritWorkoutPage.dart';
-
 class FavoritWorkouts extends StatefulWidget {
   @override
   _FavoritState  createState() => _FavoritState ();
 }
-
 class _FavoritState extends State<FavoritWorkouts> {
   @override
   List<WorkoutSession> sessions = [];
@@ -21,7 +17,6 @@ class _FavoritState extends State<FavoritWorkouts> {
   List<String> queriedGymNames = List<String>();
   bool _loaded = false;
   String searchGym = "";
-
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 132, 50, 155),
@@ -71,6 +66,7 @@ class _FavoritState extends State<FavoritWorkouts> {
     return Container(
         child: Expanded(
             child: ListView.builder(
+              //itemCount: sessions.length,
                 itemCount: selectedSessions.length,
                 itemBuilder: (context, index) {
                   return Column(children: <Widget>[
@@ -127,7 +123,7 @@ class _FavoritState extends State<FavoritWorkouts> {
                                       child: Column(
                                         children: <Widget>[
                                           Icon(
-                                            Icons.thumb_up,
+                                            Icons.favorite,
                                             color: Colors.white,
                                           ),
                                           //Text(sessions[index].likes.toString()),
@@ -135,7 +131,20 @@ class _FavoritState extends State<FavoritWorkouts> {
                                               .likes
                                               .toString(), style: TextStyle(color: Colors.white)),
                                         ],
-                                      ))
+                                      )),
+                                  Container(
+                                      padding: EdgeInsets.all(5),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.star,
+                                            color: Colors.white,
+                                          ),
+                                          Text(selectedSessions[index]
+                                              .favoris
+                                              .toString(), style: TextStyle(color: Colors.white)),
+                                        ],
+                                      )),
                                 ]))),
                     Divider(
                       height:7,

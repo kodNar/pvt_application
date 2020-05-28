@@ -188,6 +188,8 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
     createNewExercises(ref);
     Firestore.instance.collection("Workouts").document(ref).setData({'Shared':true});
     Firestore.instance.collection("Workouts").document(ref).setData({
+      'Difficulty':session.difficulty,
+      'Favorits': 0,
       'Likes': 0,
       'Location': session.location,
       'Name': session.name,
@@ -206,6 +208,7 @@ class _PrivateWorkoutState extends State<PrivateWorkoutPage> {
     );
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
+
   void _showDialog() {
     // flutter defined function
     showDialog(

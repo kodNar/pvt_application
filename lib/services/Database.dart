@@ -27,24 +27,20 @@ class DatabaseService {
 
   Future <List<String>> getLikedRef()async {
     try {
-      if (_likedRef.length == 0) {
         var doc = await userCollection.document(uid).get();
         _likedRef = doc.data["Liked"].cast<String>() as List<String>;
-      }
     }catch(e){
-      print(e);
+      print(e + "Liked error");
     }
     return _likedRef;
   }
 
   Future <List<String>> getFavRef()async {
     try{
-    if(_favRef.length == 0){
       var doc = await  userCollection.document(uid).get();
-      _favRef = doc.data["Liked"].cast<String>() as List<String>;
-    }
+      _favRef = doc.data["Favorits"].cast<String>() as List<String>;
     }catch(e){
-      print(e);
+      print(e+ "Fav error");
     }
     return _favRef;
   }
@@ -73,10 +69,13 @@ class DatabaseService {
   removeFavorit(String ref,WorkoutSession value) async {
     DocumentReference documentSnapshot =  userCollection.document(uid);
     documentSnapshot.updateData({"Favorits":FieldValue.arrayRemove([ref])});
+    _favsession.remove(value);
+    _favRef.remove(ref);
   }
   removeLiked(String ref,WorkoutSession value) async {
     DocumentReference documentSnapshot =  userCollection.document(uid);
     documentSnapshot.updateData({"Liked":FieldValue.arrayRemove([ref])});
+    _likedRef.remove(ref);
   }
 
   Future updateUserData(String userID, String email, String nickName) async {
@@ -166,8 +165,11 @@ class DatabaseService {
               //List exercises
               exerList,
               //is shared?
-              doc.data['Shared']);
+              doc.data['Shared'],
+              doc.data['Difficulty']);
           _worksession.add(w);
+          w.setLikes(doc.data['Likes']);
+          w.favoris = (doc.data['Favorits']);
         } catch (e) {
           print(e.toString());
         }
@@ -227,12 +229,12 @@ class DatabaseService {
 
 
   Future<List<WorkoutSession>> getFavoritedWorkouts() async {
-    if (_favsession.length == 0 ) {
+    _favsession =[];
     List<WorkoutSession> sessions = [];
     DocumentSnapshot documentSnapshot = await userCollection
         .document(uid).get();
    try{
-    for (String ref in documentSnapshot.data['Liked'].cast<String>() as List<String>) {
+    for (String ref in documentSnapshot.data['Favorits'].cast<String>() as List<String>) {
       var document = await Firestore.instance.collection('Workouts').document(ref).get();
       List<Exercise> exerList = await getExercisesWorkoutSessionFavorit(document.documentID);
       print(exerList.length);
@@ -252,18 +254,20 @@ class DatabaseService {
             //List exercises
             exerList,
             //is shared?
-            document.data['Shared']);
+            document.data['Shared'],
+            document.data['Difficulty']);
         w.reference = document.documentID;
+        w.setLikes(document.data['Likes']);
+        w.favoris = document.data['Favorites'];
         _favsession.add(w);
 
     }}catch(e){
      print(e);
    }
-    }
     return _favsession;
   }
 
-  void createNewExercises(List<Exercise> list, OutdoorGym gym, String name) {
+  void createNewExercises(List<Exercise> list, OutdoorGym gym, String name, int difficulty) {
     String referennce = userCollection
         .document(uid)
         .collection("workoutCollection")
@@ -278,6 +282,7 @@ class DatabaseService {
       'Name': name,
       'Date': DateTime.now(),
       'Shared': false,
+      'Difficulty':difficulty,
     });
     for (int i = 0; i < list.length; i++) {
       userCollection
@@ -292,7 +297,7 @@ class DatabaseService {
           }));
     }
     _worksession.add(WorkoutSession(
-        name, null, gym.name, DateTime.now(), null, null, list, false));
+        name, null, gym.name, DateTime.now(), null, null, list, false,difficulty));
   }
 
   /// Updates a users nickname
