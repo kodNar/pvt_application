@@ -1,74 +1,42 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutube/flutube.dart';
-
-
-class WatchTut extends StatefulWidget {
+import 'package:flutterapp/widgets/Appbar.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+class WatchTut extends StatefulWidget{
+  WatchTut({Key key}): super(key:key);
   @override
-  WatchTutState createState() => WatchTutState();
+  _WatchTutState createState() => _WatchTutState();
 }
-
-class WatchTutState extends State<WatchTut> {
-  final List<String> playlist = <String>[
-    'https://www.youtube.com/watch?v=fq4N0hgOWzU',
-    'https://youtu.be/IVTjpW3W33s',
-  ];
-  int currentPos;
-  String stateText;
-
+class _WatchTutState extends State<WatchTut> {
+  String videoURL ="https://www.youtube.com/watch?v=zaV6gx4Eut4";
+  YoutubePlayerController _controller;
   @override
   void initState() {
-    currentPos = 0;
-    stateText = "Video not started";
+    _controller = YoutubePlayerController(
+      initialVideoId: YoutubePlayer.convertUrlToId(videoURL)
+    );
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('FluTube Test'),
+      appBar: BaseAppBar(
+        title: ('YoutubePlayer'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Text('Youtube video URL: ${playlist[currentPos]}', style: TextStyle(fontSize: 16.0),),
-            FluTube.playlist(
-              playlist,
-              autoInitialize: true,
-              aspectRatio: 16 / 9,
-              allowMuting: false,
-              looping: true,
-              deviceOrientationAfterFullscreen: [
-                DeviceOrientation.portraitUp,
-                DeviceOrientation.landscapeLeft,
-                DeviceOrientation.landscapeRight,
-              ],
-              systemOverlaysAfterFullscreen: SystemUiOverlay.values,
-              onVideoStart: () {
-                setState(() {
-                  stateText = 'Video started playing!';
-                });
-              },
-              onVideoEnd: () {
-                setState(() {
-                  stateText = 'Video ended playing!';
-                  if((currentPos + 1) < playlist.length)
-                    currentPos++;
-                });
-              },
-            ),
-            Text(stateText),
-          ],
+      body: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              YoutubePlayer(
+                controller: _controller,
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
-
-
-
 
 
 
