@@ -359,7 +359,7 @@ class _ReportPageState extends State<ReportPage> {
               style: TextStyle(
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold,
-                fontSize: 25.0,
+                fontSize: 20.0,
                 color: Colors.white,
               ),
             ),
