@@ -25,5 +25,8 @@ class Exercise{
   String getName(){
     return _name;
   }
+  String getDesc(){
+    return _desc;
+  }
 
 }
