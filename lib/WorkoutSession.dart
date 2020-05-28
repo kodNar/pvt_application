@@ -17,7 +17,8 @@ class WorkoutSession{
   bool _liked =false;
   bool _fav = false;
   int _favoris = 0;
-  WorkoutSession(String name,String user, String location,DateTime dateTime, OutdoorGym outdoorGym, List <Equipment> equipments,List <Exercise> exercise,bool shared){
+  int _difficulty;
+  WorkoutSession(String name,String user, String location,DateTime dateTime, OutdoorGym outdoorGym, List <Equipment> equipments,List <Exercise> exercise,bool shared,int difficulty){
     _user = user;
     _location = location;
     _name = name;
@@ -26,6 +27,7 @@ class WorkoutSession{
     _equipment = equipments;
     _exercises = exercise;
     _shared = shared;
+    _difficulty = difficulty;
   }
 
 
@@ -73,6 +75,7 @@ class WorkoutSession{
   void setLikes(int likes){
     _likes = likes;
   }
+
   void addEquipment(Equipment e){
     _equipment.add(e);
   }

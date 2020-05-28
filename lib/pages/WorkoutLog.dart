@@ -71,7 +71,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
   final ScrollController _scrollController = ScrollController();
   List<TextEditingController> _controllersSet = List();
   List<TextEditingController> _controllersRep = List();
-
+  List <bool> _isSelected = [true,false,false];
 
 
   @override
@@ -128,7 +128,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
               icon: Icon(Icons.save),
               color: Colors.green,
               iconSize: 40,
-              onPressed: saveWorkout,
+              onPressed: _showDialog,
             ),
           ],
         ),
@@ -248,6 +248,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
       ),
       );
     }
+
   }
 
   Widget gymReturn() {
@@ -293,6 +294,66 @@ class _WorkoutLogState extends State<WorkoutLog> {
       );
     }
   }
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState){
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))
+              ),
+          title: new Text("Difficulty level"),
+          content: SizedBox(
+            height: 100,
+              child: Column(children: <Widget>[
+                Text("What difficulty would you say your workout is?"),
+            ToggleButtons(
+              isSelected: _isSelected,
+              onPressed:  (int index) {
+                setState(() {
+                  if (!_isSelected[index]) {
+                    if (index == 0) {
+                      _isSelected=[true,false,false];
+                    }
+                    else if (index == 1) {
+                      _isSelected=[false,true,false];
+                    }
+                    else if (index == 2) {
+                      _isSelected=[false,false,true];
+                    }
+                  }
+                });
+              },
+
+              children: <Widget>[
+              Container(child:Text(" Beginner ")),
+              Container(child:Text(" Intermediat ")),
+              Container(child:Text(" Advanced ")),
+            ],),
+          ],)),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: new Text("Save"),
+              onPressed: () {
+                saveWorkout();
+                Navigator.of(context).pop();
+              },
+
+            ),
+            FlatButton(
+              child: new Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )],
+        );});
+      },
+    );
+  }
 
 
   void removeWorkout() {
@@ -336,13 +397,14 @@ class _WorkoutLogState extends State<WorkoutLog> {
         duration: Duration(seconds: 5),
       );
       _scaffoldKey.currentState.showSnackBar(snackBar);
-      for(Exercise exercise in exerciseList){
-        print(exercise.name);
-        print(exercise.sets);
-        print(exercise.reps);
+      int index = 0;
+      for(bool selected in _isSelected){
+        if(selected)
+          break;
+        index++;
       }
       DatabaseService(uid: user.uid)
-          .createNewExercises(exerciseList, outdoorGym, _name);
+          .createNewExercises(exerciseList, outdoorGym, _name,index);
     }
   }
 

@@ -179,6 +179,10 @@ class _FavoritWorkoutState extends State<FavoritWorkoutPage> {
   unFavorit(){
     String ref =  session.reference;
     DatabaseService(uid:_user.uid).removeFavorit(ref,session);
+    Firestore.instance.collection('Workouts')
+        .document(session.reference)
+        .updateData({
+      'Favorites': session.favoris - 1});
     Navigator.of(context).pop();
 
   }
