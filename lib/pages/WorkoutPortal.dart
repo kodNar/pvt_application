@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/ExistingWorkouts.dart';
-import 'package:flutterapp/pages/RecentWorkout.dart';
+import 'package:flutterapp/pages/MyWorkout.dart';
 import 'package:flutterapp/pages/WorkoutLog.dart';
 import 'package:flutterapp/services/Database.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
@@ -160,7 +160,7 @@ class _WorkoutPortalState extends State<WorkoutPortal> {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(
-                              builder: (context) => RecentWorkouts()));
+                              builder: (context) => MyWorkouts()));
                     },
                     child: Container(
                       width: 350,
