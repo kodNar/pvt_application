@@ -41,6 +41,7 @@ dependencies:
 
   cloud_firestore: ^0.13.5 #Database
   provider: ^4.0.5 #Firestore
+  flutube: ^0.8.3
   geoflutterfire:
     git: git://github.com/DarshanGowda0/GeoFlutterFire.git
 

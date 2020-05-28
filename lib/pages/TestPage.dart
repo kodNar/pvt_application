@@ -4,6 +4,7 @@ import 'package:flutterapp/pages/ExistingWorkouts.dart';
 import 'package:flutterapp/pages/FAQ.dart';
 import 'package:flutterapp/pages/JohanTest.dart';
 import 'package:flutterapp/services/DatabaseTestPage.dart';
+import'package:flutterapp/pages/WatchTut.dart';
 
 import 'JacobTest.dart';
 import 'package:flutterapp/pages/AboutGymsPage.dart';
@@ -72,7 +73,7 @@ class _TestPageState extends State<TestPage> {
               padding: EdgeInsets.all(20),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => OnBoardPage())); /** Sätt din testsida här! **/
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => WatchTut())); /** Sätt din testsida här! **/
                 },
                 child: Text(
                   'Simons testknapp',
