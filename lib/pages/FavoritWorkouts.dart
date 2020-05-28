@@ -71,6 +71,7 @@ class _FavoritState extends State<FavoritWorkouts> {
     return Container(
         child: Expanded(
             child: ListView.builder(
+              //itemCount: sessions.length,
                 itemCount: selectedSessions.length,
                 itemBuilder: (context, index) {
                   return Column(children: <Widget>[
@@ -85,7 +86,7 @@ class _FavoritState extends State<FavoritWorkouts> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => FavoritWorkoutPage(
+                                      builder: (context) => PublicWorkoutPage(
                                           selectedSessions[index].getExercises(),
                                           selectedSessions[index].name,selectedSessions[index])));
                             },
@@ -127,7 +128,7 @@ class _FavoritState extends State<FavoritWorkouts> {
                                       child: Column(
                                         children: <Widget>[
                                           Icon(
-                                            Icons.thumb_up,
+                                            Icons.favorite,
                                             color: Colors.white,
                                           ),
                                           //Text(sessions[index].likes.toString()),
@@ -135,7 +136,20 @@ class _FavoritState extends State<FavoritWorkouts> {
                                               .likes
                                               .toString(), style: TextStyle(color: Colors.white)),
                                         ],
-                                      ))
+                                      )),
+                                  Container(
+                                      padding: EdgeInsets.all(5),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.star,
+                                            color: Colors.white,
+                                          ),
+                                          Text(selectedSessions[index]
+                                              .favoris
+                                              .toString(), style: TextStyle(color: Colors.white)),
+                                        ],
+                                      )),
                                 ]))),
                     Divider(
                       height:7,

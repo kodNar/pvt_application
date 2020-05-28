@@ -206,7 +206,34 @@ class _ExistingState extends State<ExistingWorkouts> {
                                               .likes
                                               .toString(), style: TextStyle(color: Colors.white)),
                                         ],
-                                      ))
+                                      )),
+                                  Container(
+                                      padding: EdgeInsets.all(5),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.star,
+                                            color: Colors.white,
+                                          ),
+                                          Text(selectedSessions[index]
+                                              .favoris
+                                              .toString(), style: TextStyle(color: Colors.white)),
+                                        ],
+                                      )),
+
+                                  Container(
+                                      padding: EdgeInsets.all(5),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.star,
+                                            color: Colors.white,
+                                          ),
+                                          Text(selectedSessions[index]
+                                              .favoris
+                                              .toString(), style: TextStyle(color: Colors.white)),
+                                        ],
+                                      )),
                                 ]))),
                     Divider(
                       height:7,
@@ -226,12 +253,15 @@ class _ExistingState extends State<ExistingWorkouts> {
       String ref = doc.documentID;
       String name = doc.data['Name'];
       int likes = (doc.data['Likes']);
+      int favs = (doc.data['Favorites']);
       String location = doc.data['Location'];
       String user = doc.data['User'];
       DateTime date = (doc.data['Published'] as Timestamp).toDate();
+      int difficulty  =doc.data['Difficulty'];
       WorkoutSession w =
-      WorkoutSession(name, user, location, date, null, null, exercisesList,null);
+      WorkoutSession(name, user, location, date, null, null, exercisesList,null, difficulty);
       w.setLikes(likes);
+      w.favoris = favs;
       w.reference = ref;
       sessions.add(w);
       if(likedRef.contains(ref)){
