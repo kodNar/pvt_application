@@ -488,17 +488,7 @@ class MapSampleState extends State<MapSample> {
                     MaterialPageRoute(builder: (context) => OnBoardPage()));
               },
             ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text(
-                'Settings',
-                style: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onTap: () => {},
-            ),
+
             ListTile(
               leading: Icon(Icons.supervised_user_circle),
               title: Text(
