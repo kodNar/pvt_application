@@ -9,6 +9,7 @@ class FavoritWorkouts extends StatefulWidget {
   @override
   _FavoritState  createState() => _FavoritState ();
 }
+
 class _FavoritState extends State<FavoritWorkouts> {
   @override
   List<WorkoutSession> sessions = [];
