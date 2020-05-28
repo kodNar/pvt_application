@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/Exercise.dart';
+import 'package:flutterapp/pages/WatchTut.dart';
+
 
 class EquipmentSelection extends StatelessWidget {
   String _name;
@@ -88,12 +90,26 @@ class _DetailPageState extends State<DetailPage> {
         child:ListView.builder(
             itemCount: _exercise.length,
           itemBuilder: (context,index) {
-           return Container(child: Card(
-              child: ListTile(
-                title: Text(_exercise[index].name),
-                subtitle: Text(_exercise[index].desc),
-              ),
-            ));
+            return Row(
+              children: <Widget>[
+                Flexible(child: Card(
+                  child: ListTile(
+                    title: Text(_exercise[index].name),
+                    subtitle: Text(_exercise[index].desc),
+                  ),
+                ),
+                ),
+                /// ZARSINS KNAPP HÄR
+                IconButton(
+                  icon: Icon(Icons.play_circle_outline),
+                  iconSize: 50,
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => WatchTut()));
+
+                  },
+                )
+              ],
+            );
           }),
     ),
     );
