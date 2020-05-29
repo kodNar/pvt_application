@@ -67,7 +67,7 @@ class _ExistingState extends State<ExistingWorkouts> {
         style: TextStyle(
           color: Colors.black,
         ),
-        cursorColor: Colors.white,
+        cursorColor: Colors.black,
         onChanged: (value) {
           selectedList(value);
         },
@@ -455,6 +455,7 @@ class _ExistingState extends State<ExistingWorkouts> {
 
     ///Om queryn innehåller något gör detta
     if (query.isNotEmpty) {
+      query = query[0].toUpperCase() + query.substring(1);
       for (var s in sessions) {
         if (s.getGym().toString().contains(query)) {
           setState(() {
