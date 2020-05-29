@@ -7,6 +7,7 @@ import 'package:flutterapp/pages/OnBoardPage.dart';
 import 'package:flutterapp/pages/Profile.dart';
 import 'package:flutterapp/pages/ReportPage.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
+import 'package:flutterapp/pages/dead%20pages/Login%5BDEAD%5D.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
@@ -444,8 +445,10 @@ class MapSampleState extends State<MapSample> {
                 ),
               ),
               onTap: () {
+                _loggedIn ?
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Profile()));
+                    MaterialPageRoute(builder: (context) => WorkoutPortal())): needToBeLoggedInDialog();
+
               },
             ),
             ListTile(
@@ -458,8 +461,10 @@ class MapSampleState extends State<MapSample> {
                   ),
                 ),
                 onTap: () {
+                  _loggedIn ?
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => WorkoutPortal()));
+                      MaterialPageRoute(builder: (context) => WorkoutPortal())): needToBeLoggedInDialog();
+
                 }),
             ListTile(
                 leading: Icon(Icons.library_books),
@@ -576,6 +581,33 @@ class MapSampleState extends State<MapSample> {
           ],
         ),
       ),
+    );
+  }
+  void needToBeLoggedInDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("To visit this page you need to be logged in"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: Text("Take me there"),
+              onPressed: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+              },
+            ),
+            FlatButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
     );
   }
 }
