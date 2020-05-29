@@ -107,9 +107,10 @@ class _LibraryExPageState extends State<LibraryEx> {
             Container(
               padding: EdgeInsets.all(8),
               width: 200,
-              height: 80,
+              height: 55,
               child: Text(
                 'Here is a list of all Exercises',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'OpenSans',
                   fontWeight: FontWeight.bold,
@@ -175,9 +176,10 @@ class _LibraryExPageState extends State<LibraryEx> {
           Container(
             padding: EdgeInsets.all(8),
             width: 250,
-            height: 80,
+            height: 55,
             child: Text(
               'Here is a list of all available equipment around Stockholm ',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold,
