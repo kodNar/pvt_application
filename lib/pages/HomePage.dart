@@ -187,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                       height: 50,
                       child: RaisedButton(
                         shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(15.0),
+                          borderRadius: BorderRadius.circular(15.0),
                           side: BorderSide(color: Colors.white),
                         ),
                         color: Color.fromARGB(255, 0, 110, 191),
@@ -311,7 +311,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               */
-
+/*
                   Container(
                     child: GestureDetector(
                       onTap: () {
@@ -332,6 +332,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
 
+
+ */
                 ],
               ),
             ),
@@ -427,7 +429,12 @@ class _HomePageState extends State<HomePage> {
         //hej
 
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MapSample()));
+          context,
+          MaterialPageRoute(
+              builder: (context) => MapSample(),
+              settings: RouteSettings(name: '/MapSample')),
+        );
+
       } catch (e) {
         Fluttertoast.showToast(
             msg: "Invalid credentials",

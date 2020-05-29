@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/HomePage.dart';
@@ -16,12 +15,11 @@ class _SplashScreenState extends State<SplashScreenPage> {
     Timer(
         Duration(seconds: 3),
             () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => HomePage())));
+            builder: (BuildContext context) => MapSample())));
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Container(
         color: Color.fromARGB(255, 132, 50, 155),
