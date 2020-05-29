@@ -19,6 +19,8 @@ class _WorkoutGymListState extends State<WorkoutGymList> {
   TextEditingController editingController = TextEditingController(); //For search
 @override
 void initState() {
+  queriedGymNames.clear();
+  allGymNames.clear();
   for(OutdoorGym gym in allOutdoorGym){
     queriedGymNames.add(gym.name);
     allGymNames.add(gym.name);

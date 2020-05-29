@@ -122,16 +122,6 @@ class _ProfileState extends State<Profile> {
                             return CircularProgressIndicator();
                           }
                         }),
-                    Container(
-                      child: Text(
-                        'Password: ********',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
                     Row(
                       children: const <Widget>[
                         Icon(
@@ -209,7 +199,10 @@ class _ProfileState extends State<Profile> {
                   ),
                   child: Text(
                     'Change nickname',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                    ),
                   ),
                 ),
               ),
@@ -231,7 +224,11 @@ class _ProfileState extends State<Profile> {
                   ),
                   child: Text(
                     'Change email',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                        color: Colors.white,
+                      fontSize: 18,
+
+                    ),
                   ),
                 ),
               ),
@@ -253,7 +250,9 @@ class _ProfileState extends State<Profile> {
                   ),
                   child: Text(
                     'Change password',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ),

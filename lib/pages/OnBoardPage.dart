@@ -9,7 +9,7 @@ class OnBoardPage extends StatelessWidget {
     return Scaffold(
 
       appBar: BaseAppBar(
-        title: 'OnBoarding',
+        title: 'App Tutorial',
       ),
       body: Column(
         children: <Widget>[
