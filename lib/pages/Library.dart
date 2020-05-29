@@ -17,9 +17,9 @@ class Library extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
-      appBar: new AppBar(
+      appBar: AppBar(
         title: Text("Equipments"),
       ),
       body: ListView.builder(
@@ -32,8 +32,8 @@ class Library extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: 100,
               child: RaisedButton(
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
                     side: BorderSide(color: Colors.black),
                   ),
                   onPressed: () {
@@ -47,7 +47,7 @@ class Library extends StatelessWidget {
                           children: <Widget>[
                             Padding(
                                 padding: EdgeInsets.only(),
-                                child: new Text(_map.keys.elementAt(index),
+                                child: Text(_map.keys.elementAt(index),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Colors.white,
