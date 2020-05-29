@@ -54,7 +54,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           tooltip: 'Go to homepage',
           onPressed: (){
-            Navigator.popUntil(context, ModalRoute.withName("/MapSample"));;
+            Navigator.popUntil(context, ModalRoute.withName("/MapSample"));
           },
         ),
       ],

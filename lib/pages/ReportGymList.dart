@@ -9,7 +9,6 @@ class ReportGymList extends StatefulWidget {
   @override
   _ReportGymListState createState() => _ReportGymListState();
 }
-
 class _ReportGymListState extends State<ReportGymList> {
   List<OutdoorGym> allOutdoorGym = MapSampleState.allOutdoorGym;
   List<String> allGymNames = List<String>();
