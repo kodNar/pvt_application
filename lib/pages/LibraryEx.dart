@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutterapp/pages/dead%20pages/Library(DEAD).dart';
 import 'package:flutterapp/widgets/Appbar.dart';
-import 'Equipment.dart';
-import 'Exercise.dart';
-import 'OutdoorGym.dart';
+import '../Equipment.dart';
+import '../Exercise.dart';
+import '../OutdoorGym.dart';
 
 class LibraryEx extends StatefulWidget {
   final Map _map;

@@ -14,7 +14,7 @@ import 'package:flutterapp/OutdoorGym.dart';
 import 'package:google_map_polyline/google_map_polyline.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import '../LibraryEx.dart';
+import 'LibraryEx.dart';
 import 'HomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -168,24 +168,27 @@ class MapSampleState extends State<MapSample> {
 
   /// Loads the outdoorgyms from the database and populates the outdoor gym list.
   populateOutdoorGymList() async {
-    QuerySnapshot outdoorGymCollection =
-        await Firestore.instance.collection("OutdoorGyms").getDocuments();
-    for (var doc in outdoorGymCollection.documents) {
-      String name = doc.data['Name'];
-      GeoPoint geoPoint = doc.data['GeoPoint'];
-      List<String> equipmentListRef = [];
-      if (doc.data['Equipment'] != null) {
-        equipmentListRef.addAll(_getReferenceToEquipment(doc));
+    if(allOutdoorGym.length == 0){
+      QuerySnapshot outdoorGymCollection =
+      await Firestore.instance.collection("OutdoorGyms").getDocuments();
+      for (var doc in outdoorGymCollection.documents) {
+        String name = doc.data['Name'];
+        GeoPoint geoPoint = doc.data['GeoPoint'];
+        List<String> equipmentListRef = [];
+        if (doc.data['Equipment'] != null) {
+          equipmentListRef.addAll(_getReferenceToEquipment(doc));
+        }
+        try {
+          allOutdoorGym
+              .add(new OutdoorGym(name, equipmentListRef, geoPoint, context));
+        } catch (e) {
+          print("Error creating gym");
+        }
       }
-      try {
-        allOutdoorGym
-            .add(new OutdoorGym(name, equipmentListRef, geoPoint, context));
-      } catch (e) {
-        print("Error creating gym");
-      }
+      _addGymsToMarkers();
+      libraryEq();
     }
-    _addGymsToMarkers();
-    libraryEq();
+    else return;
   }
 
   List<String> _getReferenceToEquipment(var doc) {

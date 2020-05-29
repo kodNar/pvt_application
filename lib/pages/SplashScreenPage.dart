@@ -15,9 +15,8 @@ class _SplashScreenState extends State<SplashScreenPage> {
     Timer(
         Duration(seconds: 3),
             () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => MapSample())));
+            builder: (BuildContext context) => MapSample(),  settings: RouteSettings(name: '/MapSample')),));
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
