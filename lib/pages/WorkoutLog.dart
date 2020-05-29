@@ -330,7 +330,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
 
               children: <Widget>[
               Container(child:Text(" Beginner ")),
-              Container(child:Text(" Intermediat ")),
+              Container(child:Text(" Intermediate ")),
               Container(child:Text(" Advanced ")),
             ],),
           ],)),

@@ -105,12 +105,12 @@ class _DetailPageState extends State<DetailPage> {
                   iconSize: 50,
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => WatchTut()));
-
                   },
                 )
               ],
             );
-          }),
+          }
+          ),
     ),
     );
     }

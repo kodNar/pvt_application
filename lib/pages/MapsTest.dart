@@ -7,13 +7,14 @@ import 'package:flutterapp/pages/OnBoardPage.dart';
 import 'package:flutterapp/pages/Profile.dart';
 import 'package:flutterapp/pages/ReportPage.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
+import 'package:flutterapp/pages/dead%20pages/Login%5BDEAD%5D.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
 import 'package:google_map_polyline/google_map_polyline.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import '../LibraryEx.dart';
+import 'LibraryEx.dart';
 import 'HomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -167,24 +168,27 @@ class MapSampleState extends State<MapSample> {
 
   /// Loads the outdoorgyms from the database and populates the outdoor gym list.
   populateOutdoorGymList() async {
-    QuerySnapshot outdoorGymCollection =
-        await Firestore.instance.collection("OutdoorGyms").getDocuments();
-    for (var doc in outdoorGymCollection.documents) {
-      String name = doc.data['Name'];
-      GeoPoint geoPoint = doc.data['GeoPoint'];
-      List<String> equipmentListRef = [];
-      if (doc.data['Equipment'] != null) {
-        equipmentListRef.addAll(_getReferenceToEquipment(doc));
+    if(allOutdoorGym.length == 0){
+      QuerySnapshot outdoorGymCollection =
+      await Firestore.instance.collection("OutdoorGyms").getDocuments();
+      for (var doc in outdoorGymCollection.documents) {
+        String name = doc.data['Name'];
+        GeoPoint geoPoint = doc.data['GeoPoint'];
+        List<String> equipmentListRef = [];
+        if (doc.data['Equipment'] != null) {
+          equipmentListRef.addAll(_getReferenceToEquipment(doc));
+        }
+        try {
+          allOutdoorGym
+              .add(new OutdoorGym(name, equipmentListRef, geoPoint, context));
+        } catch (e) {
+          print("Error creating gym");
+        }
       }
-      try {
-        allOutdoorGym
-            .add(new OutdoorGym(name, equipmentListRef, geoPoint, context));
-      } catch (e) {
-        print("Error creating gym");
-      }
+      _addGymsToMarkers();
+      libraryEq();
     }
-    _addGymsToMarkers();
-    libraryEq();
+    else return;
   }
 
   List<String> _getReferenceToEquipment(var doc) {
@@ -444,8 +448,10 @@ class MapSampleState extends State<MapSample> {
                 ),
               ),
               onTap: () {
+                _loggedIn ?
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Profile()));
+                    MaterialPageRoute(builder: (context) => Profile())): needToBeLoggedInDialog();
+
               },
             ),
             ListTile(
@@ -458,13 +464,15 @@ class MapSampleState extends State<MapSample> {
                   ),
                 ),
                 onTap: () {
+                  _loggedIn ?
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => WorkoutPortal()));
+                      MaterialPageRoute(builder: (context) => WorkoutPortal())): needToBeLoggedInDialog();
+
                 }),
             ListTile(
                 leading: Icon(Icons.library_books),
                 title: Text(
-                  'Library',
+                  'Exercises and equipment',
                   style: TextStyle(
                     fontFamily: 'OpenSans',
                     fontWeight: FontWeight.bold,
@@ -576,6 +584,33 @@ class MapSampleState extends State<MapSample> {
           ],
         ),
       ),
+    );
+  }
+  void needToBeLoggedInDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("To visit this page you need to be logged in"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: Text("Take me there"),
+              onPressed: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+              },
+            ),
+            FlatButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
     );
   }
 }
