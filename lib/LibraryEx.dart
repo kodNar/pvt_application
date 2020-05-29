@@ -31,6 +31,7 @@ class _LibraryExPageState extends State<LibraryEx> {
     this._map = map;
   }
 
+  //Hämtar från databasen
   Future<List<Exercise>> getExercise() async {
     var temp =
         (await Firestore.instance.collection('Equipment').getDocuments());
