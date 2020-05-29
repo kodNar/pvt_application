@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutterapp/pages/ExistingWorkouts.dart';
+import 'package:flutterapp/pages/DiscoverWorkout.dart';
 import 'package:flutterapp/pages/FAQ.dart';
 import 'package:flutterapp/pages/JohanTest.dart';
 import 'package:flutterapp/services/DatabaseTestPage.dart';

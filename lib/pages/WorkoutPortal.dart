@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/pages/ExistingWorkouts.dart';
+import 'package:flutterapp/pages/DiscoverWorkout.dart';
 import 'package:flutterapp/pages/MyWorkout.dart';
 import 'package:flutterapp/pages/WorkoutLog.dart';
 import 'package:flutterapp/services/Database.dart';
