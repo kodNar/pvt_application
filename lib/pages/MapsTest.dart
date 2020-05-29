@@ -464,7 +464,7 @@ class MapSampleState extends State<MapSample> {
             ListTile(
                 leading: Icon(Icons.library_books),
                 title: Text(
-                  'Library',
+                  'Exercises and equipment',
                   style: TextStyle(
                     fontFamily: 'OpenSans',
                     fontWeight: FontWeight.bold,
