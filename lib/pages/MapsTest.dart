@@ -447,7 +447,7 @@ class MapSampleState extends State<MapSample> {
               onTap: () {
                 _loggedIn ?
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => WorkoutPortal())): needToBeLoggedInDialog();
+                    MaterialPageRoute(builder: (context) => Profile())): needToBeLoggedInDialog();
 
               },
             ),
