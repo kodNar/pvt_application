@@ -5,12 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class WatchTut extends StatefulWidget{
-  WatchTut({Key key}): super(key:key);
+  String url;
+  WatchTut(String url) {
+    this.url = url;
+  }
   @override
-  _WatchTutState createState() => _WatchTutState();
+  _WatchTutState createState() => _WatchTutState(url);
 }
+
+String tempURL;
+String videoURL;
 class _WatchTutState extends State<WatchTut> {
-  String videoURL ="https://www.youtube.com/watch?v=zaV6gx4Eut4";
+  String videoURL;
+
+  _WatchTutState(String url) {
+    this.videoURL = url;
+  }
+
   YoutubePlayerController _controller;
   @override
   void initState() {
@@ -38,6 +49,7 @@ class _WatchTutState extends State<WatchTut> {
       ),
     );
   }
+
 }
 
 
