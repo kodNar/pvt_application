@@ -1,6 +1,4 @@
-import 'dart:collection';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +8,12 @@ import 'package:flutterapp/services/Database.dart';
 
 import 'PrivateWorkoutPage.dart';
 
-class RecentWorkouts extends StatefulWidget {
+class MyWorkouts extends StatefulWidget {
   @override
   _RecentState createState() => _RecentState();
 }
 
-class _RecentState extends State<RecentWorkouts> {
+class _RecentState extends State<MyWorkouts> {
   bool _loaded = false;
   List <WorkoutSession> selectedSessions = [];
 
@@ -24,14 +22,14 @@ class _RecentState extends State<RecentWorkouts> {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 132, 50, 155),
         appBar: BaseAppBar(
-          title: "Recent Workouts",
+          title: "My Workouts",
         ),
         body: Column(
-    children: <Widget>[_loaded
-    ? Container(child: _listView())
-        : Center(child: Text("Loading..."))
-    ],
-    ));
+          children: <Widget>[_loaded
+              ? Container(child: _listView())
+              : Center(child: Text("Loading..."))
+          ],
+        ));
   }
 
   Widget _listView() {
