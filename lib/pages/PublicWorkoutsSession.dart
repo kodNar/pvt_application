@@ -216,7 +216,7 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
       Firestore.instance.collection('Workouts')
           .document(session.reference)
           .updateData({
-        'Favorites': session.favoris + 1});
+        'Favorits': session.favoris + 1});
       DatabaseService(uid: user.uid).favExercise(session);
       session.favoris = (session.favoris+1);
       session.fav = true;

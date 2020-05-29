@@ -331,15 +331,15 @@ class _ExistingState extends State<ExistingWorkouts> {
     List<String> likedRef =(await DatabaseService(uid:_user.uid).getLikedRef());
     List<String> favRef =(await DatabaseService(uid:_user.uid).getFavRef());
     for (var doc in workoutsCollection.documents) {
-      List<Exercise> exercisesList = await getExercises(doc.documentID);
-      String ref = doc.documentID;
-      String name = doc.data['Name'];
-      int likes = (doc.data['Likes']);
-      int favs = (doc.data['Favorits']);
-      String location = doc.data['Location'];
-      String user = doc.data['User'];
-      DateTime date = (doc.data['Published'] as Timestamp).toDate();
-      int difficulty  =doc.data['Difficulty'];
+        List<Exercise> exercisesList = await getExercises(doc.documentID);
+        String ref = doc.documentID;
+        String name = doc.data['Name'];
+        int likes = (doc.data['Likes']);
+        int favs = (doc.data['Favorits']);
+        String location = doc.data['Location'];
+        String user = doc.data['User'];
+        DateTime date = (doc.data['Published'] as Timestamp).toDate();
+        int difficulty  =doc.data['Difficulty'];
 
       WorkoutSession w =
       WorkoutSession(name, user, location, date, null, null, exercisesList,null, difficulty);

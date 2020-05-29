@@ -30,7 +30,7 @@ class DatabaseService {
         var doc = await userCollection.document(uid).get();
         _likedRef = doc.data["Liked"].cast<String>() as List<String>;
     }catch(e){
-      print(e + "Liked error");
+      _likedRef =[];
     }
     return _likedRef;
   }
@@ -40,7 +40,7 @@ class DatabaseService {
       var doc = await  userCollection.document(uid).get();
       _favRef = doc.data["Favorits"].cast<String>() as List<String>;
     }catch(e){
-      print(e+ "Fav error");
+     _favRef = [];
     }
     return _favRef;
   }

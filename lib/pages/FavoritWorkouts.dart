@@ -87,65 +87,85 @@ class _FavoritState extends State<FavoritWorkouts> {
                                           selectedSessions[index].name,selectedSessions[index])));
                             },
                             child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+
                                 children: <Widget>[
-                                  Container(
-                                      padding: EdgeInsets.all(5),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Row(
+                                  Flexible(
+                                      flex:6,
+                                      child:Container(
+                                          padding: EdgeInsets.all(5),
+                                          child: Column(
                                             children: <Widget>[
-                                              Icon(Icons.perm_identity,color: Colors.white,),
-                                              //Text(sessions[index].name),
-                                              Text(selectedSessions[index].name, style: TextStyle(color: Colors.white),),
+                                              Row(
+                                                children: <Widget>[
+                                                  Icon(Icons.perm_identity,color: Colors.white,),
+                                                  //Text(sessions[index].name),
+                                                  Text(selectedSessions[index].name, style: TextStyle(color: Colors.white),),
+                                                ],
+                                              ),
+                                              Text(selectedSessions[index]
+                                                  .getDateTime()
+                                                  .toString().substring(0,10), style: TextStyle(color: Colors.white)),
                                             ],
-                                          ),
-                                          Text(selectedSessions[index]
-                                              .getDateTime()
-                                              .toString().substring(0,10), style: TextStyle(color: Colors.white)),
-                                        ],
-                                      )),
-                                  Container(
-                                    padding: EdgeInsets.all(5),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Row(
+                                          ))),
+                                  Flexible(
+                                      flex: 6,
+                                      fit: FlexFit.loose,
+                                      child:Container(
+                                        padding: EdgeInsets.all(5),
+                                        child: Column(
                                           children: <Widget>[
-                                            Icon(Icons.gps_fixed,color: Colors.white,),
-                                            Text("Location", style: TextStyle(color: Colors.white)),
+                                            Row(
+                                              children: <Widget>[
+                                                Icon(Icons.gps_fixed,color: Colors.white,),
+                                                Text("Location", style: TextStyle(color: Colors.white)),
+                                              ],
+                                            ),
+                                            RichText(
+                                              overflow: TextOverflow.ellipsis,
+                                              strutStyle:
+                                              StrutStyle(fontSize: 16.0),
+                                              text: TextSpan(
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                  text: selectedSessions[index].location),
+                                            ),
                                           ],
                                         ),
-                                        Text(selectedSessions[index].location, style: TextStyle(color: Colors.white)),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                      padding: EdgeInsets.all(5),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.favorite,
-                                            color: Colors.white,
-                                          ),
-                                          //Text(sessions[index].likes.toString()),
-                                          Text(selectedSessions[index]
-                                              .likes
-                                              .toString(), style: TextStyle(color: Colors.white)),
-                                        ],
                                       )),
-                                  Container(
-                                      padding: EdgeInsets.all(5),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.star,
-                                            color: Colors.white,
-                                          ),
-                                          Text(selectedSessions[index]
-                                              .favoris
-                                              .toString(), style: TextStyle(color: Colors.white)),
-                                        ],
-                                      )),
+                                  Flexible(
+                                      flex: 1,
+                                      fit: FlexFit.loose,
+                                      child:Container(
+                                          padding: EdgeInsets.all(5),
+                                          child: Column(
+                                            children: <Widget>[
+                                              Icon(
+                                                Icons.favorite,
+                                                color: Colors.white,
+                                              ),
+                                              //Text(sessions[index].likes.toString()),
+                                              Text(selectedSessions[index]
+                                                  .likes
+                                                  .toString(), style: TextStyle(color: Colors.white)),
+                                            ],
+                                          ))),
+                                  Flexible(
+                                      flex: 2,
+                                      child:Container(
+                                          padding: EdgeInsets.all(5),
+                                          child: Column(
+                                            children: <Widget>[
+                                              Icon(
+                                                Icons.star,
+                                                color: Colors.white,
+                                              ),
+                                              Text(selectedSessions[index]
+                                                  .favoris
+                                                  .toString(), style: TextStyle(color: Colors.white)),
+                                            ],
+                                          ))),
+
                                 ]))),
                     Divider(
                       height:7,
