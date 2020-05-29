@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/pages/HomePage.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -43,7 +44,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
           size: 40,
           semanticLabel: 'Back',
         ),
-      ),
+    ),
       actions: <Widget>[
         IconButton(
           icon: Icon(
@@ -53,7 +54,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           tooltip: 'Go to homepage',
           onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MapSample()));
+            Navigator.popUntil(context, ModalRoute.withName("/MapSample"));;
           },
         ),
       ],

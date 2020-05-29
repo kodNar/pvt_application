@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/widgets/Appbar.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:flutterapp/pages/MapsTest.dart';
@@ -57,23 +58,9 @@ class _ReportPageState extends State<ReportPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
-      appBar: AppBar(
-          title: const Text(
-            'Report / Contact',
-            style: TextStyle(
-              fontFamily: 'OpenSans',
-            ),
-          ),
-          actions: <Widget>[
-            // action button
-            IconButton(
-              icon: Icon(Icons.home),
-              onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => MapSample()));
-              },
-            ),
-          ]),
+      appBar: BaseAppBar(
+        title: "Workout Log",
+      ),
       body: SingleChildScrollView(
         child: Column(
             key: _formKey,
