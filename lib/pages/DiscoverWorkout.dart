@@ -46,19 +46,21 @@ class _ExistingState extends State<ExistingWorkouts> {
 
   Widget _searchField() {
     return Container(
+      height: 70,
       padding: EdgeInsets.all(12),
       child: TextFormField(
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent),
-            borderRadius: BorderRadius.all(Radius.circular(30)),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent),
-            borderRadius: BorderRadius.all(Radius.circular(30)),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           prefixIcon: Icon(Icons.search),
           hintText: "Search for a gym",
+          contentPadding: EdgeInsets.only(top: 5),
           filled: true,
           fillColor: Colors.white,
         ),
@@ -141,6 +143,7 @@ class _ExistingState extends State<ExistingWorkouts> {
 
   Widget _toggleSearchLevel() {
     return Container(
+      padding: EdgeInsets.only(top:10),
         child: Column(
       children: <Widget>[
         Text('Difficulty',
