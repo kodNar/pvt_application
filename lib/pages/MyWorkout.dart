@@ -1,11 +1,9 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/WorkoutSession.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 import 'package:flutterapp/services/Database.dart';
-
 import 'PrivateWorkoutPage.dart';
 
 class MyWorkouts extends StatefulWidget {

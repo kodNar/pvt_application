@@ -104,15 +104,13 @@ class _DetailPageState extends State<DetailPage> {
                   icon: Icon(Icons.play_circle_outline),
                   iconSize: 50,
                   onPressed: () {
-                    String url = "https://www.youtube.com/watch?v=zaV6gx4Eut4";
-
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => WatchTut(url)));
-
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => WatchTut()));
                   },
                 )
               ],
             );
-          }),
+          }
+          ),
     ),
     );
     }

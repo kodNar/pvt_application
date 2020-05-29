@@ -44,7 +44,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
           size: 40,
           semanticLabel: 'Back',
         ),
-      ),
+    ),
       actions: <Widget>[
         IconButton(
           icon: Icon(
@@ -54,10 +54,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           tooltip: 'Go to homepage',
           onPressed: (){
-            Navigator.pushAndRemoveUntil(context,
-                MaterialPageRoute(builder: (BuildContext context) => MapSample()),
-                    (Route<dynamic> route) => route is HomePage
-            );
+            Navigator.popUntil(context, ModalRoute.withName("/MapSample"));
           },
         ),
       ],

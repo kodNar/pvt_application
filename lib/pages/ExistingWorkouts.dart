@@ -237,9 +237,11 @@ class _ExistingState extends State<ExistingWorkouts> {
                                           selectedSessions[index].name,selectedSessions[index])));
                             },
                             child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+
                                 children: <Widget>[
-                                  Container(
+                                  Flexible(
+                                      flex:6,
+                                      child:Container(
                                       padding: EdgeInsets.all(5),
                                       child: Column(
                                         children: <Widget>[
@@ -254,8 +256,11 @@ class _ExistingState extends State<ExistingWorkouts> {
                                               .getDateTime()
                                               .toString().substring(0,10), style: TextStyle(color: Colors.white)),
                                         ],
-                                      )),
-                                  Container(
+                                      ))),
+                                  Flexible(
+                                      flex: 6,
+                                      fit: FlexFit.loose,
+                                      child:Container(
                                     padding: EdgeInsets.all(5),
                                     child: Column(
                                       children: <Widget>[
@@ -265,11 +270,23 @@ class _ExistingState extends State<ExistingWorkouts> {
                                             Text("Location", style: TextStyle(color: Colors.white)),
                                           ],
                                         ),
-                                        Text(selectedSessions[index].location, style: TextStyle(color: Colors.white)),
+                                        RichText(
+                                          overflow: TextOverflow.ellipsis,
+                                          strutStyle:
+                                          StrutStyle(fontSize: 16.0),
+                                          text: TextSpan(
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                              text: selectedSessions[index].location),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                  Container(
+                                  )),
+                                  Flexible(
+                                      flex: 1,
+                                      fit: FlexFit.loose,
+                                      child:Container(
                                       padding: EdgeInsets.all(5),
                                       child: Column(
                                         children: <Widget>[
@@ -282,8 +299,10 @@ class _ExistingState extends State<ExistingWorkouts> {
                                               .likes
                                               .toString(), style: TextStyle(color: Colors.white)),
                                         ],
-                                      )),
-                                  Container(
+                                      ))),
+                                  Flexible(
+                                    flex: 2,
+                                      child:Container(
                                       padding: EdgeInsets.all(5),
                                       child: Column(
                                         children: <Widget>[
@@ -295,7 +314,7 @@ class _ExistingState extends State<ExistingWorkouts> {
                                               .favoris
                                               .toString(), style: TextStyle(color: Colors.white)),
                                         ],
-                                      )),
+                                      ))),
 
                                 ]))),
                     Divider(
