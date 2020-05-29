@@ -427,7 +427,12 @@ class _HomePageState extends State<HomePage> {
         //hej
 
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MapSample()));
+          context,
+          MaterialPageRoute(
+              builder: (context) => MapSample(),
+              settings: RouteSettings(name: '/MapSample')),
+        );
+
       } catch (e) {
         Fluttertoast.showToast(
             msg: "Invalid credentials",
