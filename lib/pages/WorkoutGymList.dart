@@ -95,6 +95,7 @@ void initState() {
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(width: 1.5,
+                    color: Colors.white,
                   ),
                     borderRadius: BorderRadius.all(Radius.circular(25.0,)
                     ),
