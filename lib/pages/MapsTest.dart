@@ -7,7 +7,6 @@ import 'package:flutterapp/pages/OnBoardPage.dart';
 import 'package:flutterapp/pages/Profile.dart';
 import 'package:flutterapp/pages/ReportPage.dart';
 import 'package:flutterapp/pages/WorkoutPortal.dart';
-import 'package:flutterapp/pages/dead%20pages/Login%5BDEAD%5D.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/OutdoorGym.dart';
@@ -64,7 +63,7 @@ class MapSampleState extends State<MapSample> {
       ),
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
     );
-    return new Scaffold(
+    return Scaffold(
       drawer: _navDrawer(),
       appBar: appBar,
       body: Column(children: <Widget>[
