@@ -31,7 +31,7 @@ class _LibraryExPageState extends State<LibraryEx> {
   //Hämtar från databasen
   Future<List<Exercise>> getExercise() async {
     var temp =
-        (await Firestore.instance.collection('Equipment').getDocuments());
+    (await Firestore.instance.collection('Equipment').getDocuments());
     for (var doc in temp.documents) {
       String name = doc.documentID;
       var exerTemp = await Firestore.instance
@@ -135,12 +135,15 @@ class _LibraryExPageState extends State<LibraryEx> {
                             return Container(
                               padding: EdgeInsets.all(8),
                               color: Colors.transparent,
-                              width: MediaQuery.of(context).size.width,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width,
                               height: 100,
                               child: RaisedButton(
                                   shape: new RoundedRectangleBorder(
                                     borderRadius:
-                                        new BorderRadius.circular(30.0),
+                                    new BorderRadius.circular(30.0),
                                     side: BorderSide(color: Colors.white),
                                   ),
                                   onPressed: () {},
@@ -159,7 +162,15 @@ class _LibraryExPageState extends State<LibraryEx> {
                                                         color: Colors.white,
                                                         fontSize: 20.0,
                                                         fontWeight:
-                                                            FontWeight.bold)))
+                                                        FontWeight.bold))),
+                                            IconButton(
+                                              icon: Icon(
+                                                  Icons.play_circle_outline),
+                                              iconSize: 50,
+                                              alignment: Alignment.centerRight,
+                                              onPressed: () {
+                                              },
+                                            )
                                           ]))),
                             );
                           });
@@ -196,7 +207,10 @@ class _LibraryExPageState extends State<LibraryEx> {
                   return Container(
                     padding: EdgeInsets.all(8),
                     color: Colors.transparent,
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
                     height: 100,
                     child: RaisedButton(
                         shape: new RoundedRectangleBorder(
@@ -207,9 +221,10 @@ class _LibraryExPageState extends State<LibraryEx> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DetailPage(
-                                      _map.keys.elementAt(index),
-                                      _map.values.elementAt(index))));
+                                  builder: (context) =>
+                                      DetailPage(
+                                          _map.keys.elementAt(index),
+                                          _map.values.elementAt(index))));
                         },
                         color: Color.fromARGB(255, 132, 50, 155),
                         child: Align(
@@ -270,10 +285,10 @@ class _DetailPageState extends State<DetailPage> {
             itemBuilder: (context, index) {
               return Container(
                   child: Card(
-                child: ListTile(
-                  title: Text(list[index].name),
-                ),
-              ));
+                    child: ListTile(
+                      title: Text(list[index].name),
+                    ),
+                  ));
             }),
       ),
     );
