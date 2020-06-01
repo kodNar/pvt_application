@@ -13,10 +13,7 @@ class LibraryEx extends StatefulWidget {
   LibraryEx(this._map);
 
   @override
-  _LibraryExPageState createState() =>
-      _LibraryExPageState(_map);
-
-
+  _LibraryExPageState createState() => _LibraryExPageState(_map);
 }
 
 class _LibraryExPageState extends State<LibraryEx> {
@@ -34,7 +31,7 @@ class _LibraryExPageState extends State<LibraryEx> {
   //Hämtar från databasen
   Future<List<Exercise>> getExercise() async {
     var temp =
-        (await Firestore.instance.collection('Equipment').getDocuments());
+    (await Firestore.instance.collection('Equipment').getDocuments());
     for (var doc in temp.documents) {
       String name = doc.documentID;
       var exerTemp = await Firestore.instance
@@ -103,78 +100,166 @@ class _LibraryExPageState extends State<LibraryEx> {
 
   Widget exerciseList() {
     if (exercisePage) {
-      return Container(
-        child: FutureBuilder(
-            future: _data,
-            builder: (_, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: Text("Loading... "),
-                );
-              } else {
-                return ListView.builder(
-                    itemCount: exercises.length,
-                    itemBuilder: (_, index) {
-                      return ListTile(
-                        /*
-                      Namnet på fältet du hämtar. Ska även ha en string med sig
-                      så rätt fält hämtas beroende på vad du vill utföra
-                       */
-                        title: Text(exercises[index].getName()),
+      return new Scaffold(
+        backgroundColor: Color.fromARGB(255, 132, 50, 155),
+        body: Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(8),
+              width: 200,
+              height: 55,
+              child: Text(
+                'Here is a list of all Exercises',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Expanded(
+              child: FutureBuilder(
+                  future: _data,
+                  builder: (_, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: Text("Loading... "),
                       );
-                    });
-              }
-            }),
+                    } else {
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.all(8),
+                          itemCount: exercises.length,
+                          itemBuilder: (_, index) {
+                            return Container(
+                              padding: EdgeInsets.all(8),
+                              color: Colors.transparent,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width,
+                              height: 100,
+                              child: RaisedButton(
+                                  shape: new RoundedRectangleBorder(
+                                    borderRadius:
+                                    new BorderRadius.circular(30.0),
+                                    side: BorderSide(color: Colors.white),
+                                  ),
+                                  onPressed: () {},
+                                  color: Color.fromARGB(255, 132, 50, 155),
+                                  child: Align(
+                                      alignment: Alignment.center,
+                                      child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Padding(
+                                                padding: EdgeInsets.only(),
+                                                child: new Text(
+                                                    exercises[index].getName(),
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20.0,
+                                                        fontWeight:
+                                                        FontWeight.bold))),
+                                            IconButton(
+                                              icon: Icon(
+                                                  Icons.play_circle_outline),
+                                              iconSize: 50,
+                                              alignment: Alignment.centerRight,
+                                              onPressed: () {
+                                              },
+                                            )
+                                          ]))),
+                            );
+                          });
+                    }
+                  }),
+            ),
+          ],
+        ),
       );
     } else {
       return new Scaffold(
         backgroundColor: Color.fromARGB(255, 132, 50, 155),
-        body: ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: _map.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                padding: EdgeInsets.all(8),
-                color: Colors.transparent,
-                width: MediaQuery.of(context).size.width,
-                height: 100,
-                child: RaisedButton(
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
-                      side: BorderSide(color: Colors.black),
-                    ),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(_map.keys.elementAt(index), _map.values.elementAt(index))));
-                    },
-                    color: Color.fromARGB(255, 132, 50, 155),
-                    child: Align(
-                        alignment: Alignment.center,
-                        child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Padding(
-                                  padding: EdgeInsets.only(),
-                                  child: new Text(_map.keys.elementAt(index),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold)))
-                            ]))),
-              );
-            }),
+        body: Column(children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(8),
+            width: 250,
+            height: 55,
+            child: Text(
+              'Here is a list of all available equipment around Stockholm ',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(8),
+                itemCount: _map.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    padding: EdgeInsets.all(8),
+                    color: Colors.transparent,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
+                    height: 100,
+                    child: RaisedButton(
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30.0),
+                          side: BorderSide(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      DetailPage(
+                                          _map.keys.elementAt(index),
+                                          _map.values.elementAt(index))));
+                        },
+                        color: Color.fromARGB(255, 132, 50, 155),
+                        child: Align(
+                            alignment: Alignment.center,
+                            child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Padding(
+                                      padding: EdgeInsets.only(),
+                                      child: new Text(
+                                          _map.keys.elementAt(index),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold)))
+                                ]))),
+                  );
+                }),
+          ),
+        ]),
       );
     }
   }
 }
+
 class DetailPage extends StatefulWidget {
   String post;
   List<OutdoorGym> list;
 
-  DetailPage (String post, List<OutdoorGym> list) {
+  DetailPage(String post, List<OutdoorGym> list) {
     this.post = post;
     this.list = list;
   }
+
   @override
   _DetailPageState createState() => _DetailPageState(post, list);
 }
@@ -183,10 +268,11 @@ class _DetailPageState extends State<DetailPage> {
   String post;
   List<OutdoorGym> list;
 
-  _DetailPageState (String post, List<OutdoorGym> list) {
+  _DetailPageState(String post, List<OutdoorGym> list) {
     this.post = post;
     this.list = list;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,14 +280,15 @@ class _DetailPageState extends State<DetailPage> {
         title: Text(widget.post),
       ),
       body: Container(
-        child:ListView.builder(
+        child: ListView.builder(
             itemCount: list.length,
-            itemBuilder: (context,index) {
-              return Container(child: Card(
-                child: ListTile(
-                  title: Text(list[index].name),
-                ),
-              ));
+            itemBuilder: (context, index) {
+              return Container(
+                  child: Card(
+                    child: ListTile(
+                      title: Text(list[index].name),
+                    ),
+                  ));
             }),
       ),
     );

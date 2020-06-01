@@ -28,13 +28,12 @@ void initState() {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF84329b),
       appBar: AppBar(
-        backgroundColor:  Color(0xFF84329b),
+        backgroundColor: Color(0xFF84329b),
         title: Container(
           child: Center(
               child: FittedBox(fit:BoxFit.fitWidth,
