@@ -133,13 +133,14 @@ class _WorkoutLogState extends State<WorkoutLog> {
     super.initState();
     _controllersSet = List();
     _controllersRep = List();
-    getUsers();
+    getUser();
   }
 
-  getUsers() async {
+  getUser() async {
     user = await FirebaseAuth.instance.currentUser();
   }
 
+  ///If an exercise have been chosen display a listview containing that exercise
   Widget workoutLog() {
     if (exerciseChosen) {
       return Form(
