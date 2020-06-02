@@ -36,6 +36,7 @@ class _RegisterState extends State<Register>{
                     fontSize: 45,
                   ),
                 ),
+                ///En klickbar ikon som visar texten om att e-posten ej kommer nyttjas i reklamsyfte
                 IconButton(
                   padding: EdgeInsets.only(left: 330),
                   icon: Icon(
@@ -50,6 +51,7 @@ class _RegisterState extends State<Register>{
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextFormField(
+                    ///Textfält samt kontroller för att en giltig e-post skrivs in
                     // ignore: missing_return
                     validator: (input) {
                       if(input.isEmpty) {
@@ -75,6 +77,7 @@ class _RegisterState extends State<Register>{
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextFormField(
+                    ///Textfält, samt kontroller för att ett godkänt lösenord skrivs in
                     // ignore: missing_return
                     validator: (input){
                       if(input.isEmpty) {
@@ -99,6 +102,7 @@ class _RegisterState extends State<Register>{
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextFormField(
+                    ///Kontroll så att användaren skrivit in korrekt lösenord (denne behöver skriva in det igen likadant som denne skrev i första fältet
                     // ignore: missing_return
                     validator: (input){
                       if(input.isEmpty) {
@@ -162,6 +166,7 @@ class _RegisterState extends State<Register>{
     );
   }
 
+  ///Sparar användarens input till strängar och skickar detta till firebase som i sin tur skapar konton som användaren kan nyttja för att logga in.
   Future<void> register() async{
     final formState = _formKey.currentState;
     if(formState.validate()){
