@@ -130,7 +130,7 @@ class _StartWorkoutState extends State<StartWorkout> {
             Container(child: Text("               Reps:  ")),
             Container(child: Text(exerciseList[i].reps.toString()),),
             Spacer(),
-            ShoppingItemList(CheckBox(false),)],);
+            ExerciseItemList(CheckBox(false),)],);
         }
     );
   }
@@ -192,30 +192,30 @@ class CheckBox{
   bool isCheck;
   CheckBox(this.isCheck);
 }
-class ShoppingItemState extends State<ShoppingItemList> {
-  final CheckBox product;
-  ShoppingItemState(this.product);
+class ExerciseItemState extends State<ExerciseItemList> {
+  final CheckBox exercise;
+  ExerciseItemState(this.exercise);
   @override
   Widget build(BuildContext context) {
     return Checkbox(
-                value: product.isCheck,
+                value: exercise.isCheck,
                 onChanged: (bool value) {
                   setState(() {
-                    product.isCheck = value;
+                    exercise.isCheck = value;
                   });
                 });
   }
 }
-class ShoppingItemList extends StatefulWidget {
+class ExerciseItemList extends StatefulWidget {
   final CheckBox product;
 
-  ShoppingItemList(CheckBox product)
+  ExerciseItemList(CheckBox product)
       : product = product,
         super(key: new ObjectKey(product));
 
   @override
-  ShoppingItemState createState() {
-    return new ShoppingItemState(product);
+  ExerciseItemState createState() {
+    return new ExerciseItemState(product);
   }
   
   

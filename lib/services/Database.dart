@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/OutdoorGym.dart';
@@ -12,12 +11,12 @@ class DatabaseService {
   Links user with a newly created document by UID(UserID)
    */
   final String uid;
-  static List<WorkoutSession> _worksession = [];
+  static List<WorkoutSession> _workSession = [];
   static List<WorkoutSession> _favsession =[];
   static List<String> _likedRef =[];
   static List<String> _favRef = [];
-  static set worksession(WorkoutSession value) {
-    _worksession.add(value);
+  static set workSession(WorkoutSession value) {
+    _workSession.add(value);
   }
 
   DatabaseService({this.uid});
@@ -25,53 +24,54 @@ class DatabaseService {
   bool changedWorkout = false;
 
 
+  ///reference to the User collection collection in DB
+  final CollectionReference userCollection =
+      Firestore.instance.collection('users'); //Creates/references a collection
+///reference to the outdoorgym collection in DB
+  final CollectionReference outdoorGymsCollection =
+      Firestore.instance.collection('OutdoorGyms');
+
+
+/// gets a reference list of all liked exercises
   Future <List<String>> getLikedRef()async {
     try {
-        var doc = await userCollection.document(uid).get();
-        _likedRef = doc.data["Liked"].cast<String>() as List<String>;
+      var doc = await userCollection.document(uid).get();
+      _likedRef = doc.data["Liked"].cast<String>() as List<String>;
     }catch(e){
       _likedRef =[];
     }
     return _likedRef;
   }
-
+  /// gets a reference list of all Favortied exercises
   Future <List<String>> getFavRef()async {
     try{
       var doc = await  userCollection.document(uid).get();
       _favRef = doc.data["Favorits"].cast<String>() as List<String>;
     }catch(e){
-     _favRef = [];
+      _favRef = [];
     }
     return _favRef;
   }
 
 
-  final CollectionReference userCollection =
-      Firestore.instance.collection('users'); //Creates/references a collection
-
-  final CollectionReference outdoorGymsCollection =
-      Firestore.instance.collection('OutdoorGyms');
-
-
-
-
-
+/// adds a reference to the favorited exercise
   likeExercise(WorkoutSession s){
     userCollection.document(uid).updateData({
         'Liked': FieldValue.arrayUnion(([s.reference]))});
   }
-
+  ///adds a reference to the favortied axercises
   favExercise(WorkoutSession s){
     userCollection.document(uid).updateData({
       'Favorits': FieldValue.arrayUnion(([s.reference]))});
   }
-
+  ///removes Favorit from db and from the global list
   removeFavorit(String ref,WorkoutSession value) async {
     DocumentReference documentSnapshot =  userCollection.document(uid);
     documentSnapshot.updateData({"Favorits":FieldValue.arrayRemove([ref])});
     _favsession.remove(value);
     _favRef.remove(ref);
   }
+  ///removes like from db and from the global list
   removeLiked(String ref,WorkoutSession value) async {
     DocumentReference documentSnapshot =  userCollection.document(uid);
     documentSnapshot.updateData({"Liked":FieldValue.arrayRemove([ref])});
@@ -91,16 +91,8 @@ class DatabaseService {
     });
   }
 
-  Future addWorkout(name) async {
-    userCollection
-        .document(uid)
-        .collection('workoutCollection')
-        .document()
-        .setData({
-      'Name': name ?? '',
-    });
-  }
 
+///loop throu the referneces in the databas and adds it to the workout as a reference
   Future<List<String>> _referencesToUsersWorkoutsSessions(var doc) async {
     List<String> referenceList = [];
     if (doc.data['Reference'] != null) {
@@ -112,7 +104,7 @@ class DatabaseService {
     }
     return referenceList;
   }
-
+/// gets equipemt for the workout
   Future<Equipment> _getSessionEquipment(String ref) async {
     List<Exercise> exercises = [];
     Equipment equipment;
@@ -132,9 +124,9 @@ class DatabaseService {
     equipment = Equipment(temp.documentID.toString(), exercises);
     return equipment;
   }
-
+/// gets Ussers workouts from db
   Future<List<WorkoutSession>> getUserWorkoutSessions() async {
-    if (_worksession.length == 0 || changedWorkout) {
+    if (_workSession.length == 0 || changedWorkout) {
       QuerySnapshot collectionReference = await Firestore.instance
           .collection('users')
           .document(uid)
@@ -167,7 +159,7 @@ class DatabaseService {
               //is shared?
               doc.data['Shared'],
               doc.data['Difficulty']);
-          _worksession.add(w);
+          _workSession.add(w);
           w.setLikes(doc.data['Likes']);
           w.favoris = (doc.data['Favorits']);
         } catch (e) {
@@ -176,9 +168,9 @@ class DatabaseService {
       }
     }
     changedWorkout = false;
-    return _worksession;
+    return _workSession;
   }
-
+///gets exercises for a workout from DB
   Future<List<Exercise>> getExercisesWorkoutSession(var ref) async {
     List<Exercise> exercises = [];
     QuerySnapshot collectionReference = await Firestore.instance
@@ -224,10 +216,7 @@ class DatabaseService {
     }
     return exercises;
   }
-
-
-
-
+///gets the favorited workouts keys from the specefic users and gets those exercises fromt the DB
   Future<List<WorkoutSession>> getFavoritedWorkouts() async {
     _favsession =[];
     List<WorkoutSession> sessions = [];
@@ -266,14 +255,14 @@ class DatabaseService {
    }
     return _favsession;
   }
-
+  /// create a new workout and adds it to the users private collection
   void createNewExercises(List<Exercise> list, OutdoorGym gym, String name, int difficulty) {
     String referennce = userCollection
         .document(uid)
         .collection("workoutCollection")
         .document()
         .documentID;
-    userCollection
+        userCollection
         .document(uid)
         .collection("workoutCollection")
         .document(referennce)
@@ -296,7 +285,7 @@ class DatabaseService {
             'Name': list[i].name,
           }));
     }
-    _worksession.add(WorkoutSession(
+    _workSession.add(WorkoutSession(
         name, null, gym.name, DateTime.now(), null, null, list, false,difficulty));
   }
 
@@ -361,17 +350,4 @@ class DatabaseService {
         .map(_userListFromSnapshot); //returns us a stream
     //Everytime we get a new snapshot we want to call the list instead
   }
-
-/*
-  Future updateOutdoorGym(List<String> equipment, String name, GeoPoint position) async{
-    return await gymCollection.document(name).setData({
-      'equipment': equipment,
-      'name': name,
-      'position': position,
-    });
-  }
-
- */
-//get User stream
-
 }

@@ -75,7 +75,6 @@ class _DatabaseTestPageState extends State<DatabaseTestPage> {
                 child: FlatButton(
                   onPressed: () async{
                     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-                    DatabaseService(uid: user.uid).addWorkout('batman');
                   },child: null,
                 ),
               ),
