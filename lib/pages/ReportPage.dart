@@ -19,17 +19,28 @@ String picPath = 'assets/images/bok.png';
 bool gymChosen = false;
 bool eqChosen = false;
 String description;
-
-String equipment = 'Not Specified';
 OutdoorGym outdoorGym;
+String equipment = 'Not Specified';
 enum SingingCharacter { error, suggestion }
 
 class ReportPage extends StatefulWidget {
+
+  ReportPage(_outdoorGym){
+    outdoorGym = _outdoorGym;
+  }
   @override
-  _ReportPageState createState() => _ReportPageState();
+  _ReportPageState createState() => _ReportPageState(outdoorGym);
 }
 
 class _ReportPageState extends State<ReportPage> {
+
+  _ReportPageState(_outdoorGym){
+    outdoorGym = _outdoorGym;
+    if(outdoorGym != null){
+      gymChosen = true;
+    }
+  }
+
   final List<OutdoorGym> allOutdoorGym = MapSampleState.allOutdoorGym;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -59,7 +70,7 @@ class _ReportPageState extends State<ReportPage> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
       appBar: BaseAppBar(
-        title: "Workout Log",
+        title: "Report page",
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -490,7 +501,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             print(picPath.toString());
 
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => ReportPage()));
+                context, MaterialPageRoute(builder: (context) => ReportPage(outdoorGym)));
           } catch (e) {
             // If an error occurs, log the error to the console.
             print(e);

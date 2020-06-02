@@ -225,7 +225,7 @@ class GenericState extends State<GenericGymPage> {
                   child: GestureDetector(
               onTap: () {
                 Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ReportPage()));
+                MaterialPageRoute(builder: (context) => ReportPage(_outdoorGym)));
                 },
                     child: Text(
                       "Contact us / report",

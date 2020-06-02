@@ -90,7 +90,7 @@ class _TestPageState extends State<TestPage> {
               padding: EdgeInsets.all(20),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ReportPage() )); /** Sätt din testsida här! **/
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ReportPage(outdoorGym) )); /** Sätt din testsida här! **/
                 },
                 child: Text(
                   'Claes testknapp',

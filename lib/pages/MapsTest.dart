@@ -535,7 +535,7 @@ class MapSampleState extends State<MapSample> {
               ),
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ReportPage()));
+                    MaterialPageRoute(builder: (context) => ReportPage(null)));
               },
             ),
             _loggedIn

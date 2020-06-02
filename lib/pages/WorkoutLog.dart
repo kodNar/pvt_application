@@ -80,7 +80,6 @@ class _WorkoutLogState extends State<WorkoutLog> {
       ),
       backgroundColor: Color.fromARGB(255, 132, 50, 155),
       body: Form(
-        // TODO: Fixa så man kan scrolla ordentligt //Einar
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -115,7 +114,6 @@ class _WorkoutLogState extends State<WorkoutLog> {
               onPressed: () {
                 removeWorkout();
               },
-              // TODO: Fixa så man kan Ta bort exercises eller hela workout:en //Einar
             ),
             IconButton(
               icon: Icon(Icons.save),
