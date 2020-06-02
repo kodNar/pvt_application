@@ -65,6 +65,8 @@ class _ReportPageState extends State<ReportPage> {
 
   SingingCharacter _radioChoice = SingingCharacter.error;
 
+
+  ///layouten på sidan
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -249,6 +251,7 @@ class _ReportPageState extends State<ReportPage> {
     );
   }
 
+  ///Mer layout
   Widget gymReturn() {
     if (gymChosen) {
       return Container(
@@ -307,6 +310,7 @@ class _ReportPageState extends State<ReportPage> {
     }
   }
 
+  ///Mer layout
   Widget eqReturn() {
     if (eqChosen) {
       return Container(
@@ -367,13 +371,15 @@ class _ReportPageState extends State<ReportPage> {
     }
   }
 
+
+  ///Skickar användaren till val av  gym och returnerar valet till denna sida
   _pushContextChooseGym(BuildContext context) async {
     final OutdoorGym result = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => ReportGymList()));
     gymChosen = true;
     outdoorGym = result;
   }
-
+  ///Skickar användaren till val av  equipment och returnerar valet till denna sida
   _pushContextChooseEq(BuildContext context) async {
     final Equipment result = await Navigator.push(
         context,
@@ -383,6 +389,7 @@ class _ReportPageState extends State<ReportPage> {
     equipment = result.getName();
   }
 
+  ///Tackar användaren för dennes rapportering
   void thankYouMessage() {
     Fluttertoast.showToast(
         msg: "Thank you for your input! We will look into the matter ASAP",
@@ -397,7 +404,7 @@ class _ReportPageState extends State<ReportPage> {
 }
 
 //////////////////////////////////// CAMERA ////////////////////////////////////
-
+///Fotoklass
 Future<void> main2(context) async {
   // Ensure that plugin services are initialized so that `availableCameras()`
   // can be called before `runApp()`
@@ -513,7 +520,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 }
 
 ///////////////////////////////////EMAIL///////////////////////////////////////////
-
+///API/SMTP-server för att skicka mail direkt från appen
 main(SingingCharacter _radioChoice) async {
   gymChosen = false;
   eqChosen = false;
