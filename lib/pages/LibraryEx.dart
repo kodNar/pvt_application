@@ -51,6 +51,11 @@ class _LibraryExPageState extends State<LibraryEx> {
     return exercises;
   }
 
+  /*
+  Används för att kalla på rätt Widget och titel när man byter mellan Equipment
+  och Exercise
+   */
+
   _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -71,6 +76,7 @@ class _LibraryExPageState extends State<LibraryEx> {
     _data = getExercise();
   }
 
+  //Widget för nedre navigationsbar med knapp för Exercise och Equipment
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,6 +106,9 @@ class _LibraryExPageState extends State<LibraryEx> {
     );
   }
 
+  /*
+  Visar antingen en sida med alla exercises eller alla equipment
+   */
   Widget exerciseList() {
     if (exercisePage) {
       return new Scaffold(
@@ -275,6 +284,7 @@ class _DetailPageState extends State<DetailPage> {
     this.list = list;
   }
 
+  // Visar alla gym som har den tidigare valda equipmentet
   @override
   Widget build(BuildContext context) {
     return Scaffold(

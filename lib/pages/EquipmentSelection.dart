@@ -14,7 +14,7 @@ class EquipmentSelection extends StatelessWidget {
     this._equipment = equipment;
   }
 
-
+//Visar upp alla tillgängliga equipment på ett gym
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -79,6 +79,8 @@ class _DetailPageState extends State<DetailPage> {
     this.post = post;
     this._exercise = ex;
   }
+
+  //Visar upp alla exercises som varje equipment har
   @override
   Widget build(BuildContext context) {
     return Scaffold(
