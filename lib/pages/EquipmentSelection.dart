@@ -101,7 +101,7 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ),
                 ),
-                /// ZARSINS KNAPP HÄR
+
                 IconButton(
                   icon: Icon(Icons.play_circle_outline),
                   iconSize: 50,

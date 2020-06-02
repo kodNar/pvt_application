@@ -16,6 +16,7 @@ class WatchTut extends StatefulWidget{
 String tempURL;
 String videoURL;
 class _WatchTutState extends State<WatchTut> {
+  ///Bestämmer vilken video på youtube som skall spelas
   String videoURL;
 
   _WatchTutState(String url) {
