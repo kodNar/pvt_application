@@ -74,8 +74,9 @@ class GenericState extends State<GenericGymPage> {
                             fit: BoxFit.fitWidth),
                       ),
                     ),
-                  )
+                  ):Container(height: 300,);/*
                       : Container(
+
                     child: Container(
                       padding: EdgeInsets.only(top: 20),
                       width: MediaQuery.of(context).size.width,
@@ -88,6 +89,7 @@ class GenericState extends State<GenericGymPage> {
                       ),
                     ),
                   );
+                  */
                 },
               ),
               ),

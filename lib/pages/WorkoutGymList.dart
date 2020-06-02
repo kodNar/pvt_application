@@ -17,14 +17,14 @@ class _WorkoutGymListState extends State<WorkoutGymList> {
   List<String> allGymNames = List<String>();
   List<String> queriedGymNames = List<String>();
   TextEditingController editingController = TextEditingController(); //For search
-@override
-void initState() {
-  queriedGymNames.clear();
-  allGymNames.clear();
-  for(OutdoorGym gym in allOutdoorGym){
-    queriedGymNames.add(gym.name);
-    allGymNames.add(gym.name);
-  }
+  @override
+  void initState() {
+    queriedGymNames.clear();
+    allGymNames.clear();
+    for(OutdoorGym gym in allOutdoorGym){
+      queriedGymNames.add(gym.name);
+      allGymNames.add(gym.name);
+    }
     super.initState();
   }
 
@@ -93,13 +93,13 @@ void initState() {
                 color: Colors.white,
               ),
               decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(width: 1.5,
-                    color: Colors.white,
-                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 1.5,
+                      color: Colors.white,
+                    ),
                     borderRadius: BorderRadius.all(Radius.circular(25.0,)
                     ),
-                ),
+                  ),
                   hintText: "Search",
                   hintStyle: TextStyle(
                     color: Colors.white,
@@ -125,7 +125,7 @@ void initState() {
                         }
                       }
                       //Navigator.pop(context, (queriedGymNames[index]));
-                      },
+                    },
                     title: Text('${queriedGymNames[index]}'),
                   ),
                 );

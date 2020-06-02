@@ -58,6 +58,8 @@ class AboutGym extends StatelessWidget {
                           ),
                         )
                       : Container(
+                    height: 400,
+                    /*
                           child: Container(
                             padding: EdgeInsets.only(top: 20),
                             width: MediaQuery.of(context).size.width,
@@ -69,6 +71,7 @@ class AboutGym extends StatelessWidget {
                                   fit: BoxFit.fill),
                             ),
                           ),
+                     */
                         );
                 },
               ),

@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/Equipment.dart';
 import 'package:flutterapp/EquipmentExercisePair.dart';
 import 'package:flutterapp/Exercise.dart';
 import 'package:flutterapp/OutdoorGym.dart';
-import 'package:flutterapp/pages/ReportPage.dart';
 import 'package:flutterapp/widgets/Appbar.dart';
 
 class EquipmentOrExercise extends StatefulWidget {
@@ -36,12 +33,15 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
     super.initState();
   }
 
+  ///Populates a list with all the equipment from a certain gym
   _populateEquipmentList() async {
     equipmentList.clear();
     equipmentList.addAll(await outdoorGym.getEquipmentFromDB());
     return equipmentList;
   }
 
+
+  ///Populates a list with all the equipment from a certain gym
   _populateExerciseList() async {
     exerciseList.clear();
     print(exerciseList.length);
@@ -51,11 +51,8 @@ class _EquipmentOrExerciseState extends State<EquipmentOrExercise> {
       Exercise e = Exercise(doc.data['Name'], doc.data['Desc']);
       if (e != null) {
         exerciseList.add(e);
-        print(e.getDesc());
-        print(e.getName());
       }
     }
-    print(exerciseList.length);
     return exerciseList;
   }
 
