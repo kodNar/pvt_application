@@ -265,7 +265,6 @@ class _WorkoutLogState extends State<WorkoutLog> {
           minWidth: 250,
           height: 48,
           child: RaisedButton(
-            //Gör knappen till en cirkel och sätter dit en grön border för tydlighet
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
               side: BorderSide(color: Colors.white, width: 1.5),
@@ -287,6 +286,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
     }
   }
 
+  ///Displays a dialog after you save your workout, letting you choose difficulty level
   void _showDialog() {
     // flutter defined function
     showDialog(
@@ -347,6 +347,8 @@ class _WorkoutLogState extends State<WorkoutLog> {
     );
   }
 
+
+  ///Removes the latest exercise added in the workout log.
   void removeWorkout() {
     setState(() {
       print(exerciseList.length);
@@ -374,6 +376,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
     });
   }
 
+  ///Saves a workout
   void saveWorkout() {
     final formState = _formKey.currentState;
     if (formState.validate()) {
@@ -398,6 +401,8 @@ class _WorkoutLogState extends State<WorkoutLog> {
     }
   }
 
+
+  ///Saves the gym to the workout log
   _pushContextChooseGym(BuildContext context) async {
     final OutdoorGym result = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => WorkoutGymList()));
@@ -405,6 +410,7 @@ class _WorkoutLogState extends State<WorkoutLog> {
     outdoorGym = result;
   }
 
+///Saves the exercise to the workout log
   _pushContextChooseExercise(BuildContext context) async {
     final EquipmentExercisePair result = await Navigator.push(
         context,
