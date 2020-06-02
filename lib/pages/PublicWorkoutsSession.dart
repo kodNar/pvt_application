@@ -211,6 +211,7 @@ class _PublicWorkoutState extends State<PublicWorkoutPage> {
         )
     );
   }
+
   _pressedFav() {
     if (!_favorit) {
       Firestore.instance.collection('Workouts')

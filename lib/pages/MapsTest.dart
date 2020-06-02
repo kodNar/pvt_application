@@ -154,10 +154,10 @@ class MapSampleState extends State<MapSample> {
   @override
   void initState() {
     super.initState();
+    ///set current location and toggle map on
     Geolocator().getCurrentPosition().then((currloc) {
       setState(() {
         currentLocation = currloc;
-        currentLocation = LatLng(59.3274, 18.055);
         mapToggle = true;
       });
     });
@@ -189,7 +189,7 @@ class MapSampleState extends State<MapSample> {
     }
     else return;
   }
-
+  ///gets keys to equipment object in databas
   List<String> _getReferenceToEquipment(var doc) {
     List<String> output = [];
     try {
@@ -201,8 +201,8 @@ class MapSampleState extends State<MapSample> {
     }
     return output;
   }
-
-  libraryEq() {
+    ///adds equipment as a key with a list of outdoorgyms whit that equipment
+    libraryEq() {
     for (OutdoorGym outdoorGym in allOutdoorGym) {
       for (String equipment in outdoorGym.equipmentRef) {
         List<OutdoorGym> list = map[equipment];
@@ -232,6 +232,7 @@ class MapSampleState extends State<MapSample> {
     }
   }
 
+  ///adds the gyms marker to the set of markers
   _addGymsToMarkers() {
     for (int i = 0; i < allOutdoorGym.length; i++) {
       allMarkers.add(allOutdoorGym[i].marker);
@@ -241,20 +242,7 @@ class MapSampleState extends State<MapSample> {
     });
   }
 
-  Future<String> loadAsset() async {
-    return await rootBundle.loadString('assets/files/OutdoorGyms.txt');
-  }
-
-//  Future<void> _moveCameraToSelf() async {
-//    currentLocation = await Geolocator().getCurrentPosition();
-//    final GoogleMapController controller = await _controller.future;
-//    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-//        bearing: 0,
-//        target: LatLng(currentLocation.latitude, currentLocation.longitude),
-//        tilt: 0,
-//        zoom: 17)));
-//  }
-
+  ///Take a target destination and displayes a route on the map
   getSomePoints(var goal) async {
     polyline.clear();
     //currentLocation = await Geolocator().getCurrentPosition();
@@ -278,7 +266,7 @@ class MapSampleState extends State<MapSample> {
       ));
     });
   }
-
+ ///Bottom listview displays the list with the closest gyms.
   Widget listView2() {
     bool route = true;
     return FutureBuilder<SplayTreeMap>(
@@ -376,7 +364,7 @@ class MapSampleState extends State<MapSample> {
               : Center(child: CircularProgressIndicator());
         });
   }
-
+ ///cheacks if user is sign in
   checkIfSignedIn() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     setState(() {
@@ -387,7 +375,7 @@ class MapSampleState extends State<MapSample> {
       }
     });
   }
-
+  ///returns a list of outdoorgyms sorted on the distance to the user
   Future<SplayTreeMap> _getSortedListOnDistance() async {
     SplayTreeMap st = new SplayTreeMap<int, OutdoorGym>();
     for (int i = 0; i < allOutdoorGym.length; i++) {
@@ -405,6 +393,7 @@ class MapSampleState extends State<MapSample> {
     return distance.round();
   }
 
+  /// moves camarea to the inputed gym
   Future<void> _goToGym(OutdoorGym gym) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -413,7 +402,7 @@ class MapSampleState extends State<MapSample> {
         tilt: 0,
         zoom: 16)));
   }
-
+///menu
   Widget _navDrawer() {
     return Container(
       width: 225,
@@ -585,6 +574,7 @@ class MapSampleState extends State<MapSample> {
       ),
     );
   }
+
   void needToBeLoggedInDialog() {
     // flutter defined function
     showDialog(
