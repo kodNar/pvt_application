@@ -1,7 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutterapp/pages/dead%20pages/Library(DEAD).dart';
+
 import 'package:flutterapp/widgets/Appbar.dart';
 import '../Equipment.dart';
 import '../Exercise.dart';
@@ -140,10 +142,11 @@ class _LibraryExPageState extends State<LibraryEx> {
                                   .size
                                   .width,
                               height: 100,
+
                               child: RaisedButton(
-                                  shape: new RoundedRectangleBorder(
+                                  shape:  RoundedRectangleBorder(
                                     borderRadius:
-                                    new BorderRadius.circular(30.0),
+                                     BorderRadius.circular(30.0),
                                     side: BorderSide(color: Colors.white),
                                   ),
                                   onPressed: () {},
@@ -192,8 +195,7 @@ class _LibraryExPageState extends State<LibraryEx> {
               'Here is a list of all available equipment around Stockholm ',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.bold,
+                fontSize: 15,
                 color: Colors.white,
               ),
             ),
@@ -213,8 +215,8 @@ class _LibraryExPageState extends State<LibraryEx> {
                         .width,
                     height: 100,
                     child: RaisedButton(
-                        shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0),
+                        shape:  RoundedRectangleBorder(
+                          borderRadius:  BorderRadius.circular(30.0),
                           side: BorderSide(color: Colors.white),
                         ),
                         onPressed: () {
@@ -226,7 +228,7 @@ class _LibraryExPageState extends State<LibraryEx> {
                                           _map.keys.elementAt(index),
                                           _map.values.elementAt(index))));
                         },
-                        color: Color.fromARGB(255, 132, 50, 155),
+                        color: Colors.transparent,
                         child: Align(
                             alignment: Alignment.center,
                             child: Row(
@@ -234,7 +236,7 @@ class _LibraryExPageState extends State<LibraryEx> {
                                 children: <Widget>[
                                   Padding(
                                       padding: EdgeInsets.only(),
-                                      child: new Text(
+                                      child:  Text(
                                           _map.keys.elementAt(index),
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
@@ -276,20 +278,37 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 132, 50, 155),
       appBar: AppBar(
         title: Text(widget.post),
       ),
-      body: Container(
-        child: ListView.builder(
-            itemCount: list.length,
-            itemBuilder: (context, index) {
-              return Container(
-                  child: Card(
-                    child: ListTile(
-                      title: Text(list[index].name),
-                    ),
-                  ));
-            }),
+      body: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(top: 5),
+            width:  500,
+            height: 65,
+            child: Text('Here are all the gyms with that specific equipment',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                      child: Card(
+                        child: ListTile(
+                          title: Text(list[index].name),
+                        ),
+                      ));
+                }),
+          ),
+        ],
       ),
     );
   }
