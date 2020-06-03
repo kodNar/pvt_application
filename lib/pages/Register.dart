@@ -176,15 +176,15 @@ class _RegisterState extends State<Register>{
         showDialog(context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: new Text(
+            title: Text(
               "Confirm password"
             ),
-            content: new Text(
+            content: Text(
               "The passwords must be matching"
             ),
             actions: <Widget>[
               FlatButton(
-                child: new Text("Ok"),
+                child: Text("Ok"),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -192,6 +192,23 @@ class _RegisterState extends State<Register>{
             ],
           );
         }
+        );
+      }else if(_password.length <= 8){
+        return AlertDialog(
+          title: Text(
+              "Confirm password"
+          ),
+          content: Text(
+              "The password must be at least 8 characters"
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Ok"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
         );
       }
       try{

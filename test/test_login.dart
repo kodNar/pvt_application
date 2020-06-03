@@ -36,10 +36,10 @@ void main(){
       var result = PasswordFieldValidator.validate('password');
       expect(result, null);
     });
-  /// If you give a shorter password than 6 return 'The password needs to be at least 6 characters'
+  /// If you give a shorter password than 8 return 'The password needs to be at least 6 characters'
   test('short password', (){
     var result = PasswordFieldValidator.validate('short');
-    expect(result, 'The password needs to be at least 6 characters');
+    expect(result, 'The password needs to be at least 8 characters');
   });
 
 

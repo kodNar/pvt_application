@@ -22,8 +22,8 @@ class EmailFieldValidator {
 
 class PasswordFieldValidator {
   static String validate(String input) {
-    if (input.length > 0 && input.length < 6) {
-      return 'The password needs to be at least 6 characters';
+    if (input.length > 0 && input.length <= 8) {
+      return 'The password needs to be at least 8 characters';
     }
     return input.isEmpty ? 'Please provide a password' : null;
   }
