@@ -12,10 +12,10 @@ void main(){
     expect(result, 'Please provide an Email');
   });
 
-  /// If you give an email that does not exist in the database return "null"
-  test('non-empty email returns null', () { //if you give an email that does not exist return null
+  /// If you give an email without "@"
+  test('If you give an email without @', () { //if you give an email that does not exist return null
     var result = EmailFieldValidator.validate('email');
-    expect(result, null);
+    expect(result, 'Your email must contain @');
   });
 
   /// If you give an empty password return "Please provide a password"

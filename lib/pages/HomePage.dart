@@ -16,13 +16,22 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class EmailFieldValidator {
   static String validate(String input) {
+    if(!input.contains("@") && input.isNotEmpty){
+      return 'Your email must contain @';
+    }
+    if(input.length <= 3 && input.length > 0){
+      return 'Please provide a real Email this Email is to short';
+    }
+    if(input.length > 100){
+      return 'That email is too long use another one';
+    }
     return input.isEmpty ? 'Please provide an Email' : null;
   }
 }
 
 class PasswordFieldValidator {
   static String validate(String input) {
-    if (input.length > 0 && input.length <= 8) {
+    if (input.length > 0 && input.length < 8) {
       return 'The password needs to be at least 8 characters';
     }
     return input.isEmpty ? 'Please provide a password' : null;
@@ -159,7 +168,6 @@ class _HomePageState extends State<HomePage> {
                             // ignore: missing_return
                             validator: (input) =>
                                 PasswordFieldValidator.validate(input),
-
                             onSaved: (input) => _password = input,
                             obscureText: true, //Döljer texten
                           ),

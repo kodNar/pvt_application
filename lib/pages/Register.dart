@@ -11,6 +11,30 @@ class Register extends StatefulWidget {
 
 }
 
+class EmailFieldValidator {
+  static String validate(String input) {
+    if(!input.contains("@") && input.isNotEmpty){
+      return 'Your email must contain @';
+    }
+    if(input.length <= 3 && input.length > 0){
+      return 'Please provide a real Email when registering this Email is to short';
+    }
+    if(input.length > 100){
+      return 'That email is too long to be registered another one';
+    }
+    return input.isEmpty ? 'Please provide an Email' : null;
+  }
+}
+
+class PasswordFieldValidator {
+  static String validate(String input) {
+    if (input.length > 0 && input.length < 8) {
+      return 'The password needs to be at least 8 characters';
+    }
+    return input.isEmpty ? 'Please provide a password' : null;
+  }
+}
+
 class _RegisterState extends State<Register>{
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _email, _nickName, _password, _confirmPassword;
@@ -53,14 +77,8 @@ class _RegisterState extends State<Register>{
                   child: TextFormField(
                     ///Textfält samt kontroller för att en giltig e-post skrivs in
                     // ignore: missing_return
-                    validator: (input) {
-                      if(input.isEmpty) {
-                        return 'Please provide an E-mail';
-                      }
-                      if(!input.contains('@')) {
-                        return 'Please provide a valid E-mail';
-                      }
-                    },
+                    validator: (input) =>
+                        EmailFieldValidator.validate(input),
                     onSaved: (input) => _email = input,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
@@ -79,11 +97,8 @@ class _RegisterState extends State<Register>{
                   child: TextFormField(
                     ///Textfält, samt kontroller för att ett godkänt lösenord skrivs in
                     // ignore: missing_return
-                    validator: (input){
-                      if(input.isEmpty) {
-                        return 'Please provide a password';
-                      }
-                    },
+                    validator: (input) =>
+                        PasswordFieldValidator.validate(input),
                     onSaved: (input) => _password = input,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
