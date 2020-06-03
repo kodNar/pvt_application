@@ -17,7 +17,7 @@ class EmailFieldValidator {
       return 'Your email must contain @';
     }
     if(input.length <= 3 && input.length > 0){
-      return 'Please provide a real Email when registering this Email is to short';
+      return 'Email is to short';
     }
     if(input.length > 100){
       return 'That email is too long to be registered another one';
@@ -207,23 +207,6 @@ class _RegisterState extends State<Register>{
             ],
           );
         }
-        );
-      }else if(_password.length <= 8){
-        return AlertDialog(
-          title: Text(
-              "Confirm password"
-          ),
-          content: Text(
-              "The password must be at least 8 characters"
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("Ok"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
-          ],
         );
       }
       try{

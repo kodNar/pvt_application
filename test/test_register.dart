@@ -26,7 +26,7 @@ void main(){
   /// too short email
   test('If you give a too short email', () { //if you give an email that does not exist return null
     var result = EmailFieldValidator.validate('e@a');
-    expect(result, 'Please provide a real Email when registering this Email is to short');
+    expect(result, 'Email is to short');
   });
 
   /// too long email
