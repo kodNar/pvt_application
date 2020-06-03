@@ -3,8 +3,6 @@ import 'package:flutterapp/pages/WorkoutLog.dart';
 
 void main(){
   test('title', (){
-
-
   });
 
   /// //////////////////////////////////////////////////////////////////////////

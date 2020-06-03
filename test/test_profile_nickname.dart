@@ -5,9 +5,7 @@ import 'package:flutterapp/pages/Profile.dart';
 void main(){
 
   test('title', () {
-    //Setup
-    //Run
-    //Verify
+
   });
 
   /// If you give an empty nickname return "Your nickname cant be empty"

@@ -4,14 +4,6 @@ import 'package:flutterapp/pages/HomePage.dart';
 void main(){
 
   test('title', () {
-
-    //Setup
-
-
-    //Run
-
-
-    //Verify
   });
 
   /// If you give an empty email return "Please provide an Email"
